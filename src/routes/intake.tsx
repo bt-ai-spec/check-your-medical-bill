@@ -51,28 +51,7 @@ function IntakePage() {
   return (
     <AppShell>
       <div className="mx-auto w-full max-w-3xl px-5 pb-20">
-        {/* Stepper */}
-        <ol className="grid grid-cols-4 gap-2 border-b border-border/60 pt-6 pb-4">
-          {stepper.map((s, i) => {
-            const active = i === 0;
-            return (
-              <li key={s.num} className="flex flex-col gap-1.5">
-                <span
-                  aria-hidden
-                  className={`h-0.5 w-full ${active ? "bg-pine" : "bg-border"}`}
-                />
-                <p className="font-mono text-xs text-muted-foreground">{s.num}</p>
-                <p
-                  className={`text-sm ${
-                    active ? "font-medium text-foreground" : "text-muted-foreground"
-                  }`}
-                >
-                  {s.label}
-                </p>
-              </li>
-            );
-          })}
-        </ol>
+        <StepTracker current={0} />
 
         <div className="pt-10">
           <h1 className="font-display text-4xl font-medium tracking-tight text-foreground sm:text-5xl">
