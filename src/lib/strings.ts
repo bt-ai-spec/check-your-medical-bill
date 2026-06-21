@@ -10,6 +10,12 @@ export const strings = {
     aboutLink: "About & sources",
     privacyBar: "Your information never leaves your device",
     footerDisclaimer: "Working prototype · Not legal advice.",
+    steps: [
+      { num: "01", label: "Your bill" },
+      { num: "02", label: "Check it" },
+      { num: "03", label: "See if you qualify" },
+      { num: "04", label: "Get your letter" },
+    ],
   },
   welcome: {
     tagline: "Got a hospital bill you don't understand? Start here.",
