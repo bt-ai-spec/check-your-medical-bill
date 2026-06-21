@@ -72,7 +72,7 @@ function IntakePage() {
           <p className="mt-3 text-base text-muted-foreground">{t.subtitle}</p>
         </div>
 
-        {/* Provider type */}
+        {/* Provider type + second input revealed in place */}
         <section className="mt-10">
           <div className="flex items-baseline justify-between gap-4">
             <h2 className="text-base font-medium text-foreground">
@@ -107,176 +107,174 @@ function IntakePage() {
               label={t.providerIndependent}
             />
           </div>
-        </section>
 
-        {/* Hospital path */}
-        {providerType === "hospital" && (
-          <section className="mt-10">
-            <div className="flex items-baseline justify-between gap-4">
-              <h2 className="text-base font-medium text-foreground">
-                {t.hospitalLabel}
-              </h2>
-              <button
-                type="button"
-                onClick={() => setShowAbout((v) => !v)}
-                aria-expanded={showAbout}
-                className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded"
-              >
-                <span aria-hidden>?</span>
-                {t.hospitalAboutToggle}
-              </button>
-            </div>
+          <div className="mt-6">
+            {providerType === "hospital" && (
+              <div>
+                <div className="flex items-baseline justify-between gap-4">
+                  <h2 className="text-base font-medium text-foreground">
+                    {t.hospitalLabel}
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={() => setShowAbout((v) => !v)}
+                    aria-expanded={showAbout}
+                    className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded"
+                  >
+                    <span aria-hidden>?</span>
+                    {t.hospitalAboutToggle}
+                  </button>
+                </div>
 
-            {showAbout && (
-              <p className="mt-3 rounded-md border border-border bg-card p-4 text-sm leading-relaxed text-foreground/85">
-                {t.hospitalAboutBody}
-              </p>
-            )}
+                {showAbout && (
+                  <p className="mt-3 rounded-md border border-border bg-card p-4 text-sm leading-relaxed text-foreground/85">
+                    {t.hospitalAboutBody}
+                  </p>
+                )}
 
-            <ul className="mt-4 grid gap-3" role="radiogroup" aria-label={t.hospitalLabel}>
-              {CORPUS.hospitals.map((h) => {
-                const selected = hospitalId === h.id;
-                const meta = `${h.city}${t.hospitalCityTypeSep}Nonprofit${t.hospitalCityTypeSep}CA Fair Pricing`;
-                return (
-                  <li key={h.id}>
+                <ul className="mt-4 grid gap-3" role="radiogroup" aria-label={t.hospitalLabel}>
+                  {CORPUS.hospitals.map((h) => {
+                    const selected = hospitalId === h.id;
+                    const meta = `${h.city}${t.hospitalCityTypeSep}Nonprofit${t.hospitalCityTypeSep}CA Fair Pricing`;
+                    return (
+                      <li key={h.id}>
+                        <button
+                          type="button"
+                          role="radio"
+                          aria-checked={selected}
+                          onClick={() => {
+                            setHospitalId(h.id);
+                            setShowAdd(false);
+                          }}
+                          className={`group flex w-full items-start gap-4 rounded-xl border p-4 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                            selected
+                              ? "border-pine bg-pine-soft/40"
+                              : "border-border bg-card hover:border-pine/40"
+                          }`}
+                        >
+                          <span
+                            aria-hidden
+                            className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-md border ${
+                              selected ? "border-pine/40 bg-card" : "border-border bg-background"
+                            }`}
+                          >
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1f5d4c" strokeWidth="1.6">
+                              <path d="M4 21V8l8-4 8 4v13" />
+                              <path d="M9 21v-6h6v6" />
+                              <path d="M9 11h.01M15 11h.01M9 14h.01M15 14h.01" strokeLinecap="round" />
+                            </svg>
+                          </span>
+                          <span className="flex-1">
+                            <span className="block font-display text-lg font-medium text-foreground">
+                              {h.name}
+                            </span>
+                            <span className="mt-0.5 block text-sm text-muted-foreground">
+                              {meta}
+                            </span>
+                          </span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+
+                {/* Add it */}
+                <div className="mt-3">
+                  {!showAdd ? (
                     <button
                       type="button"
-                      role="radio"
-                      aria-checked={selected}
                       onClick={() => {
-                        setHospitalId(h.id);
-                        setShowAdd(false);
+                        setShowAdd(true);
+                        setHospitalId(null);
                       }}
-                      className={`group flex w-full items-start gap-4 rounded-xl border p-4 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
-                        selected
-                          ? "border-pine bg-pine-soft/40"
-                          : "border-border bg-card hover:border-pine/40"
-                      }`}
+                      className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-card/60 px-4 py-3.5 text-sm font-medium text-pine hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     >
-                      <span
-                        aria-hidden
-                        className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-md border ${
-                          selected ? "border-pine/40 bg-card" : "border-border bg-background"
-                        }`}
-                      >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1f5d4c" strokeWidth="1.6">
-                          <path d="M4 21V8l8-4 8 4v13" />
-                          <path d="M9 21v-6h6v6" />
-                          <path d="M9 11h.01M15 11h.01M9 14h.01M15 14h.01" strokeLinecap="round" />
-                        </svg>
-                      </span>
-                      <span className="flex-1">
-                        <span className="block font-display text-lg font-medium text-foreground">
-                          {h.name}
-                        </span>
-                        <span className="mt-0.5 block text-sm text-muted-foreground">
-                          {meta}
-                        </span>
-                      </span>
+                      <span aria-hidden>+</span>
+                      {t.hospitalAddTitle}
                     </button>
-                  </li>
-                );
-              })}
-            </ul>
+                  ) : (
+                    <div className="rounded-xl border border-border bg-card p-5">
+                      <p className="font-display text-lg font-medium text-foreground">
+                        {t.hospitalAddTitle}
+                      </p>
+                      <p className="mt-2 text-sm text-foreground/80">
+                        {t.hospitalAddIntro}
+                      </p>
 
-            {/* Add it */}
-            <div className="mt-3">
-              {!showAdd ? (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowAdd(true);
-                    setHospitalId(null);
-                  }}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-card/60 px-4 py-3.5 text-sm font-medium text-pine hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                >
-                  <span aria-hidden>+</span>
-                  {t.hospitalAddTitle}
-                </button>
-              ) : (
-                <div className="rounded-xl border border-border bg-card p-5">
-                  <p className="font-display text-lg font-medium text-foreground">
-                    {t.hospitalAddTitle}
-                  </p>
-                  <p className="mt-2 text-sm text-foreground/80">
-                    {t.hospitalAddIntro}
-                  </p>
+                      <p className="mt-4 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                        {t.hospitalAddHowTitle}
+                      </p>
+                      <ul className="mt-2 space-y-1.5 text-sm text-foreground/80">
+                        <li className="flex gap-2"><span aria-hidden className="text-pine">·</span>{t.hospitalAddHowOne}</li>
+                        <li className="flex gap-2"><span aria-hidden className="text-pine">·</span>{t.hospitalAddHowTwo}</li>
+                        <li className="flex gap-2"><span aria-hidden className="text-pine">·</span>{t.hospitalAddHowThree}</li>
+                      </ul>
 
-                  <p className="mt-4 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    {t.hospitalAddHowTitle}
-                  </p>
-                  <ul className="mt-2 space-y-1.5 text-sm text-foreground/80">
-                    <li className="flex gap-2"><span aria-hidden className="text-pine">·</span>{t.hospitalAddHowOne}</li>
-                    <li className="flex gap-2"><span aria-hidden className="text-pine">·</span>{t.hospitalAddHowTwo}</li>
-                    <li className="flex gap-2"><span aria-hidden className="text-pine">·</span>{t.hospitalAddHowThree}</li>
-                  </ul>
+                      <div className="mt-5 grid gap-4">
+                        <label className="block text-sm">
+                          <span className="block font-medium text-foreground">
+                            {t.hospitalAddNameLabel}
+                          </span>
+                          <input
+                            type="text"
+                            value={addName}
+                            onChange={(e) => setAddName(e.target.value)}
+                            placeholder={t.hospitalAddNamePlaceholder}
+                            className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                          />
+                        </label>
+                        <label className="block text-sm">
+                          <span className="block font-medium text-foreground">
+                            {t.hospitalAddCutoffsLabel}
+                          </span>
+                          <textarea
+                            value={addCutoffs}
+                            onChange={(e) => setAddCutoffs(e.target.value)}
+                            placeholder={t.hospitalAddCutoffsPlaceholder}
+                            rows={3}
+                            className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                          />
+                        </label>
+                      </div>
 
-                  <div className="mt-5 grid gap-4">
-                    <label className="block text-sm">
-                      <span className="block font-medium text-foreground">
-                        {t.hospitalAddNameLabel}
-                      </span>
-                      <input
-                        type="text"
-                        value={addName}
-                        onChange={(e) => setAddName(e.target.value)}
-                        placeholder={t.hospitalAddNamePlaceholder}
-                        className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                      />
-                    </label>
-                    <label className="block text-sm">
-                      <span className="block font-medium text-foreground">
-                        {t.hospitalAddCutoffsLabel}
-                      </span>
-                      <textarea
-                        value={addCutoffs}
-                        onChange={(e) => setAddCutoffs(e.target.value)}
-                        placeholder={t.hospitalAddCutoffsPlaceholder}
-                        rows={3}
-                        className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                      />
-                    </label>
-                  </div>
+                      <p className="mt-3 text-xs text-muted-foreground">
+                        {t.hospitalAddSessionNote}
+                      </p>
 
-                  <p className="mt-3 text-xs text-muted-foreground">
-                    {t.hospitalAddSessionNote}
-                  </p>
-
-                  <label className="mt-4 flex items-start gap-2.5 text-sm text-foreground/85">
-                    <input
-                      type="checkbox"
-                      checked={contribute}
-                      onChange={(e) => setContribute(e.target.checked)}
-                      className="mt-0.5 h-4 w-4 rounded border-input accent-pine"
-                    />
-                    <span>{t.hospitalAddContributeLabel}</span>
-                  </label>
+                      <label className="mt-4 flex items-start gap-2.5 text-sm text-foreground/85">
+                        <input
+                          type="checkbox"
+                          checked={contribute}
+                          onChange={(e) => setContribute(e.target.checked)}
+                          className="mt-0.5 h-4 w-4 rounded border-input accent-pine"
+                        />
+                        <span>{t.hospitalAddContributeLabel}</span>
+                      </label>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          </section>
-        )}
+              </div>
+            )}
 
-        {/* Independent path */}
-        {providerType === "independent" && (
-          <section className="mt-10">
-            <label className="block">
-              <span className="block text-base font-medium text-foreground">
-                {t.independentLabel}
-              </span>
-              <input
-                type="text"
-                value={independentName}
-                onChange={(e) => setIndependentName(e.target.value)}
-                placeholder={t.independentPlaceholder}
-                className="mt-2 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              />
-            </label>
-            <p className="mt-3 text-sm text-muted-foreground">
-              {t.independentHelp}
-            </p>
-          </section>
-        )}
+            {providerType === "independent" && (
+              <label className="block">
+                <span className="block text-base font-medium text-foreground">
+                  {t.independentLabel}
+                </span>
+                <input
+                  type="text"
+                  value={independentName}
+                  onChange={(e) => setIndependentName(e.target.value)}
+                  placeholder={t.independentPlaceholder}
+                  className="mt-2 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                />
+                <p className="mt-3 text-sm text-muted-foreground">
+                  {t.independentHelp}
+                </p>
+              </label>
+            )}
+          </div>
+        </section>
 
         {/* Actions */}
         <div className="mt-12 flex items-center justify-between gap-4">
