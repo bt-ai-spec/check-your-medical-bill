@@ -31,6 +31,14 @@ function IntakePage() {
   const [showAdd, setShowAdd] = useState(false);
   const [addName, setAddName] = useState("");
   const [addCutoffs, setAddCutoffs] = useState("");
+  const [addHousehold, setAddHousehold] = useState("");
+  const [addIncome, setAddIncome] = useState("");
+  const [selfCheck, setSelfCheck] = useState<{
+    hospital: string;
+    cutoffs: string;
+    size: number;
+    pct: number;
+  } | null>(null);
   const [contribute, setContribute] = useState(false);
   const [independentName, setIndependentName] = useState("");
 
