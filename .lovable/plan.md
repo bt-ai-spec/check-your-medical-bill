@@ -1,214 +1,141 @@
-## Fair Bill — session contract & build plan
 
-No code yet. This proposes the full shape so we can lock it in once, then build one screen per turn.
+## Fair Bill — build plan (no code yet)
+
+Privacy-first React + Tailwind app for Californians decoding hospital bills. Everything stays in the browser; the legal corpus is bundled at build time.
 
 ---
 
 ### 1. Screens & flow
 
 ```text
-Welcome ─▶ Intake ─▶ Bill check ─▶ Assistance / Leverage ─▶ Letters + resources
-                                                              │
-                                                              └─▶ Take it with you (.ics + mailto)
+Welcome → Intake → Bill check → Assistance/Leverage → Letters + resources
+                                                         │
+                                                         └→ Take it with you (.ics + mailto)
+About & sources (linked from header on every screen)
 ```
 
-Routes (TanStack file-based):
+| Route | Purpose |
+|---|---|
+| `/` | **Welcome.** Matches the screenshots: privacy promise card, 3-step "Check the bill / See if you qualify / Get your letter", "Start — nothing leaves your device" CTA. Header: Fair Bill mark + About & sources + "Pilot · CA". Top bar: "Private session — everything you enter stays on this device". |
+| `/intake` | Provider type → hospital pick (if applicable) → bill basics (total, dates, itemized?, in/out of network, emergency) → household size + income → insurance status. Each field has a "Why we ask" toggle. |
+| `/check` | Reads intake + corpus. Flags grouped under text headers: *Your rights as a hospital patient · California law*, *Applies to any medical bill*, *Your leverage with this provider*. Tap a flag to expand detail + provenance. |
+| `/assistance` | Deterministic eligibility outcome (free / discounted / borderline / above-line / unknown) with the math shown in plain English. For non-hospital providers, no tier — leverage points instead. |
+| `/letters` | Pre-filled letters (itemized request, financial-assistance application, dispute), copy-to-clipboard + `.txt` download. "Take it with you": `.ics` calendar reminders + `mailto:` to the provider's billing office. |
+| `/about` | "Where these numbers come from" — every corpus entry with date and source link. "Clear my data" button. |
 
-| Route | File | Purpose |
-|---|---|---|
-| `/` | `routes/index.tsx` | **Welcome.** What this is, privacy promise, "not legal advice", Start button. |
-| `/intake` | `routes/intake.tsx` | **Intake.** Provider type, hospital (if applicable), bill basics, household size, income, insurance status. Progressive disclosure ("Why we ask"). |
-| `/check` | `routes/check.tsx` | **Bill check.** Reads intake, reads corpus, lists flags grouped under text headers. Each flag taps to expand detail + provenance. |
-| `/assistance` | `routes/assistance.tsx` | **Assistance / Leverage.** Deterministic eligibility tier (free / discounted / borderline / above-line) + leverage points keyed to provider type. |
-| `/letters` | `routes/letters.tsx` | **Letters + resources.** Pre-filled letter previews (itemized bill request, financial-assistance application, dispute), corpus resource links, "Take it with you" panel (.ics + mailto). |
-| `/about` | `routes/about.tsx` | **About + provenance.** "Where these numbers come from" — every corpus entry with date and source. |
+Persistent footer: "Working prototype · Fair Bill · …Not legal advice." matches screenshot 2.
 
-Shared:
-
-- Persistent footer with the "not legal advice" disclaimer and an About link.
-- Per-screen "Where these numbers come from" panel on Check / Assistance / Letters.
-- Back/Edit navigation never destroys data.
-
-Transition-copy contract: every CTA names what the next screen actually shows. Example — Welcome's button says **"Start the bill check"** because the path takes you through intake to the bill check.
+Transition copy: every CTA names the next screen exactly. "Start — nothing leaves your device" lands on Intake's first question.
 
 ---
 
 ### 2. Client-side data model
 
-**Persistence:** `localStorage` only (single key, e.g. `fairbill.v1`). No cookies, no server. A "Clear my data" button on Welcome and About wipes the key.
+**Persistence:** `localStorage` only, single key `fairbill.v1`. No cookies, no server, no analytics. "Clear my data" wipes the key.
 
-**State management:** one React Context (`FairBillProvider`) at the root, fed by a `useReducer`. Each screen reads + dispatches; no prop drilling. Hydration on mount from `localStorage`; persistence on each commit, debounced. SSR-safe (read inside `useEffect`).
-
-**Shape (TypeScript):**
+**State:** one `FairBillProvider` Context fed by `useReducer` at the root. Hydration inside `useEffect` (SSR-safe). Debounced write on each commit.
 
 ```ts
 type ProviderType = "hospital" | "physician_group" | "ambulance" | "lab" | "imaging" | "other";
 
 type Intake = {
-  provider: {
-    type: ProviderType | null;
-    hospitalId: string | null;  // corpus key when type === "hospital"
-    name: string;               // free text fallback
-  };
+  provider: { type: ProviderType | null; hospitalId: string | null; name: string };
   bill: {
     totalCharged: number | null;
-    dateOfService: string | null;     // ISO date
+    dateOfService: string | null;
     dateReceived: string | null;
     hasItemized: boolean | null;
     inNetwork: "yes" | "no" | "unknown" | null;
     emergency: boolean | null;
   };
-  household: {
-    size: number | null;
-    annualIncome: number | null;
-    incomePeriod: "annual" | "monthly";
-  };
-  insurance: {
-    status: "uninsured" | "private" | "medi_cal" | "medicare" | "other" | null;
-    eobReceived: boolean | null;
-  };
-};
-
-type Derived = {
-  fpl: number | null;                    // from corpus, by household size + year
-  percentOfFPL: number | null;           // income / fpl * 100
-  tier: "free" | "discounted" | "borderline" | "above_line" | "unknown";
-  flags: Flag[];                         // computed from intake + corpus
-  rights: RightsTag[];                   // gated by provider.type
-};
-
-type Flag = {
-  id: string;
-  group: "hospital_rights_ca" | "any_medical_bill" | "leverage";
-  severity: "pine" | "honey" | "clay";   // semantic, never alarm red
-  title: string;
-  detail: string;
-  corpusRefs: string[];                  // ids into corpus.js
+  household: { size: number | null; annualIncome: number | null; incomePeriod: "annual" | "monthly" };
+  insurance: { status: "uninsured" | "private" | "medi_cal" | "medicare" | "other" | null; eobReceived: boolean | null };
 };
 ```
 
-**Derivation pattern:** `Derived` is **never stored** — recomputed via `useMemo` from `Intake + corpus`. Persist only what the user typed.
+`Derived` ({ fpl, percentOfFPL, tier, flags, rights }) is **never stored** — recomputed via `useMemo` from `Intake + corpus`.
 
 ---
 
 ### 3. Deterministic eligibility logic
 
-Pure function, no I/O, fully unit-testable:
+Pure, unit-testable: `eligibility(intake, corpus) → { fpl, percentOfFPL, tier, missing }`.
 
-```text
-eligibility(intake, corpus) -> { fpl, percentOfFPL, tier, missing }
-```
+1. **FPL lookup.** `corpus.fpl[year][householdSize]`; if size > table max, apply `additionalPerPerson`. If year missing → `tier = "unknown"`.
+2. **Normalize income.** Monthly → annual (`× 12`).
+3. **Percent.** `percentOfFPL = annualIncome / fpl × 100`.
+4. **Pick tier source.** If hospital + `hospitalId` resolves in corpus → that hospital's `charityTiers`. Else → `corpus.california.hhFinancialAssistanceDefault` (statutory floor). Non-hospital → no tier.
+5. **Map.** Apply tier thresholds in order: `≤ freeUpToPctFpl` → free; `≤ discountedUpToPctFpl` → discounted; within `borderlineBandPctFpl` → borderline; else above-line.
+6. **Missing data.** Null income or size → `tier = "unknown"`, return `missing: string[]` so UI prompts without guessing.
 
-Steps:
-
-1. **Lookup FPL.** `corpus.fpl[year][householdSize]`. If `householdSize > corpusMax`, apply `corpus.fpl[year].additionalPerPerson`. If the year isn't in corpus → `tier = "unknown"`, surface a "verify" state. Never guess.
-2. **Compute percent.** `percentOfFPL = (annualIncome / fpl) * 100`. Convert monthly income to annual first (`× 12`).
-3. **Pick the tier source.** If `provider.type === "hospital"` and `provider.hospitalId` resolves in `corpus.hospitals`, use that hospital's `charityTiers`. Otherwise fall back to `corpus.california.hhFinancialAssistanceDefault` (the statutory floor for licensed CA hospitals). For non-hospital provider types, **do not produce a tier** — show "Hospital charity-care tiers don't apply to this provider type" and route to leverage points instead.
-4. **Map to tier.** Tiers from corpus are `{ freeUpToPctFpl, discountedUpToPctFpl, borderlineBandPctFpl }`. Apply in order: `≤ free` → free, `≤ discounted` → discounted, `within borderline band` → borderline, else → above_line.
-5. **Missing-data handling.** If income or household size is null → `tier = "unknown"`, return a `missing: string[]` so the UI can prompt without guessing.
-
-Every number used in this function — FPL table, tier thresholds, "additional per person" — is read from corpus. None inlined.
+Every number read from corpus. Nothing inlined.
 
 ---
 
-### 4. corpus.js shape (single source of legal truth)
+### 4. corpus.js (single source of legal truth)
 
 ```ts
-export const corpus = {
-  meta: { version: "1.0.0", lastReviewed: "YYYY-MM-DD" },
-  fpl: {
-    "2025": { 1: 15650, 2: 21150, /* ... */ additionalPerPerson: 5500,
-              source: { label: "HHS Poverty Guidelines 2025", url: "...", verifiedOn: "YYYY-MM-DD" } },
-  },
+{
+  meta: { version, lastReviewed },
+  fpl: { "2025": { 1: 15650, 2: 21150, ..., additionalPerPerson: 5500, source: { label, url, verifiedOn } } },
   california: {
-    hhFinancialAssistanceDefault: { freeUpToPctFpl: 400, discountedUpToPctFpl: 400,
-      borderlineBandPctFpl: [400, 400], source: { ... } },
-    surpriseBilling: { /* AB-72 facts + source */ },
-    itemizedBillDeadlineDays: { value: 15, source: { ... } },
-    /* etc. */
+    hhFinancialAssistanceDefault: { freeUpToPctFpl, discountedUpToPctFpl, borderlineBandPctFpl, source },
+    surpriseBilling: { ... },
+    itemizedBillDeadlineDays: { value, source },
   },
-  hospitals: {
-    "ucsf-medical-center": {
-      name: "UCSF Medical Center",
-      charityTiers: { freeUpToPctFpl: 400, discountedUpToPctFpl: 400,
-        borderlineBandPctFpl: [400, 500], source: { ... } },
-      financialAssistanceUrl: "...",
-      patientFinancialServicesPhone: "...",
-    },
-    /* ... */
-  },
-  rightsTags: [
-    { id: "ca-itemized-15-days", group: "hospital_rights_ca", appliesTo: ["hospital"],
-      title: "...", detail: "...", source: { ... } },
-    { id: "no-surprises-act", group: "any_medical_bill", appliesTo: ["hospital","physician_group","ambulance","lab","imaging","other"], ... },
-    /* ... */
-  ],
-  letterTemplates: {
-    itemizedRequest: { subject: "...", body: "..." /* with {placeholders} */ },
-    financialAssistance: { ... },
-    dispute: { ... },
-  },
-  resources: [ /* outbound links: HCAI, DMHC, CDI, DHCS — { label, url, source } */ ],
-};
+  hospitals: { "ucsf-medical-center": { name, charityTiers, financialAssistanceUrl, phone, source } },
+  rightsTags: [{ id, group, appliesTo, title, detail, source }],
+  letterTemplates: { itemizedRequest, financialAssistance, dispute },
+  resources: [{ label, url, source }],
+}
 ```
 
-Any field referenced by the UI but absent from corpus renders the **"verify / confirm on application"** placeholder. Adding values is a corpus PR, not a code change.
+Every value is `{ value, date, source }` shaped. Anything missing renders a "verify on application" placeholder — never a confident number.
 
 ---
 
 ### 5. Bill-check flag engine
 
-Pure function `flags(intake, corpus) -> Flag[]`. Deterministic, no network.
+`flags(intake, corpus) → Flag[]` — pure, deterministic, gated by `appliesTo` against `provider.type`. Examples:
 
-Examples (each one's content comes from corpus, not invented here):
+- No itemized bill received → pine action flag (request itemization).
+- Out-of-network + emergency → honey leverage (No Surprises Act).
+- Hospital + low % FPL → pine (CA charity-care eligibility).
+- Bill aged past `itemizedBillDeadlineDays` without itemization → honey leverage.
 
-- `any_medical_bill`: itemized bill not received → request-itemized flag (pine, action).
-- `any_medical_bill`: out-of-network + emergency → No Surprises Act protection (honey, leverage).
-- `hospital_rights_ca`: hospital + uninsured/low-income → CA charity-care eligibility (pine).
-- `leverage`: bill received >X days ago without itemization → leverage point (honey).
-
-Flags are gated by `appliesTo` against `intake.provider.type` so a CA hospital right never appears for an ambulance bill.
+Severity color reinforces meaning, never carries it alone. No alarm red.
 
 ---
 
 ### 6. Letters + "Take it with you"
 
-- Letter previews are rendered client-side from `corpus.letterTemplates` with intake placeholders filled in. Copy-to-clipboard + download `.txt`.
-- `.ics` generation: a small in-browser builder (no library that phones home) emits a VCALENDAR with reminder dates derived from `dateReceived` + corpus deadlines. Download triggered by an `<a download>` blob URL.
-- `mailto:` link opens the user's mail app with the chosen letter pre-filled in the body. We never see the address.
+- Letters render client-side from `corpus.letterTemplates` with `{placeholders}` filled from intake. Copy / download `.txt`.
+- `.ics` built in-browser (hand-written VCALENDAR string, no library) with reminders derived from `dateReceived` + corpus deadlines. `<a download>` blob.
+- `mailto:` opens user's mail app prefilled — we never see the address.
 
 ---
 
-### 7. Design system wiring (one-time, before screens)
+### 7. Edge cases
 
-- Tokens in `src/styles.css`: `--pine`, `--honey`, `--clay` + foreground variants, mapped through `@theme inline`. No alarm red.
-- Fonts via `<link>` in `__root.tsx` head: Newsreader (display), Public Sans (body), IBM Plex Mono (amounts). CSS variables `--font-display`, `--font-body`, `--font-mono` consumed by Tailwind utilities.
-- Reusable primitives: `WhyWeAsk` toggle, `FlagCard` (tap to expand), `ProvenancePanel` ("Where these numbers come from"), `Disclaimer` footer.
+- Household > FPL table max → `additionalPerPerson`.
+- Hospital not in corpus → fall back to CA statewide default + "verify on the hospital's application".
+- Year missing from FPL table → "verify" state.
+- Zero/null income with rest known → free.
+- Non-hospital provider → no tier; leverage-only screen with explicit copy.
+- `prefers-reduced-motion` → instant transitions.
+- SSR hydration → neutral first paint, never a "no data" flash.
+- User clears data mid-flow → reducer resets cleanly.
 
 ---
 
-### 8. Edge cases & open questions
+### 8. Open questions
 
-**Edge cases I'll handle:**
+1. **Corpus scope on day one** — CA defaults + No Surprises Act + ~5–10 pilot hospitals, or a broader hospital list? (Default: small pilot.)
+2. **Welcome on revisit** — show "Resume your session" affordance when `localStorage` has data, or always restart from Intake?
+3. **Provider types** — confirm the set: hospital, physician group, ambulance, lab, imaging, other.
+4. **Borderline tier UX** — its own outcome with a "verify on the hospital's application" CTA, or fold into discounted with a caveat? (Default: own outcome.)
+5. **Letters set** — itemized request, financial-assistance application, dispute. Confirm or change?
+6. **"Take it with you"** — `.ics` + `mailto:` only on day one (no PDF), confirm?
+7. **Disclaimer placement** — persistent footer on every screen (matches screenshot 2), or only on outcome screens?
 
-- Household size larger than corpus FPL table → use `additionalPerPerson`.
-- Income period monthly vs annual → normalize to annual before percent.
-- Provider type ≠ hospital → no tier, leverage-only screen with explicit "charity-care tiers don't apply here" copy.
-- Hospital not in corpus → fall back to statewide CA default + a "verify on the hospital's application" note.
-- Year missing from corpus FPL table → "verify" state, never a guessed number.
-- Zero or null income → tier = free if other inputs known, else "unknown".
-- User clears data mid-flow → reducer resets cleanly; no orphaned derived state.
-- `prefers-reduced-motion` → all transitions become instant.
-- SSR hydration → `localStorage` reads only inside `useEffect`; first paint shows neutral state, not "no data".
-
-**Open questions for you before I build:**
-
-1. **Scope of corpus on day one.** Statewide CA defaults + No Surprises Act + a small pilot list of hospitals (say 5–10), or a broader hospital list from the start?
-2. **Welcome screen scope.** Does Welcome include a "Resume previous session" affordance when `localStorage` has data, or always start fresh?
-3. **Provider types beyond hospital.** Confirm the set: hospital, physician group, ambulance, lab, imaging, other. Anything missing?
-4. **"Borderline" tier UX.** Show as its own outcome with a "verify on the hospital's application" CTA, or fold into discounted with a caveat? My default is its own outcome.
-5. **Letters.** Three templates (itemized request, financial-assistance application, dispute) — confirm, or different set?
-6. **"Take it with you".** Confirm `.ics` + `mailto:` only on day one (no PDF export yet).
-7. **Disclaimer placement.** Persistent footer on every screen, or only on Welcome / Check / Assistance / Letters?
-
-Once you answer these (or say "your defaults are fine"), I'll wait for your first screenshot and build Welcome.
+Reply with answers (or "your defaults are fine") and I'll wait for the next screenshot to start building Welcome.
