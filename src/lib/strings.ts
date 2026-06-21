@@ -107,17 +107,21 @@ export const strings = {
         body: "California's Hospital Fair Pricing Act requires nonprofit and many other hospitals to offer free or discounted care to patients with income at or below {{ceiling}}% of the federal poverty level. Since 2025 there's no asset test. Each hospital sets its own tiers within that ceiling — we'll do that math on a later screen.",
       },
       hospNoCollections: {
-        label: "No collections or credit reporting while your assistance application is being reviewed",
-        body: "Once you've applied for financial assistance, the hospital can't send the bill to collections or report it to credit bureaus until they decide. Separately, California (SB 1061) bars reporting medical debt to credit bureaus at all.",
+        label: "Collections hold during your assistance review",
+        body: "Once you've applied for financial assistance, the hospital can't send the bill to collections until they decide. California also requires notice and a 180-day window before any adverse collection action.",
       },
       // Any medical bill
       anySurprise: {
         label: "Surprise and balance-billing protections",
-        body: "For most emergency care and for many out-of-network providers at in-network facilities, federal and California law limit you to in-network cost-sharing. You shouldn't be billed the difference between the provider's charge and what your plan paid.",
+        body: "For most emergency care, and for many out-of-network providers treating you at an in-network facility, federal and California law (the No Surprises Act and AB-72) limit you to your in-network cost-sharing. You shouldn't be billed the difference between the provider's charge and what your plan paid.",
       },
       anyItemized: {
-        label: "An itemized bill, on request",
-        body: "Any provider should give you a fully itemized bill if you ask — line-by-line charges with codes. Summary statements hide duplicates and miscoded items.",
+        label: "Right to an itemized bill",
+        body: "You can ask any provider for a fully itemized bill — every charge, with its billing codes — before you pay. A summary balance isn't enough to spot duplicates or wrong codes.",
+      },
+      anyCreditReporting: {
+        label: "Medical debt can't be reported to credit agencies",
+        body: "In California, medical debt cannot be reported to credit bureaus at all (SB 1061). This applies regardless of provider or whether you've applied for assistance.",
       },
       // Independent · leverage
       levSelfPay: {

@@ -362,7 +362,11 @@ function RightsSection({ providerType }: { providerType: "hospital" | "independe
           },
           {
             header: r.anyBillHeader,
-            tags: [{ label: r.anySurprise.label, body: r.anySurprise.body }],
+            tags: [
+              { label: r.anySurprise.label, body: r.anySurprise.body },
+              { label: r.anyItemized.label, body: r.anyItemized.body },
+              { label: r.anyCreditReporting.label, body: r.anyCreditReporting.body },
+            ],
           },
         ]
       : [
@@ -371,6 +375,7 @@ function RightsSection({ providerType }: { providerType: "hospital" | "independe
             tags: [
               { label: r.anySurprise.label, body: r.anySurprise.body },
               { label: r.anyItemized.label, body: r.anyItemized.body },
+              { label: r.anyCreditReporting.label, body: r.anyCreditReporting.body },
             ],
           },
           {
