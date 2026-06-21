@@ -63,7 +63,7 @@ function Welcome() {
             />
           </svg>
           <p className="font-display text-lg font-medium tracking-tight">
-            {c.brandWordmark}
+            {c.brandName}
           </p>
         </div>
           <nav className="flex items-center gap-5 text-sm">
@@ -84,7 +84,7 @@ function Welcome() {
       <main className="flex-1">
         <div className="mx-auto w-full max-w-3xl px-5 pb-16 pt-14 sm:pt-20">
           <p className="font-display text-base font-medium text-pine">
-            {c.brandName}
+            {c.eyebrow}
           </p>
           <h1 className="mt-2 font-display text-5xl font-medium tracking-tight text-foreground sm:text-6xl">
             {w.tagline}
@@ -115,9 +115,6 @@ function Welcome() {
                 </p>
                 <p className="mt-2 font-display text-lg font-medium text-foreground">
                   {s.title}
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {s.body}
                 </p>
               </li>
             ))}
