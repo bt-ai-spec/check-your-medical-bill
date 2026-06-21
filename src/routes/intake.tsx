@@ -338,6 +338,17 @@ function RightsSection({ providerType }: { providerType: "hospital" | "independe
 
   const fill = (s: string) => s.replace("{{ceiling}}", String(ceiling));
 
+  const [openTags, setOpenTags] = useState<Set<string>>(new Set());
+
+  const toggle = (id: string) => {
+    setOpenTags((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
   const groups: RightGroup[] =
     providerType === "hospital"
       ? [
@@ -386,25 +397,37 @@ function RightsSection({ providerType }: { providerType: "hospital" | "independe
             <h3 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
               {g.header}
             </h3>
-            <ul className="mt-3 divide-y divide-border overflow-hidden rounded-xl border border-border bg-card">
-              {g.tags.map((tag) => (
-                <li key={tag.label}>
-                  <details className="group">
-                    <summary className="flex cursor-pointer list-none items-start gap-3 px-4 py-3.5 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {g.tags.map((tag) => {
+                const id = `${providerType}-${g.header}-${tag.label}`;
+                const open = openTags.has(id);
+                return (
+                  <li
+                    key={id}
+                    className={open ? "w-full" : "w-fit"}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => toggle(id)}
+                      aria-expanded={open}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-pine/40 bg-pine-soft/40 px-3 py-1.5 text-sm font-medium text-pine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    >
                       <span
                         aria-hidden
-                        className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-pine/40 bg-pine-soft/40 text-pine transition-transform group-open:rotate-45"
+                        className={`inline-flex h-4 w-4 items-center justify-center transition-transform ${open ? "rotate-45" : ""}`}
                       >
                         +
                       </span>
-                      <span className="flex-1 font-medium">{tag.label}</span>
-                    </summary>
-                    <div className="px-4 pb-4 pl-12 pr-4 text-sm leading-relaxed text-foreground/80">
-                      {tag.body}
-                    </div>
-                  </details>
-                </li>
-              ))}
+                      <span>{tag.label}</span>
+                    </button>
+                    {open && (
+                      <div className="mt-2 rounded-lg border border-border bg-card p-4 text-sm leading-relaxed text-foreground/80">
+                        {tag.body}
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))}
