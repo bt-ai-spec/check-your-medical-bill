@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" role="img" aria-label="Fair Bill">
+
+  <rect width="32" height="32" rx="7" fill="#e3efe9"/>
+
+  <rect x="6" y="7"  width="16" height="2.3" rx="1.15" fill="#42514d"/>
+
+  <rect x="6" y="12" width="11" height="2.3" rx="1.15" fill="#42514d"/>
+
+  <path d="M6.5 20.5 L12.5 26.5 L26 11.5" fill="none" stroke="#1f5d4c" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+</svg>
