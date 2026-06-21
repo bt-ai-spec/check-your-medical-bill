@@ -5,6 +5,7 @@
 export const strings = {
   common: {
     brandName: "Medical bills · California",
+    brandWordmark: "Fair Bill",
     pilotTag: "Pilot · CA",
     aboutLink: "About & sources",
     privacyBar: "Your information never leaves your device",

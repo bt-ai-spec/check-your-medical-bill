@@ -63,7 +63,7 @@ function Welcome() {
             />
           </svg>
           <p className="font-display text-lg font-medium tracking-tight">
-            {c.brandName}
+            {c.brandWordmark}
           </p>
         </div>
           <nav className="flex items-center gap-5 text-sm">
