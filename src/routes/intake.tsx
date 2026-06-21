@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { strings } from "@/lib/strings";
 import { AppShell } from "@/components/AppShell";
+import { StepTracker } from "@/components/StepTracker";
 import { CORPUS, fplFor } from "@/lib/corpus";
 
 export const Route = createFileRoute("/intake")({
