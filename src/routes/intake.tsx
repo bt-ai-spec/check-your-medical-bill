@@ -24,7 +24,7 @@ function IntakePage() {
   const t = strings.intake;
   const stepper = [t.stepper.one, t.stepper.two, t.stepper.three, t.stepper.four];
 
-  const [providerType, setProviderType] = useState<ProviderType>(null);
+  const [providerType, setProviderType] = useState<ProviderType>("hospital");
   const [hospitalId, setHospitalId] = useState<string | null>(null);
   const [showWhy, setShowWhy] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
