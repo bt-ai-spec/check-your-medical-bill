@@ -4,33 +4,33 @@
 
 export const strings = {
   common: {
-    brandName: "Fair Bill",
+    brandName: "Medical bills · California",
     pilotTag: "Pilot · CA",
     aboutLink: "About & sources",
-    privacyBar: "Private session — everything you enter stays on this device.",
+    privacyBar: "Your information never leaves your device",
     footerDisclaimer: "Working prototype · Not legal advice.",
   },
   welcome: {
-    tagline: "Check your bill.",
+    tagline: "Got a hospital bill you don't understand? Start here.",
     intro:
-      "Fair Bill helps you read and act on a confusing or unfair California medical bill.",
+      "Check the bill for problems, see if you qualify for help, and leave with a letter you can send — in a few minutes.",
     audience:
-      "Built for Californians facing a hospital, clinic, or other medical bill that doesn't add up.",
-    freshSession: "Nothing is saved. Every visit starts clean.",
+      "No account, no upload to anyone's server. The bill, your income, everything you type stays in this browser, on this device. You're not sharing it with us — because there is no \"us\" holding it.",
+    freshSession: "Because nothing is stored, every visit starts fresh.",
     steps: {
       one: {
-        label: "Step 1",
-        title: "Check the bill",
+        label: "Check the bill",
+        title: "Spot charges and rights worth questioning",
         body: "Spot what's missing, wrong, or worth pushing back on.",
       },
       two: {
-        label: "Step 2",
-        title: "See if you qualify",
+        label: "See if you qualify",
+        title: "Financial assistance, in plain math",
         body: "Use California's rules to estimate financial assistance.",
       },
       three: {
-        label: "Step 3",
-        title: "Get your letter",
+        label: "Get your letter",
+        title: "Paste-ready, with a step-by-step plan",
         body: "Take a pre-filled letter and reminders with you.",
       },
     },
