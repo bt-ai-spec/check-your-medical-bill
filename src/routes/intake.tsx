@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { strings } from "@/lib/strings";
 import { AppShell } from "@/components/AppShell";
-import { CORPUS } from "@/lib/corpus";
+import { CORPUS, fplFor } from "@/lib/corpus";
 
 export const Route = createFileRoute("/intake")({
   head: () => ({
