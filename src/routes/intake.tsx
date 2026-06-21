@@ -328,3 +328,87 @@ function ProviderChoice({
     </button>
   );
 }
+
+type RightTag = { label: string; body: string };
+type RightGroup = { header: string; tags: RightTag[] };
+
+function RightsSection({ providerType }: { providerType: "hospital" | "independent" }) {
+  const r = strings.intake.rights;
+  const ceiling = CORPUS.fairPricingAct.eligibilityCeilingPctFpl;
+
+  const fill = (s: string) => s.replace("{{ceiling}}", String(ceiling));
+
+  const groups: RightGroup[] =
+    providerType === "hospital"
+      ? [
+          {
+            header: r.hospitalHeader,
+            tags: [
+              { label: r.hospItemized.label, body: r.hospItemized.body },
+              { label: fill(r.hospCharity.label), body: fill(r.hospCharity.body) },
+              { label: r.hospNoCollections.label, body: r.hospNoCollections.body },
+            ],
+          },
+          {
+            header: r.anyBillHeader,
+            tags: [{ label: r.anySurprise.label, body: r.anySurprise.body }],
+          },
+        ]
+      : [
+          {
+            header: r.anyBillHeader,
+            tags: [
+              { label: r.anySurprise.label, body: r.anySurprise.body },
+              { label: r.anyItemized.label, body: r.anyItemized.body },
+            ],
+          },
+          {
+            header: r.leverageHeader,
+            tags: [
+              { label: r.levSelfPay.label, body: r.levSelfPay.body },
+              { label: r.levHardship.label, body: r.levHardship.body },
+              { label: r.levPaymentPlan.label, body: r.levPaymentPlan.body },
+            ],
+          },
+        ];
+
+  return (
+    <section className="mt-12">
+      <h2 className="font-display text-2xl font-medium tracking-tight text-foreground">
+        {r.title}
+      </h2>
+      <p className="mt-2 text-sm text-muted-foreground">{r.intro}</p>
+      <p className="mt-1 text-xs text-muted-foreground">{r.expandHint}</p>
+
+      <div className="mt-6 space-y-8">
+        {groups.map((g) => (
+          <div key={g.header}>
+            <h3 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              {g.header}
+            </h3>
+            <ul className="mt-3 divide-y divide-border overflow-hidden rounded-xl border border-border bg-card">
+              {g.tags.map((tag) => (
+                <li key={tag.label}>
+                  <details className="group">
+                    <summary className="flex cursor-pointer list-none items-start gap-3 px-4 py-3.5 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
+                      <span
+                        aria-hidden
+                        className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-pine/40 bg-pine-soft/40 text-pine transition-transform group-open:rotate-45"
+                      >
+                        +
+                      </span>
+                      <span className="flex-1 font-medium">{tag.label}</span>
+                    </summary>
+                    <div className="px-4 pb-4 pl-12 pr-4 text-sm leading-relaxed text-foreground/80">
+                      {tag.body}
+                    </div>
+                  </details>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
