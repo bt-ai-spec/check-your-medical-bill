@@ -10,6 +10,12 @@ export const strings = {
     aboutLink: "About & sources",
     privacyBar: "Your information never leaves your device",
     footerDisclaimer: "Working prototype · Not legal advice.",
+    steps: [
+      { num: "01", label: "Your bill" },
+      { num: "02", label: "Check it" },
+      { num: "03", label: "See if you qualify" },
+      { num: "04", label: "Get your letter" },
+    ],
   },
   welcome: {
     tagline: "Got a hospital bill you don't understand? Start here.",
@@ -40,12 +46,6 @@ export const strings = {
     ctaPendingNote: "Next screen coming soon.",
   },
   intake: {
-    stepper: {
-      one: { num: "01", label: "Intake" },
-      two: { num: "02", label: "Bill" },
-      three: { num: "03", label: "Assistance" },
-      four: { num: "04", label: "Letter" },
-    },
     title: "Tell us about your bill",
     subtitle: "A couple of quick questions. Everything stays on this device.",
 
