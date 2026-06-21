@@ -274,10 +274,13 @@ function IntakePage() {
                       {(() => {
                         const size = parseInt(addHousehold, 10);
                         const income = parseFloat(addIncome);
+                        const cutoffHasNumber = /\d/.test(addCutoffs);
                         const canSubmit =
                           addName.trim() !== "" &&
                           addCutoffs.trim() !== "" &&
+                          cutoffHasNumber &&
                           Number.isFinite(size) &&
+                          Number.isInteger(size) &&
                           size >= 1 &&
                           Number.isFinite(income) &&
                           income >= 0;
@@ -289,7 +292,7 @@ function IntakePage() {
                             onClick={() => {
                               const pct = Math.round((income / fplFor(size)) * 100);
                               setSelfCheck({
-                                hospital: addName.trim(),
+                                hospital: addName,
                                 cutoffs: addCutoffs,
                                 size,
                                 pct,
