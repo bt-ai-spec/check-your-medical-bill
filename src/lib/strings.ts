@@ -4,8 +4,8 @@
 
 export const strings = {
   common: {
-    brandName: "Medical bills · California",
-    brandWordmark: "Fair Bill",
+    brandName: "Fair Bill",
+    eyebrow: "Medical bills · California",
     pilotTag: "Pilot · CA",
     aboutLink: "About & sources",
     privacyBar: "Your information never leaves your device",
@@ -20,19 +20,16 @@ export const strings = {
     freshSession: "Because nothing is stored, every visit starts fresh.",
     steps: {
       one: {
-        label: "Check the bill",
+        label: "1 · Check the bill",
         title: "Spot charges and rights worth questioning",
-        body: "Spot what's missing, wrong, or worth pushing back on.",
       },
       two: {
-        label: "See if you qualify",
+        label: "2 · See if you qualify",
         title: "Financial assistance, in plain math",
-        body: "Use California's rules to estimate financial assistance.",
       },
       three: {
-        label: "Get your letter",
+        label: "3 · Get your letter",
         title: "Paste-ready, with a step-by-step plan",
-        body: "Take a pre-filled letter and reminders with you.",
       },
     },
     cta: "Start — nothing leaves your device",
