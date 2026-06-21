@@ -43,7 +43,7 @@ export const strings = {
       four: { num: "04", label: "Letter" },
     },
     title: "Tell us about your bill",
-    subtitle: "Two quick things. Everything stays on this device.",
+    subtitle: "A couple of quick questions. Everything stays on this device.",
 
     providerTypeLabel: "What kind of provider sent the bill?",
     providerTypeWhyToggle: "Why this matters",
