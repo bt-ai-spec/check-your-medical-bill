@@ -40,7 +40,7 @@ function IntakePage() {
     size: number;
     pct: number;
   } | null>(null);
-  const [contribute, setContribute] = useState(false);
+  
   const [independentName, setIndependentName] = useState("");
 
   const canContinue =
@@ -265,15 +265,6 @@ function IntakePage() {
                         </label>
                       </div>
 
-                      <label className="mt-4 flex items-start gap-2.5 text-sm text-foreground/85">
-                        <input
-                          type="checkbox"
-                          checked={contribute}
-                          onChange={(e) => setContribute(e.target.checked)}
-                          className="mt-0.5 h-4 w-4 rounded border-input accent-pine"
-                        />
-                        <span>{t.hospitalAddContributeLabel}</span>
-                      </label>
 
                       {(() => {
                         const size = parseInt(addHousehold, 10);
