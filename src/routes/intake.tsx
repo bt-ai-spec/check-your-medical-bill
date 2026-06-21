@@ -276,6 +276,8 @@ function IntakePage() {
           </div>
         </section>
 
+        {providerType !== null && <RightsSection providerType={providerType} />}
+
         {/* Actions */}
         <div className="mt-12 flex items-center justify-between gap-4">
           <Link
