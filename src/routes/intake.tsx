@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { strings } from "@/lib/strings";
 import { AppShell } from "@/components/AppShell";
-import { CORPUS } from "@/lib/corpus";
+import { CORPUS, fplFor } from "@/lib/corpus";
 
 export const Route = createFileRoute("/intake")({
   head: () => ({
@@ -31,6 +31,14 @@ function IntakePage() {
   const [showAdd, setShowAdd] = useState(false);
   const [addName, setAddName] = useState("");
   const [addCutoffs, setAddCutoffs] = useState("");
+  const [addHousehold, setAddHousehold] = useState("");
+  const [addIncome, setAddIncome] = useState("");
+  const [selfCheck, setSelfCheck] = useState<{
+    hospital: string;
+    cutoffs: string;
+    size: number;
+    pct: number;
+  } | null>(null);
   const [contribute, setContribute] = useState(false);
   const [independentName, setIndependentName] = useState("");
 
@@ -241,6 +249,42 @@ function IntakePage() {
                         {t.hospitalAddSessionNote}
                       </p>
 
+                      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                        <label className="block text-sm">
+                          <span className="block font-medium text-foreground">
+                            {t.hospitalAddHouseholdLabel}
+                          </span>
+                          <input
+                            type="number"
+                            inputMode="numeric"
+                            min={1}
+                            value={addHousehold}
+                            onChange={(e) => setAddHousehold(e.target.value)}
+                            className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                          />
+                          <span className="mt-1 block text-xs text-muted-foreground">
+                            {t.hospitalAddHouseholdHelp}
+                          </span>
+                        </label>
+                        <label className="block text-sm">
+                          <span className="block font-medium text-foreground">
+                            {t.hospitalAddIncomeLabel}
+                          </span>
+                          <input
+                            type="number"
+                            inputMode="numeric"
+                            min={0}
+                            value={addIncome}
+                            onChange={(e) => setAddIncome(e.target.value)}
+                            placeholder={t.hospitalAddIncomePlaceholder}
+                            className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                          />
+                          <span className="mt-1 block text-xs text-muted-foreground">
+                            {t.hospitalAddIncomeHelp}
+                          </span>
+                        </label>
+                      </div>
+
                       <label className="mt-4 flex items-start gap-2.5 text-sm text-foreground/85">
                         <input
                           type="checkbox"
@@ -250,6 +294,47 @@ function IntakePage() {
                         />
                         <span>{t.hospitalAddContributeLabel}</span>
                       </label>
+
+                      {(() => {
+                        const size = parseInt(addHousehold, 10);
+                        const income = parseFloat(addIncome);
+                        const canSubmit =
+                          addName.trim() !== "" &&
+                          addCutoffs.trim() !== "" &&
+                          Number.isFinite(size) &&
+                          size >= 1 &&
+                          Number.isFinite(income) &&
+                          income >= 0;
+                        return (
+                          <button
+                            type="button"
+                            disabled={!canSubmit}
+                            aria-disabled={!canSubmit}
+                            onClick={() => {
+                              const pct = Math.round((income / fplFor(size)) * 100);
+                              setSelfCheck({
+                                hospital: addName.trim(),
+                                cutoffs: addCutoffs,
+                                size,
+                                pct,
+                              });
+                            }}
+                            className="mt-5 inline-flex items-center gap-2 rounded-md bg-pine px-4 py-2.5 text-sm font-medium text-pine-foreground shadow-sm transition-opacity disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                          >
+                            {t.hospitalAddSubmit}
+                            <span aria-hidden>→</span>
+                          </button>
+                        );
+                      })()}
+
+                      {selfCheck && (
+                        <SelfCheckResult
+                          hospital={selfCheck.hospital}
+                          cutoffs={selfCheck.cutoffs}
+                          size={selfCheck.size}
+                          pct={selfCheck.pct}
+                        />
+                      )}
                     </div>
                   )}
                 </div>
@@ -438,5 +523,82 @@ function RightsSection({ providerType }: { providerType: "hospital" | "independe
         ))}
       </div>
     </section>
+  );
+}
+
+function SelfCheckResult({
+  hospital,
+  cutoffs,
+  size,
+  pct,
+}: {
+  hospital: string;
+  cutoffs: string;
+  size: number;
+  pct: number;
+}) {
+  const s = strings.intake;
+  const fill = (str: string) =>
+    str
+      .replace("{{pct}}", String(pct))
+      .replace("{{size}}", String(size))
+      .replace("{{hospital}}", hospital);
+
+  return (
+    <div className="mt-6 rounded-xl border border-pine/30 bg-pine-soft/30 p-5">
+      <h3 className="font-display text-lg font-medium text-foreground">
+        {s.selfCheckTitle}
+      </h3>
+
+      <p className="mt-3 text-sm leading-relaxed text-foreground">
+        {fill(s.selfCheckFplLine)}
+      </p>
+
+      <div className="mt-5">
+        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          {fill(s.selfCheckCutoffsLabel)}
+        </p>
+        <pre className="mt-2 whitespace-pre-wrap rounded-md border border-border bg-card p-3 font-mono text-sm text-foreground">
+          {cutoffs}
+        </pre>
+      </div>
+
+      <p className="mt-4 text-sm leading-relaxed text-foreground/85">
+        {fill(s.selfCheckCompareGuide)}
+      </p>
+
+      <p className="mt-4 rounded-md border border-border bg-card p-3 text-sm leading-relaxed text-foreground/80">
+        {fill(s.selfCheckHonesty)}
+      </p>
+
+      <div className="mt-5">
+        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          {fill(s.selfCheckNextTitle)}
+        </p>
+        <div className="mt-3 grid gap-2">
+          <button
+            type="button"
+            disabled
+            aria-disabled
+            title={s.selfCheckLetterPendingNote}
+            className="inline-flex items-center justify-between gap-2 rounded-md border border-border bg-card px-4 py-3 text-left text-sm text-foreground hover:bg-accent disabled:cursor-not-allowed disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            <span>{fill(s.selfCheckLetterItemized)}</span>
+            <span aria-hidden>→</span>
+          </button>
+          <button
+            type="button"
+            disabled
+            aria-disabled
+            title={s.selfCheckLetterPendingNote}
+            className="inline-flex items-center justify-between gap-2 rounded-md border border-border bg-card px-4 py-3 text-left text-sm text-foreground hover:bg-accent disabled:cursor-not-allowed disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            <span>{fill(s.selfCheckLetterFa)}</span>
+            <span aria-hidden>→</span>
+          </button>
+          <p className="text-xs text-muted-foreground">{s.selfCheckLetterPendingNote}</p>
+        </div>
+      </div>
+    </div>
   );
 }

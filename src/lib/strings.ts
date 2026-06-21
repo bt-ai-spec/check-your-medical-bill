@@ -77,6 +77,26 @@ export const strings = {
       "What you paste stays in this session only. Closing this tab clears it.",
     hospitalAddContributeLabel:
       "Optional: also share this policy (not your details) with the open library so the next person finds it.",
+    hospitalAddHouseholdLabel: "Household size",
+    hospitalAddHouseholdHelp:
+      "Count yourself plus anyone you file taxes with (spouse, dependents).",
+    hospitalAddIncomeLabel: "Annual household income (before taxes)",
+    hospitalAddIncomePlaceholder: "e.g. 48000",
+    hospitalAddIncomeHelp:
+      "Used only on this device for the FPL calculation below.",
+    hospitalAddSubmit: "Check against this hospital",
+    selfCheckTitle: "Your self-check",
+    selfCheckFplLine:
+      "Your household income is about {{pct}}% of the federal poverty level (for a household of {{size}}).",
+    selfCheckCutoffsLabel: "{{hospital}}'s cutoffs — as you pasted them",
+    selfCheckCompareGuide:
+      "Compare your {{pct}}% to {{hospital}}'s cutoffs above. If you're at or below their free-care line, you likely qualify for free care; if you're under their discount line, you likely qualify for a discount.",
+    selfCheckHonesty:
+      "We can't verify {{hospital}}'s policy the way we've verified our listed hospitals, so we're not calculating your result for you — but the law and your rights are the same, and the letters below work for any California nonprofit hospital.",
+    selfCheckNextTitle: "Letters you can send to {{hospital}}",
+    selfCheckLetterItemized: "Request an itemized bill from {{hospital}}",
+    selfCheckLetterFa: "Apply for financial assistance at {{hospital}}",
+    selfCheckLetterPendingNote: "Letter generator coming soon.",
 
     independentLabel: "Provider name",
     independentPlaceholder: "e.g. Westside Imaging",
