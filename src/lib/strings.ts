@@ -77,6 +77,8 @@ export const strings = {
     hospitalAddCutoffsLabel: "Paste the income cutoffs from the policy",
     hospitalAddCutoffsPlaceholder:
       "e.g. Free care up to 400% FPL · Discount up to 600% FPL",
+    hospitalAddCutoffsError:
+      "Paste the income cutoffs from the policy — e.g., 'free up to 400% FPL.'",
     hospitalAddSessionNote:
       "What you paste stays in this session only. Closing this tab clears it.",
     hospitalAddContributeLabel:
