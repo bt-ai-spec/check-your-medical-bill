@@ -86,5 +86,52 @@ export const strings = {
     backToWelcome: "Back",
     primaryCta: "Continue to bill check",
     primaryCtaPendingNote: "Next screen coming soon.",
+
+    rights: {
+      title: "What applies to your bill",
+      intro:
+        "These are general rights tied to the kind of provider you picked. We'll check the bill itself on the next screen.",
+      expandHint: "Tap a row to read it.",
+      hospitalHeader: "Your rights as a hospital patient · California law",
+      anyBillHeader: "Applies to any medical bill",
+      leverageHeader: "Your leverage with this provider",
+      sourceLabel: "Source",
+      // Hospital · CA-specific
+      hospItemized: {
+        label: "An itemized bill, on request",
+        body: "You can ask the hospital for a fully itemized bill — every charge, with codes — before you pay. A summary statement is not enough to spot duplicates or wrong codes.",
+      },
+      hospCharity: {
+        // {{ceiling}} = corpus.fairPricingAct.eligibilityCeilingPctFpl
+        label: "Free or discounted care up to {{ceiling}}% of the federal poverty level",
+        body: "California's Hospital Fair Pricing Act requires nonprofit and many other hospitals to offer free or discounted care to patients with income at or below {{ceiling}}% of the federal poverty level. Since 2025 there's no asset test. Each hospital sets its own tiers within that ceiling — we'll do that math on a later screen.",
+      },
+      hospNoCollections: {
+        label: "No collections or credit reporting while your assistance application is being reviewed",
+        body: "Once you've applied for financial assistance, the hospital can't send the bill to collections or report it to credit bureaus until they decide. Separately, California (SB 1061) bars reporting medical debt to credit bureaus at all.",
+      },
+      // Any medical bill
+      anySurprise: {
+        label: "Surprise and balance-billing protections",
+        body: "For most emergency care and for many out-of-network providers at in-network facilities, federal and California law limit you to in-network cost-sharing. You shouldn't be billed the difference between the provider's charge and what your plan paid.",
+      },
+      anyItemized: {
+        label: "An itemized bill, on request",
+        body: "Any provider should give you a fully itemized bill if you ask — line-by-line charges with codes. Summary statements hide duplicates and miscoded items.",
+      },
+      // Independent · leverage
+      levSelfPay: {
+        label: "Self-pay or prompt-pay discount",
+        body: "Independent clinics, labs, imaging, and solo doctors aren't required by California's hospital law to give you charity care, but most quietly offer a self-pay or prompt-pay discount if you ask — often 20–40% off. It's a discount, not a right; ask in writing.",
+      },
+      levHardship: {
+        label: "Hardship programs",
+        body: "Many independent providers have an internal hardship policy for patients who can document low income or unusual medical costs. They rarely advertise it. Asking the billing office in writing — once — is the move.",
+      },
+      levPaymentPlan: {
+        label: "Interest-free payment plan",
+        body: "Independent providers can offer an interest-free payment plan, and most will if you propose a realistic monthly amount. Get the terms in writing before the first payment.",
+      },
+    },
   },
 } as const;
