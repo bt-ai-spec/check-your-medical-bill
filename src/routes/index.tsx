@@ -25,7 +25,7 @@ export const Route = createFileRoute("/")({
 function Welcome() {
   const c = strings.common;
   const w = strings.welcome;
-  const steps = [w.steps.one, w.steps.two, w.steps.three];
+  const steps = [w.steps.one, w.steps.two, w.steps.three, w.steps.four];
 
   return (
     <AppShell>
@@ -49,7 +49,7 @@ function Welcome() {
           {w.freshSession}
         </p>
 
-        <ol className="mt-10 grid gap-4 sm:grid-cols-3">
+        <ol className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s) => (
             <li
               key={s.title}

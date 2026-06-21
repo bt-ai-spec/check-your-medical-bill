@@ -20,15 +20,19 @@ export const strings = {
     freshSession: "Because nothing is stored, every visit starts fresh.",
     steps: {
       one: {
-        label: "1 · Check the bill",
-        title: "Spot charges and rights worth questioning",
+        label: "1 · Your bill",
+        title: "Tell us who sent it and see your rights",
       },
       two: {
-        label: "2 · See if you qualify",
-        title: "Financial assistance, in plain math",
+        label: "2 · Check it",
+        title: "Spot charges and rights worth questioning",
       },
       three: {
-        label: "3 · Get your letter",
+        label: "3 · See if you qualify",
+        title: "Financial assistance, in plain math",
+      },
+      four: {
+        label: "4 · Get your letter",
         title: "Paste-ready, with a step-by-step plan",
       },
     },
