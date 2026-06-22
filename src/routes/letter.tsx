@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { strings } from "@/lib/strings";
+import { useStrings, type Strings } from "@/lib/i18n";
 import { AppShell } from "@/components/AppShell";
 import { StepTracker } from "@/components/StepTracker";
 import { CORPUS } from "@/lib/corpus";
@@ -39,16 +39,16 @@ function fmtCurrency(n: number): string {
   });
 }
 
-function deriveProviderName(ctx: LetterContext): string {
+function deriveProviderName(ctx: LetterContext, strings: Strings): string {
   if (ctx.qualify?.kind === "hospital") return ctx.qualify.hospitalName;
   if (ctx.provider?.name) return ctx.provider.name;
   return strings.letter.placeholders.providerFallback;
 }
 
-function buildItemized(ctx: LetterContext): RenderedLetter {
+function buildItemized(ctx: LetterContext, strings: Strings): RenderedLetter {
   const t = strings.letter.itemized;
   const ph = strings.letter.placeholders;
-  const provider = deriveProviderName(ctx);
+  const provider = deriveProviderName(ctx, strings);
   const subject = t.subject.replace("{{ACCOUNT}}", ph.accountNumber);
   const greeting = t.greeting.replace("{{PROVIDER}}", provider);
   return {
@@ -65,10 +65,10 @@ function buildItemized(ctx: LetterContext): RenderedLetter {
   };
 }
 
-function buildDispute(ctx: LetterContext): RenderedLetter {
+function buildDispute(ctx: LetterContext, strings: Strings): RenderedLetter {
   const t = strings.letter.dispute;
   const ph = strings.letter.placeholders;
-  const provider = deriveProviderName(ctx);
+  const provider = deriveProviderName(ctx, strings);
   const subject = t.subject.replace("{{ACCOUNT}}", ph.accountNumber);
   const greeting = t.greeting.replace("{{PROVIDER}}", provider);
   const dups = ctx.check?.duplicates ?? [];
@@ -102,7 +102,7 @@ function buildDispute(ctx: LetterContext): RenderedLetter {
   return { id: "dispute", subject, body: paragraphs };
 }
 
-function buildAssistance(ctx: LetterContext): RenderedLetter {
+function buildAssistance(ctx: LetterContext, strings: Strings): RenderedLetter {
   const t = strings.letter.assistance;
   const ph = strings.letter.placeholders;
   const q = ctx.qualify?.kind === "hospital" ? ctx.qualify : null;
@@ -140,10 +140,10 @@ function buildAssistance(ctx: LetterContext): RenderedLetter {
   };
 }
 
-function buildLeverage(ctx: LetterContext): RenderedLetter {
+function buildLeverage(ctx: LetterContext, strings: Strings): RenderedLetter {
   const t = strings.letter.leverage;
   const ph = strings.letter.placeholders;
-  const provider = deriveProviderName(ctx);
+  const provider = deriveProviderName(ctx, strings);
   const subject = t.subject.replace("{{PROVIDER}}", provider);
   const greeting = t.greeting.replace("{{PROVIDER}}", provider);
   const askPlan = t.askPaymentPlan.replace("{{MONTHLY}}", ph.monthlyAmount);
@@ -167,7 +167,7 @@ function buildLeverage(ctx: LetterContext): RenderedLetter {
   };
 }
 
-function chooseTabs(ctx: LetterContext): RenderedLetter[] {
+function chooseTabs(ctx: LetterContext, strings: Strings): RenderedLetter[] {
   const out: RenderedLetter[] = [];
   const check = ctx.check;
   const qualify = ctx.qualify;
@@ -176,18 +176,18 @@ function chooseTabs(ctx: LetterContext): RenderedLetter[] {
   // bill-check happened at all (so they can request the breakdown).
   const needsItemized =
     !check || check.format === "summary" || check.format === undefined;
-  if (needsItemized) out.push(buildItemized(ctx));
+  if (needsItemized) out.push(buildItemized(ctx, strings));
 
   // Dispute: only when something to dispute was found / confirmed.
   const hasDispute =
     (check?.duplicates?.length ?? 0) > 0 || !!check?.surpriseConfirmed;
-  if (hasDispute) out.push(buildDispute(ctx));
+  if (hasDispute) out.push(buildDispute(ctx, strings));
 
   // Financial relief — only one of the two, based on which path they took.
   if (qualify?.kind === "hospital") {
-    out.push(buildAssistance(ctx));
+    out.push(buildAssistance(ctx, strings));
   } else if (qualify?.kind === "independent") {
-    out.push(buildLeverage(ctx));
+    out.push(buildLeverage(ctx, strings));
   }
 
   return out;
@@ -221,6 +221,7 @@ function lettersToPlainText(l: RenderedLetter): string {
 }
 
 function LetterPanel({ letter }: { letter: RenderedLetter }) {
+  const strings = useStrings();
   const a = strings.letter.actions;
   const [copied, setCopied] = useState(false);
 
@@ -289,6 +290,7 @@ function LetterPanel({ letter }: { letter: RenderedLetter }) {
 /* --------------------------- Page --------------------------- */
 
 function LetterPage() {
+  const strings = useStrings();
   const t = strings.letter;
   const [ctx, setCtx] = useState<LetterContext | null>(null);
 
@@ -296,7 +298,7 @@ function LetterPage() {
     setCtx(readLetterContext());
   }, []);
 
-  const letters = useMemo(() => (ctx ? chooseTabs(ctx) : []), [ctx]);
+  const letters = useMemo(() => (ctx ? chooseTabs(ctx, strings) : []), [ctx, strings]);
   const [active, setActive] = useState<TabId | null>(null);
 
   useEffect(() => {
