@@ -75,7 +75,7 @@ export const strings = {
     hospitalLabel: "Which hospital?",
     hospitalAboutToggle: "About these hospitals",
     hospitalAboutBody:
-      "These are California nonprofit hospital systems whose published financial-assistance policies we've read and verified. Kaiser Permanente is handled separately because Kaiser members go through Kaiser's own process, not the hospital fair-pricing path.",
+      "These are California hospitals covered by the Hospital Fair Pricing Act whose published financial-assistance policies we've read and verified. Kaiser Permanente is handled separately because Kaiser members go through Kaiser's own process, not the hospital fair-pricing path.",
     hospitalCityTypeSep: " · ",
     hospitalOrgTypeNonprofit: "Nonprofit",
     hospitalOrgTypePublic: "Public university hospital",
