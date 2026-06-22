@@ -261,7 +261,7 @@ export const strings = {
           label: "Possible duplicate charge",
           rule: "Computed · two lines with the same description and amount",
           body:
-            "We flagged lines that match on description and amount. A different code next to the same service and price doesn't prove the charges are separate — a different code is the provider's claim that the services differ, and you're entitled to make them substantiate it. It's fair to ask them to explain, in writing, why each code is there and what distinct service it represents.",
+            "We flagged lines that match on description and amount. If they carry different procedure codes, that doesn't prove the charges are separate — a different code is the provider's claim that the services differ, and you're entitled to make them substantiate it. It's fair to ask them to explain, in writing, why each one is there and what distinct service it represents.",
           actionLabel: "Do",
           action:
             "We'll include this duplicated line in your dispute letter and ask the provider to confirm or remove it.",
