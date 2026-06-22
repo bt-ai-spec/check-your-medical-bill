@@ -158,6 +158,9 @@ export const CORPUS: Corpus = {
       id: "cedars",
       name: "Cedars-Sinai",
       city: "Los Angeles",
+      orgType: "private-nonprofit",
+      orgTypeSource:
+        "https://projects.propublica.org/nonprofits/organizations/951644600",
       freeMaxPctFpl: 400, // care without charge at or below 400% FPL
       discountMaxPctFpl: 600, // 401–600% FPL sliding scale
       verifiedOn: "2026-06-19",
