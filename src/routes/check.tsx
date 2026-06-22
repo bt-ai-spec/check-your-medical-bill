@@ -199,7 +199,7 @@ function CheckPage() {
         : search.type === "independent"
           ? { kind: "independent" as const }
           : undefined;
-    console.log("[check] writing context", { searchType: search.type, searchHospital: search.hospital, provider });
+    
     writeLetterContext({
       provider,
       check: {
