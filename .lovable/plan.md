@@ -1,131 +1,59 @@
-# Audit — hardcoded user-facing strings (not from `src/lib/strings.ts`)
+## QA pass — Fair Bill
 
-Read-only. Nothing to change yet. Grouped by file. Each entry = a literal that renders to a user (visible text, `aria-label`, `placeholder`, page `<title>`/meta, or template sentence built in code) and is **not** pulled from `strings.ts`.
+A read-only audit across the four pillars that matter for this project: **privacy**, **legal accuracy**, **UX/copy/accessibility**, and **technical health**. No code changes — I'll deliver a findings report grouped by severity (Critical / Warning / Info), with file + line references and a recommended fix for each.
 
-I'm separating **visible on-screen copy** (highest priority for i18n) from **page metadata** (titles/descriptions in `head()`) and **accessibility labels** (aria-label / aria text), since you may want to handle them in separate passes.
+### Scope
 
----
+**1. Privacy (non-negotiable)**
+- Grep for any network calls touching user data: `fetch`, `axios`, `XMLHttpRequest`, `navigator.sendBeacon`, analytics SDKs, third-party script tags.
+- Confirm no persistence of bill/income/household to `localStorage`/`sessionStorage`/`IndexedDB`/cookies.
+- Confirm `.ics` generation and `mailto:` happen client-side; no email address ever leaves the device.
+- Confirm every external `<a>` uses `target="_blank"` + `rel="noopener noreferrer"` + `referrerPolicy="no-referrer"`.
+- Check that `head()` meta and fonts don't leak referrer (already see `referrer: no-referrer` in root — verify it's the only referrer policy).
 
-## `src/routes/__root.tsx`
+**2. Legal content integrity**
+- Walk every route and confirm legal figures (FPL %, dollar thresholds, discount tiers, hospital policies) are read from `src/lib/corpus.ts` — never inlined.
+- Confirm "verify / confirm on application" placeholder is used wherever the corpus is missing a value (e.g., Providence 2025 Exhibit B note).
+- Confirm rights tags / claims are gated by selected provider type (hospital-only rights don't render for non-hospital providers).
+- Confirm the "Where these numbers come from" panel + About page sources still match the corpus (`verifiedOn` dates, source URLs resolve).
+- Confirm "not legal advice" disclaimer is present on every screen that asserts a right.
 
-**Visible copy** — entire 404 and error fallback screens are hardcoded:
-- L19 `"404"`
-- L20 `"Page not found"`
-- L21–22 `"The page you're looking for doesn't exist or has been moved."`
-- L29 `"Go home"` (404 button)
-- L48 `"This page didn't load"`
-- L50–51 `"Something went wrong on our end. You can try refreshing or head back home."`
-- L61 `"Try again"`
-- L67 `"Go home"` (error button)
+**3. UX, copy & accessibility**
+- Re-walk every transition (index → intake → check → qualify → letter → about) and verify button/link copy matches the destination screen exactly.
+- Keyboard-only walkthrough via Playwright: tab order, visible focus, no hover-only affordances, no focus traps.
+- Color-contrast check on pine / honey / clay against paper and ink (AA).
+- Confirm meaning is never conveyed by color alone (icon or text label paired).
+- Confirm progressive-disclosure toggles are tap/keyboard, not hover.
+- Check `prefers-reduced-motion` is respected on any animation.
+- Re-run the hardcoded-string audit against the latest `strings.ts` refactor to confirm nothing regressed and the consolidation didn't accidentally change visible copy.
 
-**Metadata** — root `head()`:
-- L80 title `"Fair Bill — Check your California medical bill"`
-- L84 description, L87 og:title, L91 og:description, L95 twitter:title
-- L96–98 a *second* description / og:description / twitter:description ("Fair Bill Companion helps users…") that conflicts with the first set — worth flagging separately, but it's hardcoded.
+**4. Technical health**
+- Console errors / warnings on each route (via Playwright + console listener).
+- Network tab: confirm zero third-party requests after first paint (fonts only).
+- 404 / error boundary smoke test (navigate to `/does-not-exist`, throw in a loader).
+- `head()` metadata sanity: every route has a distinct title + description; no leaked root `og:image` overriding leaves; the duplicated description block in `__root.tsx` (L96–98) noted earlier is still there — flag in report.
+- SSR sanity: hit each route and confirm no `{"unhandled":true}` 500s.
+- Mobile viewport (375×812) screenshot per route — tap targets ≥44px, no horizontal scroll.
 
----
+### Deliverable
 
-## `src/components/StepTracker.tsx`
+A single findings report:
 
-**Accessibility**:
-- L18 `aria-label="Progress"`
+```
+CRITICAL  (privacy or legal-accuracy breakage)
+  - [file:line] description + recommended fix
 
-(Step labels themselves come from `strings.common.steps` — fine.)
+WARNING   (UX, a11y, copy mismatch, console errors)
+  - [file:line] ...
 
----
+INFO      (polish, consistency, metadata)
+  - [file:line] ...
+```
 
-## `src/components/AppShell.tsx`
+Plus screenshots from the Playwright walk (desktop + mobile) for any visual finding.
 
-Clean — every string reads from `strings.common`. No findings.
+No code changes in this pass. After you see the report, you pick what to fix and I'll do it one issue at a time.
 
----
+### One question before I start
 
-## `src/routes/index.tsx`
-
-Clean — all copy from `strings.welcome` / `strings.common`. Route `head()` meta is hardcoded (L7–18) — same category as the root metadata.
-
----
-
-## `src/routes/intake.tsx`
-
-**Visible copy**:
-- L121 the hospital meta line is assembled in code: `` `${h.city}${t.hospitalCityTypeSep}Nonprofit${t.hospitalCityTypeSep}CA Fair Pricing` `` — the literals `"Nonprofit"` and `"CA Fair Pricing"` are hardcoded. The separator is from strings, but the two labels are not.
-
-**Metadata** (L11–17): title `"Intake — Fair Bill"` + description.
-
----
-
-## `src/routes/check.tsx`
-
-**Visible copy**:
-- L38–45 `EXAMPLE_TEXT` — the sample itemized bill shown when the user clicks "Try example" (six English line items with `$` amounts). User-visible and locale-sensitive.
-- L640 `"What this means"` — the expand/collapse button label on every action card.
-- L649 the literal `":"` punctuation after `card.actionLabel` (small, but worth knowing for languages that don't use colon).
-
-**Accessibility**:
-- L118 `aria-label="What this screen checks for"`
-
-**Metadata** (L24–31): title `"Check it — Fair Bill"` + description.
-
-Currency formatting (L93–99) is locale-hardcoded to `en-US` / `USD` — not a string but will need to move when localizing.
-
----
-
-## `src/routes/qualify.tsx`
-
-**Visible copy** — the `MissingQualify` fallback (L517–536) is entirely hardcoded:
-- L524 `"We need to know who sent the bill before we can run this step."`
-- L531 `"Back to intake"`
-
-**Metadata** (L23–29): title `"See if you qualify — Fair Bill"` + description.
-
-Currency formatter at L235–241 is also `en-US`/`USD`-hardcoded.
-
----
-
-## `src/routes/letter.tsx`
-
-**Visible copy**:
-- L246 `"Subject"` — the eyebrow label above the rendered subject line in every letter panel.
-- L75 every built letter has a hardcoded `` `Re: account {{ACCOUNT}} · date of service {{DOS}} · patient {{PATIENT}}` `` line (and a shorter variant at L100, L146, L164). The placeholders come through the strings module, but the surrounding sentence (`Re: account … · date of service … · patient …`) is built in TypeScript, not in `strings.ts`.
-
-**Accessibility**:
-- L385 `aria-label="Letter type"` (tabs)
-
-**Metadata** (L15–22): title `"Get your letter — Fair Bill"` + description.
-
-Currency formatter at L36–42: `en-US`/`USD`-hardcoded.
-
----
-
-## `src/routes/about.tsx`
-
-**Visible copy**:
-- L204 each hospital card claim is built in code:
-  `` `${h.name} — ${h.city}. Financial-assistance policy used by the qualify step.` ``
-  The sentence "Financial-assistance policy used by the qualify step." is hardcoded.
-- L193 / L197 the labels `` `${h.name} — ${a.hospitalSourceLabel}` `` and `` `${h.name} — ${a.hospitalExhibitBLabel}` `` use a hardcoded `" — "` glue (em-dash + spaces). The label halves come from strings; the joiner punctuation does not.
-
-**Metadata** (L8–21): title `"About & sources — Fair Bill"` + description + og tags.
-
-Date formatting at L37–42 is locale-hardcoded to `en-US`.
-
----
-
-## Summary by priority
-
-**Most important (visible body copy a user can read):**
-1. `__root.tsx` — 404 + error pages (8 strings)
-2. `qualify.tsx` — MissingQualify fallback (2 strings)
-3. `check.tsx` — "What this means" button, `EXAMPLE_TEXT` sample bill
-4. `letter.tsx` — `"Subject"` label, `Re: account…` line built in 4 letter builders
-5. `intake.tsx` — `"Nonprofit"`, `"CA Fair Pricing"` in the hospital meta line
-6. `about.tsx` — "Financial-assistance policy used by the qualify step." sentence
-
-**Accessibility labels** (3): `aria-label="Progress"` (StepTracker), `aria-label="What this screen checks for"` (check.tsx), `aria-label="Letter type"` (letter.tsx).
-
-**Page metadata** (`head()` titles + meta descriptions + og/twitter tags): every route file plus `__root.tsx`. None are sourced from `strings.ts`. The root also has a duplicated/conflicting description block (L96–98) — flag separately.
-
-**Locale-coupled non-string code** (not strings, but will break with the strings during i18n): four `toLocaleString("en-US", { currency: "USD" … })` formatters in check.tsx, qualify.tsx, letter.tsx; one `toLocaleDateString("en-US", …)` in about.tsx.
-
-No code changes proposed in this plan — this is the gap list you asked for.
+Do you want me to include the **published site** (`check-your-medical-bill.lovable.app`) in the QA — i.e., test the live deployed build in addition to the local preview — or just the preview?
