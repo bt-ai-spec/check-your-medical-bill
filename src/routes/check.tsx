@@ -387,8 +387,10 @@ function passthroughSearch(s: CheckSearch): CheckSearch {
   if (s.hospital) out.hospital = s.hospital;
   if (s.customName) out.customName = s.customName;
   if (s.customCutoffs) out.customCutoffs = s.customCutoffs;
+  if (s.providerName) out.providerName = s.providerName;
   return out;
 }
+
 
 function FormatChoice({
   selected,
