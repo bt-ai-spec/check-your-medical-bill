@@ -1,10 +1,11 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
 import { strings } from "@/lib/strings";
 import { AppShell } from "@/components/AppShell";
 import { StepTracker } from "@/components/StepTracker";
 import { CORPUS, eligibilityTier, fplFor, type Hospital } from "@/lib/corpus";
+import { writeLetterContext } from "@/lib/letter-context";
 
 const searchSchema = z.object({
   type: z.enum(["hospital", "independent"]).optional(),
@@ -55,7 +56,7 @@ function PageShell({
   title,
   lede,
   children,
-  primaryDisabled = true,
+  primaryReady = false,
   primaryLabel,
   primaryPendingNote,
   backLabel,
@@ -64,7 +65,7 @@ function PageShell({
   title: string;
   lede: string;
   children: React.ReactNode;
-  primaryDisabled?: boolean;
+  primaryReady?: boolean;
   primaryLabel: string;
   primaryPendingNote: string;
   backLabel: string;
@@ -93,16 +94,26 @@ function PageShell({
             <span aria-hidden>←</span>
             {backLabel}
           </Link>
-          <button
-            type="button"
-            disabled={primaryDisabled}
-            aria-disabled={primaryDisabled}
-            title={primaryPendingNote}
-            className="inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm transition-opacity disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          >
-            {primaryLabel}
-            <span aria-hidden>→</span>
-          </button>
+          {primaryReady ? (
+            <Link
+              to="/letter"
+              className="inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              {primaryLabel}
+              <span aria-hidden>→</span>
+            </Link>
+          ) : (
+            <button
+              type="button"
+              disabled
+              aria-disabled
+              title={primaryPendingNote}
+              className="inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm transition-opacity disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              {primaryLabel}
+              <span aria-hidden>→</span>
+            </button>
+          )}
         </div>
       </div>
     </AppShell>
@@ -114,11 +125,16 @@ function PageShell({
 function IndependentQualify() {
   const q = strings.qualify.independent;
 
+  useEffect(() => {
+    writeLetterContext({ qualify: { kind: "independent" } });
+  }, []);
+
   return (
     <PageShell
       eyebrow={q.eyebrow}
       title={q.title}
       lede={q.lede}
+      primaryReady
       primaryLabel={q.primaryCta}
       primaryPendingNote={q.primaryCtaPendingNote}
       backLabel={q.back}
@@ -245,11 +261,26 @@ function HospitalQualify({ hospital }: { hospital: Hospital }) {
     [ready, inc, size, hospital],
   );
 
+  useEffect(() => {
+    writeLetterContext({
+      qualify: {
+        kind: "hospital",
+        hospitalId: hospital.id,
+        hospitalName: hospital.name,
+        eligibility: result?.key,
+        income: ready ? inc : undefined,
+        household: ready ? size : undefined,
+        pct: result?.pct,
+      },
+    });
+  }, [hospital.id, hospital.name, result, ready, inc, size]);
+
   return (
     <PageShell
       eyebrow={h.eyebrow}
       title={h.title}
       lede={h.lede}
+      primaryReady={!!result}
       primaryLabel={h.primaryCta}
       primaryPendingNote={h.primaryCtaPendingNote}
       backLabel={h.back}
@@ -397,6 +428,18 @@ function CustomHospitalQualify({
     Number.isFinite(inc) && inc >= 0;
   const pct = ready ? Math.round((inc / fplFor(size)) * 100) : null;
 
+  useEffect(() => {
+    writeLetterContext({
+      qualify: {
+        kind: "hospital",
+        hospitalName: name,
+        income: ready ? inc : undefined,
+        household: ready ? size : undefined,
+        pct: pct ?? undefined,
+      },
+    });
+  }, [name, ready, inc, size, pct]);
+
   const fill = (str: string) =>
     str
       .replace("{{pct}}", String(pct ?? ""))
@@ -408,6 +451,7 @@ function CustomHospitalQualify({
       eyebrow={h.eyebrow}
       title={h.title}
       lede={h.lede}
+      primaryReady={ready}
       primaryLabel={h.primaryCta}
       primaryPendingNote={h.primaryCtaPendingNote}
       backLabel={h.back}

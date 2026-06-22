@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
 import { strings } from "@/lib/strings";
 import { AppShell } from "@/components/AppShell";
 import { StepTracker } from "@/components/StepTracker";
+import { writeLetterContext } from "@/lib/letter-context";
 
 const searchSchema = z.object({
   type: z.enum(["hospital", "independent"]).optional(),
@@ -162,12 +163,38 @@ function CheckPage() {
   const [format, setFormat] = useState<Format>(null);
   const [text, setText] = useState("");
   const [usingExample, setUsingExample] = useState(false);
+  const [surpriseConfirmed, setSurpriseConfirmed] = useState(false);
 
   const parsed = useMemo(() => parseBill(text), [text]);
   const hasContent = parsed.length > 0;
   const total = parsed.reduce((s, l) => s + (l.amount ?? 0), 0);
   const anyDuplicate = parsed.some((l) => l.isDuplicate);
   const anyAmountParsed = parsed.some((l) => l.amount !== null);
+
+  // Mirror findings into sessionStorage so the Letter screen can build the
+  // right letters without us transmitting anything. Cleared at tab close.
+  useEffect(() => {
+    const duplicates = parsed
+      .filter((l) => l.isDuplicate)
+      .map((l) => ({ description: l.description, amount: l.amount }));
+    // De-duplicate the duplicate-list itself (each repeated line shows up
+    // multiple times in `parsed`; we only need one row per duplicate).
+    const seen = new Set<string>();
+    const unique = duplicates.filter((d) => {
+      const key = `${d.description.toLowerCase()}|${d.amount}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    writeLetterContext({
+      check: {
+        format: format ?? undefined,
+        duplicates: unique,
+        surpriseConfirmed,
+      },
+    });
+  }, [parsed, format, surpriseConfirmed]);
+
 
   const loadExample = () => {
     setText(EXAMPLE_TEXT);
@@ -274,6 +301,8 @@ function CheckPage() {
             total={total}
             anyDuplicate={anyDuplicate}
             anyAmountParsed={anyAmountParsed}
+            surpriseConfirmed={surpriseConfirmed}
+            onToggleSurprise={() => setSurpriseConfirmed((v) => !v)}
           />
         )}
 
@@ -297,7 +326,6 @@ function CheckPage() {
               </Link>
               <Link
                 to="/letter"
-                search={passthroughSearch(search)}
                 className="inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 {t.summary.summaryPrimaryCta}
@@ -403,11 +431,15 @@ function ItemizedPath({
   total,
   anyDuplicate,
   anyAmountParsed,
+  surpriseConfirmed,
+  onToggleSurprise,
 }: {
   parsed: ParsedLine[];
   total: number;
   anyDuplicate: boolean;
   anyAmountParsed: boolean;
+  surpriseConfirmed: boolean;
+  onToggleSurprise: () => void;
 }) {
   const it = strings.check.itemized;
   return (
@@ -477,6 +509,12 @@ function ItemizedPath({
                     ? it.duplicateNoneNote
                     : undefined
                 }
+                surpriseConfirmed={
+                  c.id === "surprise" ? surpriseConfirmed : undefined
+                }
+                onToggleSurprise={
+                  c.id === "surprise" ? onToggleSurprise : undefined
+                }
               />
             ))}
         </ol>
@@ -492,11 +530,15 @@ function ActionCard({
   card,
   dimmed,
   dimmedNote,
+  surpriseConfirmed,
+  onToggleSurprise,
 }: {
   index: number;
   card: Card;
   dimmed?: boolean;
   dimmedNote?: string;
+  surpriseConfirmed?: boolean;
+  onToggleSurprise?: () => void;
 }) {
   const [open, setOpen] = useState(false);
   return (
@@ -551,6 +593,29 @@ function ActionCard({
                     {card.selfCheckLabel}
                   </p>
                   <p className="mt-1.5">{card.selfCheckPrompt}</p>
+                  {card.id === "surprise" && onToggleSurprise && (
+                    <label className="mt-3 flex items-start gap-2.5 rounded-md border border-border bg-card p-2.5 text-sm text-foreground">
+                      <input
+                        type="checkbox"
+                        checked={!!surpriseConfirmed}
+                        onChange={onToggleSurprise}
+                        className="mt-0.5 h-4 w-4 cursor-pointer rounded border-input accent-pine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                      />
+                      <span>
+                        <span className="font-medium">
+                          {"selfCheckConfirmLabel" in card
+                            ? card.selfCheckConfirmLabel
+                            : ""}
+                        </span>
+                        {surpriseConfirmed &&
+                          "selfCheckConfirmedNote" in card && (
+                            <span className="mt-1 block text-xs text-muted-foreground">
+                              {card.selfCheckConfirmedNote}
+                            </span>
+                          )}
+                      </span>
+                    </label>
+                  )}
                 </div>
               )}
             </div>

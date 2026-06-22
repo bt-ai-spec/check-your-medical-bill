@@ -254,6 +254,10 @@ export const strings = {
           selfCheckLabel: "Does this match a line on your bill?",
           selfCheckPrompt:
             "If this matches your situation, we'll include it in your letter.",
+          selfCheckConfirmLabel:
+            "Yes — a charge like this is on my bill",
+          selfCheckConfirmedNote:
+            "Got it. We'll include the surprise-billing paragraph in your dispute letter.",
         },
       ],
       duplicateNoneNote:
@@ -342,6 +346,130 @@ export const strings = {
       back: "Back",
       primaryCta: "Continue to letter",
       primaryCtaPendingNote: "Letter step coming soon.",
+    },
+  },
+
+  letter: {
+    eyebrow: "Step 04 · Get your letter",
+    title: "Your letter, ready to send",
+    ledeSingle:
+      "Based on what you did, here's the letter that fits your situation. Highlighted fields are yours to fill in — everything else is pre-filled from what you've already told this tool.",
+    ledeMulti:
+      "Based on what you did, here are the letters that fit your situation. Each one is pre-filled from what you've already told this tool — only the highlighted fields are yours to fill in.",
+    fillLegend:
+      "Highlighted fields are yours to fill in.",
+    privacyNote:
+      "These letters are generated on this device. Nothing is sent anywhere when you copy or open them.",
+    actions: {
+      copy: "Copy letter text",
+      copied: "Copied",
+      mail: "Open in email",
+      mailHelp:
+        "Opens your default mail app with the letter pre-filled. You add the provider's billing email and send.",
+    },
+    tabs: {
+      itemized: "Itemized bill request",
+      dispute: "Dispute letter",
+      assistance: "Financial assistance",
+      leverage: "Discount & payment plan",
+    },
+    tabHints: {
+      itemized: "Asks for the line-by-line breakdown and a hold on collections.",
+      dispute: "Lists the charges we flagged and asks the provider to confirm or remove them.",
+      assistance: "Charity-care application letter, citing your eligibility tier.",
+      leverage: "Self-pay discount, hardship program, and payment plan — in one ask.",
+    },
+    back: "Back",
+    backToCheck: "Back to bill check",
+    backToQualify: "Back to qualify",
+    missing: {
+      title: "We don't have anything to put in a letter yet.",
+      body: "Run the bill check or the qualify step first — the letters here are built from what you do there.",
+      cta: "Start with the bill check",
+    },
+
+    // ----- Letter templates. Placeholders use {{KEY}}. -----
+    // Fill-ins (user must complete) use [BRACKETED LABEL] inside the body.
+    placeholders: {
+      providerFallback: "[your provider's name]",
+      patientName: "[YOUR FULL NAME]",
+      accountNumber: "[ACCOUNT OR BILL NUMBER]",
+      dateOfService: "[DATE OF SERVICE]",
+      address: "[YOUR MAILING ADDRESS]",
+      todayDate: "[TODAY'S DATE]",
+      providerInNetwork: "[FACILITY OR HOSPITAL NAME — the in-network place you went to]",
+      monthlyAmount: "[MONTHLY AMOUNT YOU CAN AFFORD]",
+    },
+
+    itemized: {
+      subject: "Request for a fully itemized bill — account {{ACCOUNT}}",
+      greeting: "To the billing department at {{PROVIDER}},",
+      body: [
+        "I'm writing to request a fully itemized statement of charges for my account, including every billing code (CPT/HCPCS, revenue codes, and any modifiers) and the amount charged for each line. A summary balance does not give me enough detail to verify the charges or identify duplicates or coding errors.",
+        "While I review the itemized bill, please place this account on hold and do not refer it to collections or report it to any credit bureau. California law (SB 1061) prohibits reporting medical debt to credit agencies, and I'd like a written confirmation that no adverse action will be taken during this review.",
+        "Please send the itemized statement to the address above within 30 days. If you need anything else from me to release it, let me know in writing.",
+      ],
+      signoff: "Thank you for your help.",
+    },
+
+    dispute: {
+      subject: "Disputed charges on account {{ACCOUNT}}",
+      greeting: "To the billing department at {{PROVIDER}},",
+      intro:
+        "I've reviewed the bill for the account above and I'm writing to dispute specific charges. Please pause collections on this account while you investigate; California law prohibits adverse credit reporting on medical debt, and I'm asking for written confirmation that no further collection activity will occur until this is resolved.",
+      duplicateHeader: "Duplicate charges",
+      duplicateLead:
+        "The following line(s) appear more than once on the bill with the same description and amount. Please confirm in writing whether each is a separate, distinct service, or remove the duplicate(s) from the balance:",
+      duplicateLineFormat: "• {{DESC}} — {{AMT}}",
+      surpriseHeader: "Possible surprise out-of-network charge",
+      surpriseBody:
+        "At least one line on this bill appears to be from an out-of-network provider I did not choose, while I was being treated at an in-network facility ({{IN_NETWORK}}). Under the federal No Surprises Act and California AB-72, my responsibility for that care is limited to my in-network cost-sharing. Please re-bill any such line at the in-network rate or send me the documentation showing why those protections do not apply.",
+      ask:
+        "Please send a written response, including a corrected statement, within 30 days. If you need a copy of my insurance card or any other information to investigate, write to me at the address above.",
+      signoff: "Thank you.",
+    },
+
+    assistance: {
+      subject:
+        "Application for financial assistance / charity care — {{HOSPITAL}}",
+      greeting: "To the financial-assistance office at {{HOSPITAL}},",
+      intro:
+        "I'm writing to apply for financial assistance under {{HOSPITAL}}'s published financial-assistance policy and the California Hospital Fair Pricing Act (HSC §127400 et seq.).",
+      eligibility: {
+        free:
+          "By the figures I entered on Fair Bill, my household income is approximately {{PCT}}% of the federal poverty level (household of {{HOUSEHOLD}}). Under your policy, that places me in the free / charity-care band. I'm asking that the balance on the account above be written off in full.",
+        disc:
+          "By the figures I entered on Fair Bill, my household income is approximately {{PCT}}% of the federal poverty level (household of {{HOUSEHOLD}}). Under your policy, that places me in the discounted-rate band. I'm asking that the balance on the account above be reduced accordingly and that I be sent a corrected statement.",
+        border:
+          "By the figures I entered on Fair Bill, my household income is approximately {{PCT}}% of the federal poverty level (household of {{HOUSEHOLD}}). That is close to your assistance line, and I'm asking that my application be reviewed on the merits — including any high-medical-cost or hardship path your policy provides.",
+        above:
+          "While my household income (approximately {{PCT}}% of the federal poverty level for a household of {{HOUSEHOLD}}) is above your standard eligibility line, I'm asking that you review me under any high-medical-cost, hardship, or extended-payment path your policy provides, and that you apply California's fair-pricing limits to any remaining balance.",
+        unknown:
+          "Please review my income and household size against your policy's tiers and let me know in writing which band I fall into and what documentation you need.",
+      },
+      collections:
+        "Per California law, please place this account on hold and do not refer it to collections or take any adverse credit action while my application is under review. Medical debt cannot be reported to credit bureaus in California (SB 1061).",
+      ask:
+        "Please send the application packet (or confirmation that no further action is needed), and let me know what supporting documents you require — pay stubs, tax return, or otherwise. Account number: {{ACCOUNT}}. Date of service: {{DOS}}.",
+      signoff: "Thank you for your time.",
+    },
+
+    leverage: {
+      subject: "Self-pay discount, hardship review, and payment plan — {{PROVIDER}}",
+      greeting: "To the billing office at {{PROVIDER}},",
+      intro:
+        "I'm writing about the bill on the account above. I'm paying out of pocket and would like to resolve this in a single conversation rather than back-and-forth, so I'm asking three things at once.",
+      askSelfPay:
+        "First, please apply your self-pay or prompt-pay discount to this balance. Many independent practices and labs offer 20–40% off when a patient pays directly rather than the bill being routed through collections; I'd like to take that path.",
+      askHardship:
+        "Second, please review me under any internal hardship or financial-assistance program you offer. I can provide income documentation if you tell me what you need.",
+      askPaymentPlan:
+        "Third, if a balance remains after the discount and hardship review, please put me on an interest-free payment plan at {{MONTHLY}} per month, with the terms confirmed in writing before the first payment.",
+      collections:
+        "While we work this out, please don't refer the account to collections or report it to any credit bureau. California law (SB 1061) prohibits credit reporting on medical debt regardless of provider.",
+      ask:
+        "A written response within 30 days would be appreciated. Account number: {{ACCOUNT}}.",
+      signoff: "Thank you.",
     },
   },
 } as const;
