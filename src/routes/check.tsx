@@ -402,6 +402,7 @@ function CheckPage() {
                 </Link>
               </div>
             )
+          ) : (
             <button
               type="button"
               disabled
