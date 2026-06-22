@@ -303,7 +303,12 @@ export const strings = {
   },
 
   qualify: {
+    missing: {
+      body: "We need to know who sent the bill before we can run this step.",
+      backToIntake: "Back to intake",
+    },
     independent: {
+
       eyebrow: "Step 03 · Your leverage",
       title: "Charity care isn't required here — but you still have leverage.",
       lede:
