@@ -309,6 +309,14 @@ function LetterPage() {
   }, []);
 
   const letters = useMemo(() => (ctx ? chooseTabs(ctx, strings) : []), [ctx, strings]);
+  const needsAssistancePrompt = useMemo(() => {
+    if (!ctx || ctx.provider?.kind !== "hospital") return false;
+    return (
+      !ctx.qualify ||
+      ctx.qualify.kind !== "hospital" ||
+      ctx.qualify.hospitalName !== ctx.provider.name
+    );
+  }, [ctx]);
   const [active, setActive] = useState<TabId | null>(null);
 
   useEffect(() => {
