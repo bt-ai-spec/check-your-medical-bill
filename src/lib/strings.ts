@@ -307,7 +307,7 @@ export const strings = {
   qualify: {
     missing: {
       eyebrow: "Step 03 · See if you qualify",
-      title: "We need to know who sent the bill.",
+      title: "Start at step 1 to see if you qualify.",
       body: "We need to know who sent the bill before we can run this step.",
       backToIntake: "Back to intake",
     },
