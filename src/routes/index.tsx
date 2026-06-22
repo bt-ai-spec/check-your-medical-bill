@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { strings } from "@/lib/strings";
+import { useStrings } from "@/lib/i18n";
 import { AppShell } from "@/components/AppShell";
 
 export const Route = createFileRoute("/")({
@@ -23,6 +23,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Welcome() {
+  const strings = useStrings();
   const c = strings.common;
   const w = strings.welcome;
   const steps = [w.steps.one, w.steps.two, w.steps.three, w.steps.four];

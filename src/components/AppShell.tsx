@@ -1,13 +1,13 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { strings } from "@/lib/strings";
+import { useStrings } from "@/lib/i18n";
 
 interface AppShellProps {
   children: ReactNode;
 }
 
 export function AppShell({ children }: AppShellProps) {
-  const c = strings.common;
+  const c = useStrings().common;
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">

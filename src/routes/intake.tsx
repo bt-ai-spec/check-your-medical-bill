@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { strings } from "@/lib/strings";
+import { useStrings } from "@/lib/i18n";
 import { AppShell } from "@/components/AppShell";
 import { StepTracker } from "@/components/StepTracker";
 import { CORPUS } from "@/lib/corpus";
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/intake")({
 type ProviderType = "hospital" | "independent" | null;
 
 function IntakePage() {
-  const t = strings.intake;
+  const t = useStrings().intake;
 
   const [providerType, setProviderType] = useState<ProviderType>("hospital");
   const [hospitalId, setHospitalId] = useState<string | null>(null);
@@ -358,7 +358,7 @@ type RightTag = { label: string; body: string };
 type RightGroup = { header: string; tags: RightTag[] };
 
 function RightsSection({ providerType }: { providerType: "hospital" | "independent" }) {
-  const r = strings.intake.rights;
+  const r = useStrings().intake.rights;
   const ceiling = CORPUS.fairPricingAct.eligibilityCeilingPctFpl;
 
   const fill = (s: string) => s.replace("{{ceiling}}", String(ceiling));
