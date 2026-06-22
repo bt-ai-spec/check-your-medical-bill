@@ -87,6 +87,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     const raw = search.lang;
     // Spanish is wired in the locale infrastructure but is not selectable yet;
     // only English is reachable. Any other ?lang= value falls back to English.
+    console.log("validateSearch raw lang:", raw);
     return raw === "en" ? {} : {};
   },
   search: {
