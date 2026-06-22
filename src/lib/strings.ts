@@ -575,6 +575,8 @@ export const strings = {
       "For each pilot hospital, we read the published financial-assistance policy and recorded the income tiers used by the qualify step. Always confirm the current figures on the hospital's own application.",
     hospitalSourceLabel: "Financial-assistance policy",
     hospitalExhibitBLabel: "Exhibit B (HCAI filing)",
+    hospitalPolicyClaim: "Financial-assistance policy used by the qualify step.",
+
 
     resourcesHeader: "Referral resources",
     resourcesIntro:
