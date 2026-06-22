@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
 import { strings } from "@/lib/strings";
+import { useStrings } from "@/lib/i18n";
 import { AppShell } from "@/components/AppShell";
 import { StepTracker } from "@/components/StepTracker";
 import { writeLetterContext } from "@/lib/letter-context";
@@ -99,6 +100,7 @@ function fmtCurrency(n: number): string {
 }
 
 function PreviewChecks() {
+  const strings = useStrings();
   const t = strings.check;
   const [open, setOpen] = useState<Set<string>>(new Set());
 
@@ -161,6 +163,7 @@ function PreviewChecks() {
 }
 
 function CheckPage() {
+  const strings = useStrings();
   const t = strings.check;
   const search = Route.useSearch();
   const [format, setFormat] = useState<Format>(null);
@@ -463,7 +466,7 @@ function FormatChoice({
 /* ----------------------------- Summary ----------------------------- */
 
 function SummaryPath() {
-  const s = strings.check.summary;
+  const s = useStrings().check.summary;
   return (
     <section className="mt-10">
       <div className="rounded-xl border border-pine/30 bg-pine-soft/30 p-5">
@@ -504,7 +507,7 @@ function ItemizedPath({
   surpriseConfirmed: boolean;
   onToggleSurprise: () => void;
 }) {
-  const it = strings.check.itemized;
+  const it = useStrings().check.itemized;
   return (
     <>
       {/* Ledger */}
@@ -603,6 +606,7 @@ function ActionCard({
   surpriseConfirmed?: boolean;
   onToggleSurprise?: () => void;
 }) {
+  const strings = useStrings();
   const [open, setOpen] = useState(false);
   return (
     <li
