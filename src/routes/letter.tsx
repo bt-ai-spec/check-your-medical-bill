@@ -187,7 +187,14 @@ function chooseTabs(ctx: LetterContext, strings: Strings): RenderedLetter[] {
   if (hasDispute) out.push(buildDispute(ctx, strings));
 
   // Financial relief — only one of the two, based on which path they took.
-  if (qualify?.kind === "hospital") {
+  // Assistance is only valid when the qualify result was computed against the
+  // SAME hospital that's on the current bill. If the user switched providers
+  // after qualifying, the stale eligibility is not applicable here.
+  if (
+    qualify?.kind === "hospital" &&
+    ctx.provider?.name &&
+    qualify.hospitalName === ctx.provider.name
+  ) {
     out.push(buildAssistance(ctx, strings));
   } else if (qualify?.kind === "independent") {
     out.push(buildLeverage(ctx, strings));
