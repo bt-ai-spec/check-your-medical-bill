@@ -246,7 +246,8 @@ function LetterPanel({ letter }: { letter: RenderedLetter }) {
   return (
     <div>
       <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
-        Subject
+        {strings.letter.subjectLabel}
+
       </p>
       <p className="mt-1 text-sm text-foreground">
         <FillInText text={letter.subject} />
