@@ -41,8 +41,7 @@ function fmtCurrency(n: number): string {
 
 function deriveProviderName(ctx: LetterContext): string {
   if (ctx.qualify?.kind === "hospital") return ctx.qualify.hospitalName;
-  // Independent path doesn't currently carry the provider name forward;
-  // surface a clear fill-in so the user knows it's theirs to complete.
+  if (ctx.provider?.name) return ctx.provider.name;
   return strings.letter.placeholders.providerFallback;
 }
 
