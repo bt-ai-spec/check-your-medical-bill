@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { useStrings } from "@/lib/i18n";
+import { LocaleToggle } from "@/components/LocaleToggle";
 
 interface AppShellProps {
   children: ReactNode;
@@ -53,13 +54,14 @@ export function AppShell({ children }: AppShellProps) {
               {c.brandName}
             </p>
           </Link>
-          <nav className="flex items-center gap-5 text-sm">
+          <nav className="flex items-center gap-4 text-sm">
             <Link
               to="/about"
               className="text-foreground/70 underline-offset-4 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               {c.aboutLink}
             </Link>
+            <LocaleToggle />
             <span className="rounded-full border border-border bg-card px-2.5 py-1 text-xs uppercase tracking-wide text-muted-foreground">
               {c.pilotTag}
             </span>
