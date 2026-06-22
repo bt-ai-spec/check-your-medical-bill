@@ -85,6 +85,7 @@ export const CORPUS: Corpus = {
     addPerPerson: 5680,
     // 100% FPL by household size (1–8); compute beyond 8 with addPerPerson.
     table100: { 1: 15960, 2: 21640, 3: 27320, 4: 33000, 5: 38680, 6: 44360, 7: 50040, 8: 55720 },
+    source: "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines",
   },
 
   // California Hospital Fair Pricing Act (HSC §127400 et seq.).
