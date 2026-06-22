@@ -10,6 +10,8 @@ export interface FplTable {
   addPerPerson: number;
   /** 100% FPL by household size (1–8); compute beyond 8 with addPerPerson. */
   table100: Record<number, number>;
+  /** Source URL for the poverty guidelines. */
+  source: string;
 }
 
 export interface FairPricingAct {
