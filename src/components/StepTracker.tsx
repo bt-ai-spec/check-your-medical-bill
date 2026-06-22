@@ -1,4 +1,4 @@
-import { strings } from "@/lib/strings";
+import { useStrings } from "@/lib/i18n";
 
 type StepTrackerProps = {
   /** Zero-based index of the current step (0–3). */
@@ -10,6 +10,7 @@ type StepTrackerProps = {
  * Labels live in strings.common.steps so they can never drift.
  */
 export function StepTracker({ current }: StepTrackerProps) {
+  const strings = useStrings();
   const steps = strings.common.steps;
   return (
     <ol
