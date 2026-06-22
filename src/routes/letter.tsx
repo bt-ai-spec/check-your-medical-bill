@@ -297,6 +297,46 @@ function LetterPanel({ letter }: { letter: RenderedLetter }) {
   );
 }
 
+function AssistancePrompt({ providerName }: { providerName: string }) {
+  const strings = useStrings();
+  const t = strings.letter.assistancePrompt;
+
+  const target = useMemo(() => {
+    const hospital = CORPUS.hospitals.find((h) => h.name === providerName);
+    if (hospital) {
+      return {
+        to: "/qualify" as const,
+        search: { type: "hospital" as const, hospital: hospital.id },
+      };
+    }
+    return { to: "/intake" as const };
+  }, [providerName]);
+
+  const body = t.body.replace("{{PROVIDER}}", providerName);
+
+  return (
+    <p className="text-sm text-muted-foreground">
+      {body}{" "}
+      {target.to === "/qualify" ? (
+        <Link
+          to="/qualify"
+          search={target.search}
+          className="rounded text-pine underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          {t.cta}
+        </Link>
+      ) : (
+        <Link
+          to="/intake"
+          className="rounded text-pine underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          {t.cta}
+        </Link>
+      )}
+    </p>
+  );
+}
+
 /* --------------------------- Page --------------------------- */
 
 function LetterPage() {
@@ -309,6 +349,14 @@ function LetterPage() {
   }, []);
 
   const letters = useMemo(() => (ctx ? chooseTabs(ctx, strings) : []), [ctx, strings]);
+  const needsAssistancePrompt = useMemo(() => {
+    if (!ctx || ctx.provider?.kind !== "hospital") return false;
+    return (
+      !ctx.qualify ||
+      ctx.qualify.kind !== "hospital" ||
+      ctx.qualify.hospitalName !== ctx.provider.name
+    );
+  }, [ctx]);
   const [active, setActive] = useState<TabId | null>(null);
 
   useEffect(() => {
@@ -416,6 +464,11 @@ function LetterPage() {
           <p className="mt-3 text-xs text-muted-foreground">
             {t.privacyNote}
           </p>
+          {needsAssistancePrompt && (
+            <div className="mt-4">
+              <AssistancePrompt providerName={deriveProviderName(ctx, strings)} />
+            </div>
+          )}
         </div>
 
         {/* Tabs — only when more than one applies */}
