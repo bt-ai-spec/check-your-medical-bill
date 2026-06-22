@@ -113,35 +113,6 @@ function PageShell({
 
 function IndependentQualify() {
   const q = strings.qualify.independent;
-  const r = strings.intake.rights;
-
-  const [openTags, setOpenTags] = useState<Set<string>>(new Set());
-  const toggle = (id: string) =>
-    setOpenTags((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-
-  const groups = [
-    {
-      header: r.anyBillHeader,
-      tags: [
-        { label: r.anySurprise.label, body: r.anySurprise.body },
-        { label: r.anyItemized.label, body: r.anyItemized.body },
-        { label: r.anyCreditReporting.label, body: r.anyCreditReporting.body },
-      ],
-    },
-    {
-      header: r.leverageHeader,
-      tags: [
-        { label: r.levSelfPay.label, body: r.levSelfPay.body },
-        { label: r.levHardship.label, body: r.levHardship.body },
-        { label: r.levPaymentPlan.label, body: r.levPaymentPlan.body },
-      ],
-    },
-  ];
 
   return (
     <PageShell
@@ -178,58 +149,9 @@ function IndependentQualify() {
         </ol>
       </section>
 
-      <section className="mt-12">
-        <h2 className="font-display text-2xl font-medium tracking-tight text-foreground">
-          {r.title}
-        </h2>
-        <p className="mt-2 text-sm text-muted-foreground">{r.intro}</p>
-        <p className="mt-1 text-xs text-muted-foreground">{r.expandHint}</p>
-
-        <div className="mt-6 space-y-8">
-          {groups.map((g) => (
-            <div key={g.header}>
-              <h3 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                {g.header}
-              </h3>
-              <ul className="mt-3 flex flex-wrap gap-2">
-                {g.tags.map((tag) => {
-                  const id = `${g.header}-${tag.label}`;
-                  const open = openTags.has(id);
-                  return (
-                    <li key={id} className={open ? "w-full" : "w-fit"}>
-                      <button
-                        type="button"
-                        onClick={() => toggle(id)}
-                        aria-expanded={open}
-                        className="inline-flex items-center gap-1.5 rounded-full border border-pine/40 bg-pine-soft/40 px-3 py-1.5 text-sm font-medium text-pine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                      >
-                        <span
-                          aria-hidden
-                          className={`inline-flex h-4 w-4 items-center justify-center transition-transform ${
-                            open ? "rotate-45" : ""
-                          }`}
-                        >
-                          +
-                        </span>
-                        <span>{tag.label}</span>
-                      </button>
-                      {open && (
-                        <div className="mt-2 rounded-lg border border-border bg-card p-4 text-sm leading-relaxed text-foreground/80">
-                          {tag.body}
-                        </div>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        <p className="mt-8 text-sm leading-relaxed text-muted-foreground">
-          {q.contextNote}
-        </p>
-      </section>
+      <p className="mt-8 text-sm leading-relaxed text-muted-foreground">
+        {q.contextNote}
+      </p>
     </PageShell>
   );
 }
