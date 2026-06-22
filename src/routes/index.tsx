@@ -30,7 +30,7 @@ function Welcome() {
   return (
     <AppShell>
       <div className="mx-auto w-full max-w-3xl px-5 pb-16 pt-14 sm:pt-20">
-        <p className="font-display text-base font-medium text-pine">
+        <p className="text-base font-medium text-pine">
           {c.eyebrow}
         </p>
         <h1 className="mt-2 font-display text-5xl font-medium tracking-tight text-foreground sm:text-6xl">
@@ -58,7 +58,7 @@ function Welcome() {
               <p className="text-xs font-medium uppercase tracking-wide text-pine">
                 {s.label}
               </p>
-              <p className="mt-2 font-display text-lg font-medium text-foreground">
+              <p className="mt-2 text-lg font-medium text-foreground">
                 {s.title}
               </p>
             </li>
