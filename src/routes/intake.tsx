@@ -265,7 +265,7 @@ function IntakePage() {
             <span aria-hidden>←</span>
             {t.backToWelcome}
           </Link>
-          {providerType === "independent" && canContinue ? (
+          {canContinue && providerType === "independent" ? (
             <Link
               to="/qualify"
               search={{ type: "independent" as const }}
@@ -274,12 +274,33 @@ function IntakePage() {
               {t.primaryCta}
               <span aria-hidden>→</span>
             </Link>
+          ) : canContinue && providerType === "hospital" && hospitalId ? (
+            <Link
+              to="/qualify"
+              search={{ type: "hospital" as const, hospital: hospitalId }}
+              className="inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              {t.primaryCta}
+              <span aria-hidden>→</span>
+            </Link>
+          ) : canContinue && providerType === "hospital" && customReady ? (
+            <Link
+              to="/qualify"
+              search={{
+                type: "hospital" as const,
+                customName: addName,
+                customCutoffs: addCutoffs,
+              }}
+              className="inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              {t.primaryCta}
+              <span aria-hidden>→</span>
+            </Link>
           ) : (
             <button
               type="button"
-              disabled={!canContinue}
-              aria-disabled={!canContinue}
-              title={!canContinue ? undefined : t.primaryCtaPendingNote}
+              disabled
+              aria-disabled
               className="inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm transition-opacity disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               {t.primaryCta}
