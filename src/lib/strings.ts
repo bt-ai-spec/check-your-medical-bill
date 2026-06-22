@@ -16,7 +16,23 @@ export const strings = {
       { num: "03", label: "See if you qualify" },
       { num: "04", label: "Get your letter" },
     ],
+    a11y: {
+      progress: "Progress",
+    },
+    errorPage: {
+      title: "This page didn't load",
+      body: "Something went wrong on our end. You can try refreshing or head back home.",
+      tryAgain: "Try again",
+      goHome: "Go home",
+    },
+    notFound: {
+      code: "404",
+      title: "Page not found",
+      body: "The page you're looking for doesn't exist or has been moved.",
+      goHome: "Go home",
+    },
   },
+
   welcome: {
     tagline: "Got a hospital bill you don't understand? Start here.",
     intro:
