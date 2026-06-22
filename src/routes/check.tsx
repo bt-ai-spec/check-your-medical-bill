@@ -94,6 +94,68 @@ function fmtCurrency(n: number): string {
   });
 }
 
+function PreviewChecks() {
+  const t = strings.check;
+  const [open, setOpen] = useState<Set<string>>(new Set());
+
+  const toggle = (label: string) => {
+    setOpen((prev) => {
+      const next = new Set(prev);
+      if (next.has(label)) {
+        next.delete(label);
+      } else {
+        next.add(label);
+      }
+      return next;
+    });
+  };
+
+  return (
+    <section className="mt-6" aria-label="What this screen checks for">
+      <p className="text-sm text-foreground/85">{t.previewIntro}</p>
+      <ol className="mt-3 grid gap-2">
+        {t.previewChecks.map((c, i) => {
+          const isOpen = open.has(c.label);
+          return (
+            <li
+              key={c.label}
+              className="rounded-lg border border-border bg-card text-sm text-foreground/90"
+            >
+              <button
+                type="button"
+                onClick={() => toggle(c.label)}
+                aria-expanded={isOpen}
+                className="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                <span className="flex items-start gap-3">
+                  <span
+                    aria-hidden
+                    className="font-mono text-xs text-muted-foreground"
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="font-medium text-foreground">{c.label}</span>
+                </span>
+                <span
+                  aria-hidden
+                  className="font-mono text-xs text-muted-foreground"
+                >
+                  {isOpen ? "−" : "+"}
+                </span>
+              </button>
+              {isOpen && (
+                <div className="px-3 pb-3 pl-9 text-sm leading-relaxed text-foreground/85">
+                  {c.body}
+                </div>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+  );
+}
+
 function CheckPage() {
   const t = strings.check;
   const search = Route.useSearch();
