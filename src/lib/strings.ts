@@ -174,17 +174,22 @@ export const strings = {
     previewChecks: [
       {
         label: "Duplicate charges",
-        body: "The same service billed twice.",
+        body: "The same charge listed twice — same description, same amount. It happens more than you'd think, especially with imaging and labs.",
       },
       {
-        label: "Possible surprise billing",
-        body: "Out-of-network charges you didn't choose.",
+        label: "Possible surprise out-of-network charges",
+        body: "A separate bill from a radiologist, anesthesiologist, or pathologist you didn't choose, at a facility you went to in-network. Federal and California law usually limit you to your in-network cost-sharing here.",
+      },
+      {
+        label: "Charges for things that didn't happen",
+        body: "Tests that were ordered but cancelled, days you weren't admitted, supplies you didn't receive. Compare the itemized list against your discharge paperwork.",
       },
       {
         label: "Whether you got a full itemized bill",
-        body: "Your right to see every line.",
+        body: "You can ask any provider for a fully itemized bill with every charge and code. A summary balance isn't enough to spot the things above.",
       },
     ],
+
 
     formatHeader: "What kind of bill do you have?",
     formatSummary: "Just a summary balance",
