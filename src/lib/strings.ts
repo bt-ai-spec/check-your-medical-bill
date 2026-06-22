@@ -164,4 +164,35 @@ export const strings = {
       },
     },
   },
+  qualify: {
+    independent: {
+      eyebrow: "Step 03 · Your leverage",
+      title: "Charity care isn't required here — but you still have leverage.",
+      lede:
+        "An independent provider isn't bound by California's hospital charity-care law, so the tool won't promise eligibility it can't deliver. Here's what genuinely works instead.",
+      cardsHeader: "Three things that actually work",
+      cards: [
+        {
+          label: "Ask for a self-pay / prompt-pay discount",
+          body:
+            "Many practices quietly offer a meaningful discount for paying directly rather than chasing the balance.",
+        },
+        {
+          label: "Ask about their own hardship program",
+          body:
+            "Some independent providers and large labs run voluntary financial-assistance programs. Not guaranteed — worth asking in writing.",
+        },
+        {
+          label: "Request an interest-free payment plan",
+          body:
+            "Independent providers can offer an interest-free payment plan, and most will if you propose a realistic monthly amount. Get the terms in writing before the first payment.",
+        },
+      ],
+      contextNote:
+        "Hospitals carry extra protections under California's charity-care law — if part of your care was at a hospital, you may have more options there.",
+      back: "Back",
+      primaryCta: "Continue to letter",
+      primaryCtaPendingNote: "Letter step coming soon.",
+    },
+  },
 } as const;
