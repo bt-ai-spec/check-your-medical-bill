@@ -217,7 +217,7 @@ export const strings = {
       ctaBody:
         "Use the itemized-bill request letter on the next step. It cites the right to itemization and asks the provider to pause collections while you review.",
       summaryPrimaryCta: "Ask for a fully itemized bill",
-      summarySecondaryCta: "Continue to qualify",
+      summarySecondaryCta: "See if you qualify",
     },
 
     itemized: {
