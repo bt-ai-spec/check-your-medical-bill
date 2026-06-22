@@ -16,7 +16,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { LocaleProvider, isLocale, useStrings, type Locale } from "../lib/i18n";
 
 interface RootSearch {
-  lang: Locale;
+  lang?: Locale;
 }
 
 function NotFoundComponent() {
@@ -85,7 +85,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   validateSearch: (search: Record<string, unknown>): RootSearch => {
     const raw = search.lang;
-    return { lang: isLocale(raw) ? raw : "en" };
+    return isLocale(raw) && raw !== "en" ? { lang: raw } : {};
   },
   search: {
     // Keep ?lang= across all navigations so locale survives link clicks.
