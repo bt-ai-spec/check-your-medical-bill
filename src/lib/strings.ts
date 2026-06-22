@@ -224,7 +224,6 @@ export const strings = {
       ledgerHeader: "Your bill",
       totalLabel: "Total",
       duplicateFlag: "duplicate?",
-      selfCheckFlag: "self-check?",
       cards: [
         {
           id: "itemized" as const,
