@@ -439,18 +439,25 @@ function ItemizedPath({
         <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
           {it.ledgerHeader}
         </p>
-        <ul className="mt-3 divide-y divide-border rounded-xl border border-border bg-card">
+        <ul className="mt-3 divide-y divide-border overflow-hidden rounded-xl border border-border bg-card">
           {parsed.map((l, i) => (
             <li
               key={`${i}-${l.raw}`}
-              className="flex items-baseline justify-between gap-4 px-4 py-3"
+              className={`flex items-baseline justify-between gap-4 px-4 py-3 ${
+                l.isFlagged ? "bg-honey-soft" : ""
+              }`}
             >
               <div className="min-w-0 flex-1">
                 <p className="text-sm text-foreground">{l.description}</p>
                 {l.isDuplicate && (
-                  <p className="mt-0.5 font-mono text-xs text-honey">
-                    · {it.duplicateFlag}
-                  </p>
+                  <span className="mt-1 inline-flex items-center rounded-full border border-honey/40 bg-honey/10 px-2 py-0.5 font-mono text-xs text-honey-foreground">
+                    {it.duplicateFlag}
+                  </span>
+                )}
+                {l.isSelfCheck && (
+                  <span className="mt-1 inline-flex items-center rounded-full border border-honey/40 bg-honey/10 px-2 py-0.5 font-mono text-xs text-honey-foreground">
+                    {it.selfCheckFlag}
+                  </span>
                 )}
               </div>
               <p className="shrink-0 font-mono text-sm tabular-nums text-foreground">
