@@ -12,7 +12,9 @@ const searchSchema = z.object({
   hospital: z.string().optional(),
   customName: z.string().optional(),
   customCutoffs: z.string().optional(),
+  providerName: z.string().optional(),
 });
+
 
 type CheckSearch = z.infer<typeof searchSchema>;
 
