@@ -16,7 +16,23 @@ export const strings = {
       { num: "03", label: "See if you qualify" },
       { num: "04", label: "Get your letter" },
     ],
+    a11y: {
+      progress: "Progress",
+    },
+    errorPage: {
+      title: "This page didn't load",
+      body: "Something went wrong on our end. You can try refreshing or head back home.",
+      tryAgain: "Try again",
+      goHome: "Go home",
+    },
+    notFound: {
+      code: "404",
+      title: "Page not found",
+      body: "The page you're looking for doesn't exist or has been moved.",
+      goHome: "Go home",
+    },
   },
+
   welcome: {
     tagline: "Got a hospital bill you don't understand? Start here.",
     intro:
@@ -267,7 +283,13 @@ export const strings = {
         "We didn't find any exact duplicates on this bill — that doesn't mean there aren't questionable charges, just no two lines that match.",
       parseFallback:
         "We couldn't read amounts on these lines, so we'll show them as you typed them. The action steps still apply.",
+      expandWhatThisMeans: "What this means",
     },
+
+    a11y: {
+      previewSection: "What this screen checks for",
+    },
+
 
     backToIntake: "Back",
     primaryCta: "See if you qualify",
@@ -281,7 +303,12 @@ export const strings = {
   },
 
   qualify: {
+    missing: {
+      body: "We need to know who sent the bill before we can run this step.",
+      backToIntake: "Back to intake",
+    },
     independent: {
+
       eyebrow: "Step 03 · Your leverage",
       title: "Charity care isn't required here — but you still have leverage.",
       lede:
@@ -361,6 +388,11 @@ export const strings = {
   letter: {
     eyebrow: "Step 04 · Get your letter",
     title: "Your letter, ready to send",
+    subjectLabel: "Subject",
+    a11y: {
+      tabList: "Letter type",
+    },
+
     ledeSingle:
       "Based on what you did, here's the letter that fits your situation. Highlighted fields are yours to fill in — everything else is pre-filled from what you've already told this tool.",
     ledeMulti:
@@ -543,6 +575,8 @@ export const strings = {
       "For each pilot hospital, we read the published financial-assistance policy and recorded the income tiers used by the qualify step. Always confirm the current figures on the hospital's own application.",
     hospitalSourceLabel: "Financial-assistance policy",
     hospitalExhibitBLabel: "Exhibit B (HCAI filing)",
+    hospitalPolicyClaim: "Financial-assistance policy used by the qualify step.",
+
 
     resourcesHeader: "Referral resources",
     resourcesIntro:

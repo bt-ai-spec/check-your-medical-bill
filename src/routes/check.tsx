@@ -115,7 +115,7 @@ function PreviewChecks() {
   };
 
   return (
-    <section className="mt-6" aria-label="What this screen checks for">
+    <section className="mt-6" aria-label={strings.check.a11y.previewSection}>
       <p className="text-sm text-foreground/85">{t.previewIntro}</p>
       <ol className="mt-3 grid gap-2">
         {t.previewChecks.map((c, i) => {
@@ -637,7 +637,7 @@ function ActionCard({
             className="mt-3 ml-7 inline-flex items-center gap-1.5 text-sm text-pine hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded"
           >
             <span aria-hidden>{open ? "−" : "+"}</span>
-            What this means
+            {strings.check.itemized.expandWhatThisMeans}
           </button>
           {open && (
             <div className="mt-3 ml-7 space-y-3 text-sm leading-relaxed text-foreground/85">

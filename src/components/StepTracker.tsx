@@ -13,7 +13,7 @@ export function StepTracker({ current }: StepTrackerProps) {
   const steps = strings.common.steps;
   return (
     <ol
-      aria-label="Progress"
+      aria-label={strings.common.a11y.progress}
       className="grid grid-cols-4 gap-2 border-b border-border/60 pt-6 pb-4"
     >
       {steps.map((s, i) => {

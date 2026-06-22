@@ -521,15 +521,16 @@ function MissingQualify() {
         <StepTracker current={2} />
         <div className="pt-10">
           <p className="text-sm text-muted-foreground">
-            We need to know who sent the bill before we can run this step.
+            {strings.qualify.missing.body}
           </p>
           <Link
             to="/intake"
             className="mt-6 inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2.5 text-sm text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <span aria-hidden>←</span>
-            Back to intake
+            {strings.qualify.missing.backToIntake}
           </Link>
+
         </div>
       </div>
     </AppShell>

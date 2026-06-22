@@ -201,7 +201,7 @@ function AboutPage() {
               return (
                 <SourceCard
                   key={h.id}
-                  claim={`${h.name} — ${h.city}. Financial-assistance policy used by the qualify step.`}
+                  claim={`${h.name} — ${h.city}. ${a.hospitalPolicyClaim}`}
                   links={links}
                   verifiedOn={h.verifiedOn}
                 />
