@@ -334,31 +334,6 @@ function SummaryPath() {
         </div>
       </div>
 
-      <div className="mt-8">
-        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          {s.watchForHeader}
-        </p>
-        <ol className="mt-4 grid gap-3">
-          {s.watchFor.map((w, i) => (
-            <li
-              key={w.label}
-              className="rounded-xl border border-border bg-card p-5"
-            >
-              <div className="flex items-baseline gap-3">
-                <span aria-hidden className="font-mono text-xs text-muted-foreground">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="font-display text-lg font-medium text-foreground">
-                  {w.label}
-                </h3>
-              </div>
-              <p className="mt-2 pl-7 text-sm leading-relaxed text-foreground/80">
-                {w.body}
-              </p>
-            </li>
-          ))}
-        </ol>
-      </div>
     </section>
   );
 }

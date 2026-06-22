@@ -210,24 +210,6 @@ export const strings = {
       ctaTitle: "Ask for a fully itemized bill",
       ctaBody:
         "Use the itemized-bill request letter on the next step. It cites the right to itemization and asks the provider to pause collections while you review.",
-      watchForHeader: "Once it arrives, watch for",
-      watchFor: [
-        {
-          label: "Duplicates",
-          body:
-            "The same charge listed twice — same description, same amount. It happens more than you'd think, especially with imaging and labs.",
-        },
-        {
-          label: "Surprise out-of-network charges",
-          body:
-            "A separate bill from a radiologist, anesthesiologist, or pathologist you didn't choose, at a facility you went to in-network. Federal and California law usually limit you to your in-network cost-sharing here.",
-        },
-        {
-          label: "Charges for things that didn't happen",
-          body:
-            "Tests that were ordered but cancelled, days you weren't admitted, supplies you didn't receive. Compare the itemized list against your discharge paperwork.",
-        },
-      ],
     },
 
     itemized: {
