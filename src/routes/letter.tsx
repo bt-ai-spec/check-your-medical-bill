@@ -40,8 +40,11 @@ function fmtCurrency(n: number): string {
 }
 
 function deriveProviderName(ctx: LetterContext, strings: Strings): string {
-  if (ctx.qualify?.kind === "hospital") return ctx.qualify.hospitalName;
+  // Always prefer the current provider on the bill. The dispute / itemized /
+  // leverage letters concern THIS provider's bill regardless of any prior
+  // (and possibly stale) qualify result tied to a different hospital.
   if (ctx.provider?.name) return ctx.provider.name;
+  if (ctx.qualify?.kind === "hospital") return ctx.qualify.hospitalName;
   return strings.letter.placeholders.providerFallback;
 }
 
