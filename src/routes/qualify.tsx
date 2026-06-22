@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
-import { strings } from "@/lib/strings";
+import { useStrings } from "@/lib/i18n";
 import { AppShell } from "@/components/AppShell";
 import { StepTracker } from "@/components/StepTracker";
 import { CORPUS, eligibilityTier, fplFor, type Hospital } from "@/lib/corpus";
@@ -125,7 +125,7 @@ function PageShell({
 /* --------------------------- Independent --------------------------- */
 
 function IndependentQualify() {
-  const q = strings.qualify.independent;
+  const q = useStrings().qualify.independent;
 
   useEffect(() => {
     writeLetterContext({ qualify: { kind: "independent" } });
@@ -187,7 +187,7 @@ function HouseholdInputs({
   income: string;
   setIncome: (v: string) => void;
 }) {
-  const h = strings.qualify.hospital;
+  const h = useStrings().qualify.hospital;
   return (
     <section className="mt-10">
       <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground font-sans">
@@ -241,7 +241,7 @@ function fmtCurrency(n: number): string {
 }
 
 function HospitalQualify({ hospital }: { hospital: Hospital }) {
-  const h = strings.qualify.hospital;
+  const h = useStrings().qualify.hospital;
   const [household, setHousehold] = useState("");
   const [income, setIncome] = useState("");
   const [showSources, setShowSources] = useState(false);
@@ -418,6 +418,7 @@ function CustomHospitalQualify({
   name: string;
   cutoffs: string;
 }) {
+  const strings = useStrings();
   const h = strings.qualify.hospital;
   const s = strings.intake;
   const [household, setHousehold] = useState("");
@@ -515,7 +516,7 @@ function CustomHospitalQualify({
 /* --------------------------- Fallback ----------------------------- */
 
 function MissingQualify() {
-  const m = strings.qualify.missing;
+  const m = useStrings().qualify.missing;
   return (
     <AppShell>
       <div className="mx-auto w-full max-w-3xl px-5 pb-20">
