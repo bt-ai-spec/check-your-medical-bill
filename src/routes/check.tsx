@@ -187,14 +187,27 @@ function CheckPage() {
       seen.add(key);
       return true;
     });
+    const provider =
+      search.type === "hospital"
+        ? {
+            kind: "hospital" as const,
+            name:
+              (search.hospital
+                ? CORPUS.hospitals.find((h) => h.id === search.hospital)?.name
+                : undefined) ?? search.customName ?? undefined,
+          }
+        : search.type === "independent"
+          ? { kind: "independent" as const }
+          : undefined;
     writeLetterContext({
+      provider,
       check: {
         format: format ?? undefined,
         duplicates: unique,
         surpriseConfirmed,
       },
     });
-  }, [parsed, format, surpriseConfirmed]);
+  }, [parsed, format, surpriseConfirmed, search.type, search.hospital, search.customName]);
 
 
   const loadExample = () => {
