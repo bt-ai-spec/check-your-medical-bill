@@ -13,7 +13,7 @@ import { useCallback, useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { LocaleProvider, isLocale, useStrings, type Locale } from "../lib/i18n";
+import { LocaleProvider, useStrings, type Locale } from "../lib/i18n";
 
 interface RootSearch {
   lang?: Locale;
@@ -85,7 +85,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   validateSearch: (search: Record<string, unknown>): RootSearch => {
     const raw = search.lang;
-    return isLocale(raw) && raw !== "en" ? { lang: raw } : {};
+    // Spanish is wired in the locale infrastructure but is not selectable yet;
+    // only English is reachable. Any other ?lang= value falls back to English.
+    return raw === "en" ? {} : {};
   },
   search: {
     // Keep ?lang= across all navigations so locale survives link clicks.
