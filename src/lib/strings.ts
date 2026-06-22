@@ -283,7 +283,13 @@ export const strings = {
         "We didn't find any exact duplicates on this bill — that doesn't mean there aren't questionable charges, just no two lines that match.",
       parseFallback:
         "We couldn't read amounts on these lines, so we'll show them as you typed them. The action steps still apply.",
+      expandWhatThisMeans: "What this means",
     },
+
+    a11y: {
+      previewSection: "What this screen checks for",
+    },
+
 
     backToIntake: "Back",
     primaryCta: "See if you qualify",
