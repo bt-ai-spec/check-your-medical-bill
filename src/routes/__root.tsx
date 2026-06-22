@@ -167,7 +167,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <LocaleProvider locale={lang} onLocaleChange={handleLocaleChange}>
+      <LocaleProvider locale={lang ?? "en"} onLocaleChange={handleLocaleChange}>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
       </LocaleProvider>
