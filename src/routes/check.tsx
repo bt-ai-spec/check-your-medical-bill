@@ -131,12 +131,37 @@ function CheckPage() {
           <h1 className="mt-3 font-display text-4xl font-medium tracking-tight text-foreground sm:text-5xl">
             {t.title}
           </h1>
-          <p className="mt-4 text-base leading-relaxed text-foreground/85">
-            {t.lede}
-          </p>
-        </div>
+        <p className="mt-4 text-base leading-relaxed text-foreground/85">
+          {t.lede}
+        </p>
 
-        {/* Format fork */}
+        {/* Preview of checks */}
+        <section className="mt-6" aria-label="What this screen checks for">
+          <p className="text-sm text-foreground/85">{t.previewIntro}</p>
+          <ol className="mt-3 grid gap-2">
+            {t.previewChecks.map((c, i) => (
+              <li
+                key={c.label}
+                className="flex items-start gap-3 text-sm text-foreground/90"
+              >
+                <span
+                  aria-hidden
+                  className="mt-0.5 font-mono text-xs text-muted-foreground"
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span>
+                  <span className="font-medium text-foreground">{c.label}</span>
+                  {" "}
+                  — {c.body}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </section>
+      </div>
+
+      {/* Format fork */}
         <section className="mt-10">
           <h2 className="text-base font-medium text-foreground">
             {t.formatHeader}
