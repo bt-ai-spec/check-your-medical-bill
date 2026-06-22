@@ -186,7 +186,6 @@ export const strings = {
       },
     ],
 
-
     formatHeader: "What kind of bill do you have?",
     formatSummary: "Just a summary balance",
     formatSummaryHelp:
