@@ -53,7 +53,7 @@ function Welcome() {
           {steps.map((s) => (
             <li
               key={s.title}
-              className="rounded-xl border border-border bg-card p-5"
+              className="rounded-xl border border-border/70 bg-background p-5"
             >
               <p className="text-xs font-medium uppercase tracking-wide text-pine">
                 {s.label}
