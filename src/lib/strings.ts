@@ -272,8 +272,12 @@ export const strings = {
     backToIntake: "Back",
     primaryCta: "See if you qualify",
     primaryCtaPendingNote: "",
+    disputeCta: "Get your dispute letter",
+    disputePrompt:
+      "We found something worth questioning. Your dispute letter is ready — it asks the provider to correct what looks wrong on this bill.",
     qualifyPrompt:
-      "Worried you can't afford this bill? See if you qualify for help paying — this is often the biggest savings step.",
+      "If a correct bill is still more than you can afford, you may be entitled to help paying — check if you qualify.",
+    qualifySecondaryLabel: "See if you qualify for help",
   },
 
   qualify: {
