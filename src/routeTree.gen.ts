@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as QualifyRouteImport } from './routes/qualify'
+import { Route as LetterRouteImport } from './routes/letter'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as CheckRouteImport } from './routes/check'
 import { Route as IndexRouteImport } from './routes/index'
@@ -17,6 +18,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const QualifyRoute = QualifyRouteImport.update({
   id: '/qualify',
   path: '/qualify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LetterRoute = LetterRouteImport.update({
+  id: '/letter',
+  path: '/letter',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IntakeRoute = IntakeRouteImport.update({
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/check': typeof CheckRoute
   '/intake': typeof IntakeRoute
+  '/letter': typeof LetterRoute
   '/qualify': typeof QualifyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/check': typeof CheckRoute
   '/intake': typeof IntakeRoute
+  '/letter': typeof LetterRoute
   '/qualify': typeof QualifyRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/check': typeof CheckRoute
   '/intake': typeof IntakeRoute
+  '/letter': typeof LetterRoute
   '/qualify': typeof QualifyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/check' | '/intake' | '/qualify'
+  fullPaths: '/' | '/check' | '/intake' | '/letter' | '/qualify'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/check' | '/intake' | '/qualify'
-  id: '__root__' | '/' | '/check' | '/intake' | '/qualify'
+  to: '/' | '/check' | '/intake' | '/letter' | '/qualify'
+  id: '__root__' | '/' | '/check' | '/intake' | '/letter' | '/qualify'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CheckRoute: typeof CheckRoute
   IntakeRoute: typeof IntakeRoute
+  LetterRoute: typeof LetterRoute
   QualifyRoute: typeof QualifyRoute
 }
 
@@ -76,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/qualify'
       fullPath: '/qualify'
       preLoaderRoute: typeof QualifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/letter': {
+      id: '/letter'
+      path: '/letter'
+      fullPath: '/letter'
+      preLoaderRoute: typeof LetterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/intake': {
@@ -106,8 +123,19 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CheckRoute: CheckRoute,
   IntakeRoute: IntakeRoute,
+  LetterRoute: LetterRoute,
   QualifyRoute: QualifyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
