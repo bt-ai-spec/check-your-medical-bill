@@ -464,6 +464,11 @@ function LetterPage() {
           <p className="mt-3 text-xs text-muted-foreground">
             {t.privacyNote}
           </p>
+          {needsAssistancePrompt && (
+            <div className="mt-4">
+              <AssistancePrompt providerName={deriveProviderName(ctx, strings)} />
+            </div>
+          )}
         </div>
 
         {/* Tabs — only when more than one applies */}
