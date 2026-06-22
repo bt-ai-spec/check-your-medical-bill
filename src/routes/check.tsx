@@ -5,6 +5,7 @@ import { strings } from "@/lib/strings";
 import { AppShell } from "@/components/AppShell";
 import { StepTracker } from "@/components/StepTracker";
 import { writeLetterContext } from "@/lib/letter-context";
+import { CORPUS } from "@/lib/corpus";
 
 const searchSchema = z.object({
   type: z.enum(["hospital", "independent"]).optional(),
