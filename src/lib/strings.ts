@@ -481,4 +481,80 @@ export const strings = {
       signoff: "Thank you.",
     },
   },
+
+  about: {
+    eyebrow: "About & sources",
+    title: "What this is, and where every number comes from.",
+    lede:
+      "Fair Bill is built on a small, published corpus of California law and hospital policies. This page lets anyone trace every legal claim the tool makes back to its source.",
+
+    whatTitle: "What Fair Bill is",
+    whatBody:
+      "Fair Bill is a free tool that helps Californians understand and act on a confusing or unfair medical bill — check it for problems, see if you qualify for financial assistance, and leave with ready-to-send letters. It is not affiliated with any hospital, insurer, or government agency.",
+
+    privacyTitle: "How your privacy works",
+    privacyBody: [
+      "There is no account and no server. Nothing you enter — your bill, your income, your household, the hospital — is uploaded or stored anywhere. All calculations run in your browser, on your device, and disappear when you close the tab.",
+      "The tool does not run AI on your data. The legal logic is plain arithmetic against a published, verified corpus — the same numbers shown on this page.",
+    ],
+
+    limitsTitle: "What the tool does and doesn't do",
+    limitsIntro:
+      "Being honest about the edges matters more than looking comprehensive.",
+    limitsItems: [
+      {
+        label: "Duplicate charges — a real finding.",
+        body: "When you paste an itemized bill, the tool computes which lines match exactly (same description, same amount) and flags them. That arithmetic is something the tool can actually do for you.",
+      },
+      {
+        label: "Surprise billing and \"charges for things that didn't happen\" — self-checks.",
+        body: "These depend on facts only you know (which provider was in-network, what was actually performed). The tool explains the rule and asks you to confirm — it does not detect them for you.",
+      },
+      {
+        label: "It does not assert eligibility for hospitals it hasn't verified.",
+        body: "For hospitals outside the verified list, the tool shows your federal-poverty-level math and lets you compare it against the policy you paste. It won't tell you \"you qualify\" for a policy it hasn't read.",
+      },
+      {
+        label: "It does not estimate \"fair prices\" or claim you were overcharged by a dollar amount.",
+        body: "Pricing varies wildly between providers and contracts; a confident dollar figure would be misleading. The tool focuses on rights and arithmetic that are knowable.",
+      },
+    ],
+
+    sourcesTitle: "Sources",
+    sourcesIntro:
+      "Every legal figure the tool uses comes from this list. Each entry shows the plain-language claim, the official source, and the date we last verified it.",
+    verifiedOnLabel: "Verified on",
+    newTab: "(opens in a new tab)",
+
+    fplClaim:
+      "2026 Federal Poverty Guidelines — the income table the tool uses to compute your percent of poverty.",
+    fplSourceLabel: "U.S. Department of Health & Human Services (HHS / ASPE)",
+
+    fpaClaim:
+      "California Hospital Fair Pricing Act — nonprofit and many other California hospitals must offer free or discounted care to patients at or below {{ceiling}}% of the federal poverty level. Since 2025 there is no asset test (AB 2297).",
+    fpaSourceLabel: "California HCAI — Hospital Fair Billing Program",
+
+    sb1061Claim:
+      "Medical debt cannot be reported to credit bureaus in California (SB 1061). This applies regardless of provider or whether you've applied for assistance.",
+    sb1061SourceLabel: "California HCAI — Hospital Fair Billing Program",
+
+    hospitalsHeader: "Pilot hospital financial-assistance policies",
+    hospitalsIntro:
+      "For each pilot hospital, we read the published financial-assistance policy and recorded the income tiers used by the qualify step. Always confirm the current figures on the hospital's own application.",
+    hospitalSourceLabel: "Financial-assistance policy",
+    hospitalExhibitBLabel: "Exhibit B (HCAI filing)",
+
+    resourcesHeader: "Referral resources",
+    resourcesIntro:
+      "Outside organizations the tool may point you to. Listed here for transparency. Not endorsements; links open in a new tab and carry no information about you.",
+
+    disclaimersTitle: "Disclaimers",
+    disclaimersBody: [
+      "Fair Bill is not legal or medical advice. It is a tool to help you read your bill and exercise rights that already exist under California and federal law.",
+      "Hospital policies and the law can change. The verified date next to each figure shows when we last checked it — always confirm the current details on the hospital's own application or the official source.",
+      "If something on this page looks out of date or wrong, that's a bug. The whole project is open and the corpus is a single readable file.",
+    ],
+
+    backHome: "Back to home",
+  },
 } as const;
