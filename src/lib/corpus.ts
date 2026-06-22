@@ -58,6 +58,10 @@ export interface Hospital {
   id: string;
   name: string;
   city: string;
+  /** Organizational type — drives the badge segment after the city. */
+  orgType?: "private-nonprofit" | "public";
+  /** Source URL backing the orgType claim. Same shape as `source`. */
+  orgTypeSource?: string;
   /** Outer ceiling of any assistance (free or discounted), where defined as one combined figure. */
   assistanceMaxPctFpl?: number;
   /** Upper bound (% FPL) for free / charity care. */
