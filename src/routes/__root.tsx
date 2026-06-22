@@ -3,15 +3,21 @@ import {
   Outlet,
   Link,
   createRootRouteWithContext,
+  retainSearchParams,
+  useNavigate,
   useRouter,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useCallback, useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { LocaleProvider, useStrings } from "../lib/i18n";
+import { LocaleProvider, isLocale, useStrings, type Locale } from "../lib/i18n";
+
+interface RootSearch {
+  lang: Locale;
+}
 
 function NotFoundComponent() {
   const t = useStrings().common.notFound;
@@ -77,6 +83,14 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  validateSearch: (search: Record<string, unknown>): RootSearch => {
+    const raw = search.lang;
+    return { lang: isLocale(raw) ? raw : "en" };
+  },
+  search: {
+    // Keep ?lang= across all navigations so locale survives link clicks.
+    middlewares: [retainSearchParams(["lang"])],
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -137,10 +151,23 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const { lang } = Route.useSearch();
+  const navigate = useNavigate();
+
+  const handleLocaleChange = useCallback(
+    (next: Locale) => {
+      navigate({
+        to: ".",
+        search: (prev) => ({ ...prev, lang: next === "en" ? undefined : next }),
+        replace: true,
+      });
+    },
+    [navigate],
+  );
 
   return (
     <QueryClientProvider client={queryClient}>
-      <LocaleProvider>
+      <LocaleProvider locale={lang} onLocaleChange={handleLocaleChange}>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
       </LocaleProvider>
