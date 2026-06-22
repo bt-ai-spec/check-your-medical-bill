@@ -171,6 +171,9 @@ export const CORPUS: Corpus = {
       id: "ucla",
       name: "UCLA Health",
       city: "Los Angeles",
+      orgType: "public",
+      orgTypeSource:
+        "https://www.uclahealth.org/about-us",
       freeMaxPctFpl: 400, // hospital (facility) services: 100% discount at/below 400% FPL
       discountMaxPctFpl: 450, // 401–450% FPL partial
       physicianServices: {
