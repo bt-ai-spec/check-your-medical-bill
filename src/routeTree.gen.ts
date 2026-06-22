@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as QualifyRouteImport } from './routes/qualify'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as IndexRouteImport } from './routes/index'
 
+const QualifyRoute = QualifyRouteImport.update({
+  id: '/qualify',
+  path: '/qualify',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IntakeRoute = IntakeRouteImport.update({
   id: '/intake',
   path: '/intake',
@@ -26,31 +32,42 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/intake': typeof IntakeRoute
+  '/qualify': typeof QualifyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/intake': typeof IntakeRoute
+  '/qualify': typeof QualifyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/intake': typeof IntakeRoute
+  '/qualify': typeof QualifyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/intake'
+  fullPaths: '/' | '/intake' | '/qualify'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/intake'
-  id: '__root__' | '/' | '/intake'
+  to: '/' | '/intake' | '/qualify'
+  id: '__root__' | '/' | '/intake' | '/qualify'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   IntakeRoute: typeof IntakeRoute
+  QualifyRoute: typeof QualifyRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/qualify': {
+      id: '/qualify'
+      path: '/qualify'
+      fullPath: '/qualify'
+      preLoaderRoute: typeof QualifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/intake': {
       id: '/intake'
       path: '/intake'
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   IntakeRoute: IntakeRoute,
+  QualifyRoute: QualifyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
