@@ -267,7 +267,7 @@ function IntakePage() {
           </Link>
           {canContinue && providerType === "independent" ? (
             <Link
-              to="/qualify"
+              to="/check"
               search={{ type: "independent" as const }}
               className="inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
@@ -276,7 +276,7 @@ function IntakePage() {
             </Link>
           ) : canContinue && providerType === "hospital" && hospitalId ? (
             <Link
-              to="/qualify"
+              to="/check"
               search={{ type: "hospital" as const, hospital: hospitalId }}
               className="inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
@@ -285,7 +285,7 @@ function IntakePage() {
             </Link>
           ) : canContinue && providerType === "hospital" && customReady ? (
             <Link
-              to="/qualify"
+              to="/check"
               search={{
                 type: "hospital" as const,
                 customName: addName,
