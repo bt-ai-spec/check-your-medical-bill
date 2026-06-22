@@ -216,9 +216,9 @@ export const strings = {
     },
 
     itemized: {
-      heading: "Three things worth questioning",
+      heading: "What to question on this bill",
       lede:
-        "These are based on your rights and the rules, not a guess about price. Each one is something you can ask about before you pay.",
+        "Based on the lines you entered, here's what's worth questioning — and what to do about each.",
       ledgerHeader: "Your bill",
       totalLabel: "Total",
       duplicateFlag: "duplicate?",
