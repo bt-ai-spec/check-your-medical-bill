@@ -13,7 +13,7 @@ import { useCallback, useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { LocaleProvider, isLocale, useStrings, type Locale } from "../lib/i18n";
+import { LocaleProvider, useStrings, type Locale } from "../lib/i18n";
 
 interface RootSearch {
   lang?: Locale;
@@ -85,7 +85,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   validateSearch: (search: Record<string, unknown>): RootSearch => {
     const raw = search.lang;
-    return isLocale(raw) && raw !== "en" ? { lang: raw } : {};
+    // Spanish is wired in the locale infrastructure but is not selectable yet;
+    // only English is reachable. Any other ?lang= value falls back to English.
+    return raw === "en" ? {} : {};
   },
   search: {
     // Keep ?lang= across all navigations so locale survives link clicks.
@@ -154,6 +156,10 @@ function RootComponent() {
   const { lang } = Route.useSearch();
   const navigate = useNavigate();
 
+  // Guard: Spanish is wired but not selectable yet; any direct URL attempt
+  // falls back to English so the UI never activates the Spanish bundle.
+  const activeLocale: Locale = lang === "es" ? "en" : (lang ?? "en");
+
   const handleLocaleChange = useCallback(
     (next: Locale) => {
       navigate({
@@ -167,7 +173,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <LocaleProvider locale={lang ?? "en"} onLocaleChange={handleLocaleChange}>
+      <LocaleProvider locale={activeLocale} onLocaleChange={handleLocaleChange}>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
       </LocaleProvider>
