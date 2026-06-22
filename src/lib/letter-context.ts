@@ -28,7 +28,13 @@ export type QualifyContext =
       kind: "independent";
     };
 
+export type ProviderContext = {
+  kind: "hospital" | "independent";
+  name?: string; // hospital name when known; independent provider name not yet plumbed forward
+};
+
 export type LetterContext = {
+  provider?: ProviderContext;
   check?: CheckContext;
   qualify?: QualifyContext;
 };
