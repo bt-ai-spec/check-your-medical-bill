@@ -430,6 +430,11 @@ export const strings = {
       body: "Run the bill check or the qualify step first — the letters here are built from what you do there.",
       cta: "Start with the bill check",
     },
+    noContext: {
+      title: "Start at step 1 to build your letter.",
+      body: "The letters on this page are built from what you enter in the earlier steps. Begin with intake so the letter reflects your bill.",
+      cta: "Start at step 1",
+    },
 
     // ----- Letter templates. Placeholders use {{KEY}}. -----
     // Fill-ins (user must complete) use [BRACKETED LABEL] inside the body.
