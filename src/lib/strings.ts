@@ -164,6 +164,105 @@ export const strings = {
       },
     },
   },
+  check: {
+    eyebrow: "Step 02 · Check it",
+    title: "Check the bill",
+    lede:
+      "You don't need to paste the whole thing — just the line or two that look confusing or wrong. Messy paste is fine; spacing and codes don't matter.",
+
+    formatHeader: "What kind of bill do you have?",
+    formatSummary: "Just a summary balance",
+    formatSummaryHelp:
+      "One total, no breakdown of charges.",
+    formatItemized: "A line-by-line itemized bill",
+    formatItemizedHelp:
+      "Each charge shown separately, often with billing codes.",
+
+    inputLabel: "Paste the line or two that look off",
+    inputPlaceholder:
+      "CT scan, abdomen — $2,400\nFacility fee — $1,940",
+    inputHelp:
+      "One charge per line. Include the description and the dollar amount.",
+    tryExample: "Try an example",
+    clearExample: "Clear and enter my own",
+
+    summary: {
+      heading: "First, get the itemized bill.",
+      lede:
+        "You can't question what you can't see. A summary balance hides the individual charges — duplicates, wrong codes, surprise out-of-network reads. Asking for an itemized bill in writing is your right, and asking the right way signals you know it.",
+      ctaTitle: "Ask for a fully itemized bill",
+      ctaBody:
+        "Use the itemized-bill request letter on the next step. It cites the right to itemization and asks the provider to pause collections while you review.",
+      watchForHeader: "Once it arrives, watch for",
+      watchFor: [
+        {
+          label: "Duplicates",
+          body:
+            "The same charge listed twice — same description, same amount. It happens more than you'd think, especially with imaging and labs.",
+        },
+        {
+          label: "Surprise out-of-network charges",
+          body:
+            "A separate bill from a radiologist, anesthesiologist, or pathologist you didn't choose, at a facility you went to in-network. Federal and California law usually limit you to your in-network cost-sharing here.",
+        },
+        {
+          label: "Charges for things that didn't happen",
+          body:
+            "Tests that were ordered but cancelled, days you weren't admitted, supplies you didn't receive. Compare the itemized list against your discharge paperwork.",
+        },
+      ],
+    },
+
+    itemized: {
+      heading: "Three things worth questioning",
+      lede:
+        "These are based on your rights and the rules, not a guess about price. Each one is something you can ask about before you pay.",
+      ledgerHeader: "Your bill",
+      totalLabel: "Total",
+      duplicateFlag: "duplicate?",
+      cards: [
+        {
+          id: "itemized" as const,
+          label: "Ask for a fully itemized bill",
+          rule: "Universal · applies to any provider in any state",
+          body:
+            "You can ask any provider for a fully itemized bill — every charge, with billing codes — before you pay. A summary balance isn't enough to spot duplicates or wrong codes. The next step generates the request letter.",
+          actionLabel: "Do",
+          action:
+            "Send the itemized-bill request letter on the next step.",
+        },
+        {
+          id: "duplicate" as const,
+          label: "Possible duplicate charge",
+          rule: "Computed · two lines with the same description and amount",
+          body:
+            "We flagged lines that look like exact duplicates of another line. Sometimes a charge legitimately repeats (two separate scans on different days), but on a single bill it's worth asking the provider to confirm — in writing — that each one is a distinct service.",
+          actionLabel: "Do",
+          action:
+            "On the dispute letter, list the duplicated line and ask the provider to confirm or remove it.",
+        },
+        {
+          id: "surprise" as const,
+          label: "Possible surprise bill",
+          rule: "Self-check · only you know whether this matches your situation",
+          body:
+            "Surprise billing is when you're charged out-of-network rates by a provider you didn't choose at a facility you went to in-network — most often a radiologist, anesthesiologist, pathologist, ER doctor, or assistant surgeon. Federal law (the No Surprises Act) and California's AB-72 usually limit you to your in-network cost-sharing in those cases.",
+          selfCheckLabel: "Does this match a line on your bill?",
+          selfCheckPrompt:
+            "If yes — for example, an \"out-of-network radiologist read\" billed separately after an in-network ER visit — flag it on the dispute letter and ask your insurer to reprocess at the in-network rate.",
+        },
+      ],
+      duplicateNoneNote:
+        "We didn't find any exact duplicates on this bill — that doesn't mean there aren't questionable charges, just no two lines that match.",
+      parseFallback:
+        "We couldn't read amounts on these lines, so we'll show them as you typed them. The action steps still apply.",
+    },
+
+    backToIntake: "Back",
+    primaryCta: "Continue to qualify",
+    primaryCtaPendingNote: "",
+  },
+
   qualify: {
     independent: {
       eyebrow: "Step 03 · Your leverage",
