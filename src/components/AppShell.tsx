@@ -54,12 +54,12 @@ export function AppShell({ children }: AppShellProps) {
             </p>
           </Link>
           <nav className="flex items-center gap-5 text-sm">
-            <a
-              href="/about"
+            <Link
+              to="/about"
               className="text-foreground/70 underline-offset-4 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               {c.aboutLink}
-            </a>
+            </Link>
             <span className="rounded-full border border-border bg-card px-2.5 py-1 text-xs uppercase tracking-wide text-muted-foreground">
               {c.pilotTag}
             </span>
