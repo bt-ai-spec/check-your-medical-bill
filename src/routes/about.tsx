@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { strings } from "@/lib/strings";
+import { useStrings } from "@/lib/i18n";
 import { AppShell } from "@/components/AppShell";
 import { CORPUS } from "@/lib/corpus";
 
@@ -51,7 +51,7 @@ function SourceCard({
   links: { label: string; url: string }[];
   verifiedOn: string;
 }) {
-  const a = strings.about;
+  const a = useStrings().about;
   return (
     <li className="rounded-lg border border-border/70 bg-card p-5">
       <p className="text-base leading-relaxed text-foreground">{claim}</p>
@@ -80,7 +80,7 @@ function SourceCard({
 }
 
 function AboutPage() {
-  const a = strings.about;
+  const a = useStrings().about;
   const fpa = CORPUS.fairPricingAct;
   const fpaClaim = a.fpaClaim.replace(
     "{{ceiling}}",
