@@ -103,12 +103,11 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   CheckRoute: CheckRoute,
   IntakeRoute: IntakeRoute,
   QualifyRoute: QualifyRoute,
-  IndexRoute: IndexRoute,
 }
-
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
