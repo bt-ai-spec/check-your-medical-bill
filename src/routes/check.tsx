@@ -115,7 +115,7 @@ function PreviewChecks() {
   };
 
   return (
-    <section className="mt-6" aria-label="What this screen checks for">
+    <section className="mt-6" aria-label={strings.check.a11y.previewSection}>
       <p className="text-sm text-foreground/85">{t.previewIntro}</p>
       <ol className="mt-3 grid gap-2">
         {t.previewChecks.map((c, i) => {
