@@ -424,6 +424,10 @@ export const strings = {
       assistance: "Charity-care application letter, citing your eligibility tier.",
       leverage: "Self-pay discount, hardship program, and payment plan — in one ask.",
     },
+    assistancePrompt: {
+      body: "Eligibility hasn't been checked for {{PROVIDER}}.",
+      cta: "Check if you qualify",
+    },
     back: "Back",
     backToCheck: "Back to bill check",
     backToQualify: "Back to qualify",
