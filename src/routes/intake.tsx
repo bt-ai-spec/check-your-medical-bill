@@ -268,7 +268,10 @@ function IntakePage() {
           {canContinue && providerType === "independent" ? (
             <Link
               to="/check"
-              search={{ type: "independent" as const }}
+              search={{
+                type: "independent" as const,
+                providerName: independentName,
+              }}
               className="inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               {t.primaryCta}

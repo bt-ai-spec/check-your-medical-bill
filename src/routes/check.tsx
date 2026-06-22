@@ -12,7 +12,9 @@ const searchSchema = z.object({
   hospital: z.string().optional(),
   customName: z.string().optional(),
   customCutoffs: z.string().optional(),
+  providerName: z.string().optional(),
 });
+
 
 type CheckSearch = z.infer<typeof searchSchema>;
 
@@ -197,8 +199,12 @@ function CheckPage() {
                 : undefined) ?? search.customName ?? undefined,
           }
         : search.type === "independent"
-          ? { kind: "independent" as const }
+          ? {
+              kind: "independent" as const,
+              name: search.providerName?.trim() || undefined,
+            }
           : undefined;
+
     
     writeLetterContext({
       provider,
@@ -208,7 +214,8 @@ function CheckPage() {
         surpriseConfirmed,
       },
     });
-  }, [parsed, format, surpriseConfirmed, search.type, search.hospital, search.customName]);
+  }, [parsed, format, surpriseConfirmed, search.type, search.hospital, search.customName, search.providerName]);
+
 
 
   const loadExample = () => {
@@ -380,8 +387,10 @@ function passthroughSearch(s: CheckSearch): CheckSearch {
   if (s.hospital) out.hospital = s.hospital;
   if (s.customName) out.customName = s.customName;
   if (s.customCutoffs) out.customCutoffs = s.customCutoffs;
+  if (s.providerName) out.providerName = s.providerName;
   return out;
 }
+
 
 function FormatChoice({
   selected,
