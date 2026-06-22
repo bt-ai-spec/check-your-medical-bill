@@ -2,7 +2,13 @@ import { createContext, useContext, useMemo, useState, type ReactNode } from "re
 import { strings as enStrings } from "./strings";
 
 export type Strings = typeof enStrings;
-export type Locale = "en";
+export type Locale = "en" | "es";
+
+export const SUPPORTED_LOCALES: Locale[] = ["en", "es"];
+
+export function isLocale(value: unknown): value is Locale {
+  return value === "en" || value === "es";
+}
 
 // Registry of available locale string bundles. English is the source of truth;
 // future locales can register a DeepPartial<Strings> here and missing keys will
@@ -13,6 +19,9 @@ type DeepPartial<T> = {
 
 const localeBundles: Record<Locale, DeepPartial<Strings>> = {
   en: enStrings,
+  // Spanish bundle is intentionally empty for now — every key falls back to
+  // English via the Proxy below. Add translations here incrementally.
+  es: {},
 };
 
 // Recursively wraps a localized bundle in a Proxy that falls back to the
@@ -64,20 +73,33 @@ interface LocaleContextValue {
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
+interface LocaleProviderProps {
+  children: ReactNode;
+  /** Controlled locale. When omitted, the provider manages its own state. */
+  locale?: Locale;
+  /** Called when something inside the tree requests a locale change. */
+  onLocaleChange?: (locale: Locale) => void;
+  initialLocale?: Locale;
+}
+
 export function LocaleProvider({
   children,
+  locale: controlledLocale,
+  onLocaleChange,
   initialLocale = "en",
-}: {
-  children: ReactNode;
-  initialLocale?: Locale;
-}) {
-  const [locale, setLocale] = useState<Locale>(initialLocale);
+}: LocaleProviderProps) {
+  const [uncontrolledLocale, setUncontrolledLocale] = useState<Locale>(initialLocale);
+  const locale = controlledLocale ?? uncontrolledLocale;
 
   const value = useMemo<LocaleContextValue>(() => {
     const bundle = localeBundles[locale];
     const merged = locale === "en" ? enStrings : withFallback<Strings>(bundle, enStrings);
+    const setLocale = (next: Locale) => {
+      if (controlledLocale === undefined) setUncontrolledLocale(next);
+      onLocaleChange?.(next);
+    };
     return { locale, setLocale, strings: merged };
-  }, [locale]);
+  }, [locale, controlledLocale, onLocaleChange]);
 
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
 }
