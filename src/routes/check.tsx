@@ -329,7 +329,7 @@ function CheckPage() {
         )}
 
         {/* Actions */}
-        <div className="mt-12 flex items-center justify-between gap-4">
+        <div className="mt-12 flex items-start justify-between gap-4">
           <Link
             to="/intake"
             className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2.5 text-sm text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -338,14 +338,19 @@ function CheckPage() {
             {t.backToIntake}
           </Link>
           {format === "summary" ? (
-            <div className="flex items-center gap-3">
-              <Link
-                to="/qualify"
-                search={passthroughSearch(search)}
-                className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2.5 text-sm text-foreground/90 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              >
-                {t.summary.summarySecondaryCta}
-              </Link>
+            <div className="flex items-start gap-3">
+              <div className="flex flex-col items-end gap-1.5">
+                <p className="max-w-xs text-right text-sm leading-snug text-foreground/85">
+                  {t.qualifyPrompt}
+                </p>
+                <Link
+                  to="/qualify"
+                  search={passthroughSearch(search)}
+                  className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2.5 text-sm text-foreground/90 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                >
+                  {t.summary.summarySecondaryCta}
+                </Link>
+              </div>
               <Link
                 to="/letter"
                 className="inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -355,14 +360,19 @@ function CheckPage() {
               </Link>
             </div>
           ) : canContinue ? (
-            <Link
-              to="/qualify"
-              search={passthroughSearch(search)}
-              className="inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-            >
-              {t.primaryCta}
-              <span aria-hidden>→</span>
-            </Link>
+            <div className="flex flex-col items-end gap-1.5">
+              <p className="max-w-xs text-right text-sm leading-snug text-foreground/85">
+                {t.qualifyPrompt}
+              </p>
+              <Link
+                to="/qualify"
+                search={passthroughSearch(search)}
+                className="inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                {t.primaryCta}
+                <span aria-hidden>→</span>
+              </Link>
+            </div>
           ) : (
             <button
               type="button"

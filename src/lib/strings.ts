@@ -20,7 +20,7 @@ export const strings = {
   welcome: {
     tagline: "Got a hospital bill you don't understand? Start here.",
     intro:
-      "Check the bill for problems, see if you qualify for help, and leave with a letter you can send — in a few minutes.",
+      "Check the bill for problems, see if you qualify for help paying, and leave with a letter you can send — use whichever steps fit your situation. When both apply, correct the bill first, then seek help paying.",
     audience:
       "No account, no upload to anyone's server. The bill, your income, everything you type stays in this browser, on this device. You're not sharing it with us — because there is no \"us\" holding it.",
     freshSession: "Because nothing is stored, every visit starts fresh.",
@@ -114,7 +114,10 @@ export const strings = {
     primaryCtaPendingNote: "Next screen coming soon.",
 
     rights: {
-      title: "What applies to your bill",
+      title: {
+        hospital: "These are your protections",
+        independent: "Your protections and options",
+      },
       intro:
         "These are general rights tied to the kind of provider you picked. We'll check the bill itself on the next screen.",
       expandHint: "Tap a row to read it.",
@@ -269,6 +272,8 @@ export const strings = {
     backToIntake: "Back",
     primaryCta: "Continue to qualify",
     primaryCtaPendingNote: "",
+    qualifyPrompt:
+      "Worried you can't afford this bill? See if you qualify for help paying — this is often the biggest savings step.",
   },
 
   qualify: {

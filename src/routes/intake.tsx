@@ -404,7 +404,7 @@ function RightsSection({ providerType }: { providerType: "hospital" | "independe
   return (
     <section className="mt-12">
       <h2 className="font-display text-2xl font-medium tracking-tight text-foreground">
-        {r.title}
+        {providerType === "hospital" ? r.title.hospital : r.title.independent}
       </h2>
       <p className="mt-2 text-sm text-muted-foreground">{r.intro}</p>
       <p className="mt-1 text-xs text-muted-foreground">{r.expandHint}</p>
