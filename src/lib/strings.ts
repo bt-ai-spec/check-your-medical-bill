@@ -170,6 +170,22 @@ export const strings = {
     lede:
       "You don't need to paste the whole thing — just the line or two that look confusing or wrong. Messy paste is fine; spacing and codes don't matter.",
 
+    previewIntro: "We'll help you check your bill for three things worth questioning:",
+    previewChecks: [
+      {
+        label: "Duplicate charges",
+        body: "The same service billed twice.",
+      },
+      {
+        label: "Possible surprise billing",
+        body: "Out-of-network charges you didn't choose.",
+      },
+      {
+        label: "Whether you got a full itemized bill",
+        body: "Your right to see every line.",
+      },
+    ],
+
     formatHeader: "What kind of bill do you have?",
     formatSummary: "Just a summary balance",
     formatSummaryHelp:
