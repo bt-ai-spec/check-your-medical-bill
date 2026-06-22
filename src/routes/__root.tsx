@@ -158,7 +158,7 @@ function RootComponent() {
     (next: Locale) => {
       navigate({
         to: ".",
-        search: (prev) => ({ ...prev, lang: next === "en" ? undefined : next }),
+        search: (prev: Record<string, unknown>) => ({ ...prev, lang: next === "en" ? undefined : next }),
         replace: true,
       });
     },
