@@ -328,6 +328,34 @@ function LetterPage() {
     );
   }
 
+  if (!ctx.provider && ctx.qualify?.kind !== "hospital" && ctx.qualify?.kind !== "independent") {
+    return (
+      <AppShell>
+        <div className="mx-auto w-full max-w-3xl px-5 pb-20">
+          <StepTracker current={3} />
+          <div className="pt-10">
+            <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
+              {t.eyebrow}
+            </p>
+            <h1 className="mt-3 font-display text-4xl font-medium tracking-tight text-foreground sm:text-5xl">
+              {t.noContext.title}
+            </h1>
+            <p className="mt-4 text-base leading-relaxed text-foreground/85">
+              {t.noContext.body}
+            </p>
+            <Link
+              to="/intake"
+              className="mt-8 inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              {t.noContext.cta}
+              <span aria-hidden>→</span>
+            </Link>
+          </div>
+        </div>
+      </AppShell>
+    );
+  }
+
   if (letters.length === 0) {
     return (
       <AppShell>
