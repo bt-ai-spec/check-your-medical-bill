@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { strings } from "@/lib/strings";
 import { AppShell } from "@/components/AppShell";
 import { StepTracker } from "@/components/StepTracker";
-import { CORPUS, fplFor } from "@/lib/corpus";
+import { CORPUS } from "@/lib/corpus";
 
 export const Route = createFileRoute("/intake")({
   head: () => ({
@@ -24,7 +24,6 @@ type ProviderType = "hospital" | "independent" | null;
 function IntakePage() {
   const t = strings.intake;
 
-
   const [providerType, setProviderType] = useState<ProviderType>("hospital");
   const [hospitalId, setHospitalId] = useState<string | null>(null);
   const [showWhy, setShowWhy] = useState(false);
@@ -32,21 +31,17 @@ function IntakePage() {
   const [showAdd, setShowAdd] = useState(false);
   const [addName, setAddName] = useState("");
   const [addCutoffs, setAddCutoffs] = useState("");
-  const [addHousehold, setAddHousehold] = useState("");
-  const [addIncome, setAddIncome] = useState("");
-  const [selfCheck, setSelfCheck] = useState<{
-    hospital: string;
-    cutoffs: string;
-    size: number;
-    pct: number;
-  } | null>(null);
-  
   const [independentName, setIndependentName] = useState("");
 
+  const customReady =
+    addName.trim() !== "" &&
+    addCutoffs.trim() !== "" &&
+    /\d/.test(addCutoffs);
+
   const canContinue =
-    (providerType === "hospital" &&
-      (hospitalId !== null || (addName.trim() !== "" && addCutoffs.trim() !== ""))) ||
+    (providerType === "hospital" && (hospitalId !== null || customReady)) ||
     (providerType === "independent" && independentName.trim() !== "");
+
 
   return (
     <AppShell>
