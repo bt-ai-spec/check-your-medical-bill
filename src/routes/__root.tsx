@@ -156,6 +156,7 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const { lang } = Route.useSearch();
   const navigate = useNavigate();
+  console.log("RootComponent lang from useSearch:", lang);
 
   const handleLocaleChange = useCallback(
     (next: Locale) => {
