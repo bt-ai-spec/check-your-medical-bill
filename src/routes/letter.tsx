@@ -383,7 +383,7 @@ function LetterPage() {
           <div
             className="mt-8 flex flex-wrap gap-2 border-b border-border"
             role="tablist"
-            aria-label="Letter type"
+            aria-label={strings.letter.a11y.tabList}
           >
             {letters.map((l) => {
               const selected = l.id === activeLetter.id;
