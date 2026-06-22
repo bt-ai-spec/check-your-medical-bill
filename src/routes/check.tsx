@@ -464,19 +464,21 @@ function ItemizedPath({
         </p>
 
         <ol className="mt-5 grid gap-3">
-          {it.cards.map((c, i) => (
-            <ActionCard
-              key={c.id}
-              index={i + 1}
-              card={c}
-              dimmed={c.id === "duplicate" && !anyDuplicate}
-              dimmedNote={
-                c.id === "duplicate" && !anyDuplicate
-                  ? it.duplicateNoneNote
-                  : undefined
-              }
-            />
-          ))}
+          {it.cards
+            .filter((c) => c.id !== "itemized")
+            .map((c, i) => (
+              <ActionCard
+                key={c.id}
+                index={i + 1}
+                card={c}
+                dimmed={c.id === "duplicate" && !anyDuplicate}
+                dimmedNote={
+                  c.id === "duplicate" && !anyDuplicate
+                    ? it.duplicateNoneNote
+                    : undefined
+                }
+              />
+            ))}
         </ol>
       </section>
     </>
