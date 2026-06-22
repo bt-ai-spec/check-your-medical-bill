@@ -194,5 +194,51 @@ export const strings = {
       primaryCta: "Continue to letter",
       primaryCtaPendingNote: "Letter step coming soon.",
     },
+    hospital: {
+      eyebrow: "Step 03 · See if you qualify",
+      title: "Do you qualify for help?",
+      lede:
+        "This is plain arithmetic — your income compared to the poverty level for your household, against this hospital's policy. No black box.",
+      inputsHeader: "Your household",
+      householdLabel: "Household size",
+      householdHelp:
+        "Count yourself plus anyone you file taxes with (spouse, dependents).",
+      incomeLabel: "Annual household income (before taxes)",
+      incomePlaceholder: "e.g. 48000",
+      incomeHelp: "Used only on this device for the calculation below.",
+      runCta: "Calculate",
+      verifiedNote:
+        "These figures use the verified 2026 poverty guidelines and {{hospital}}'s published policy (checked {{verifiedOn}}). Always confirm on the hospital's current application.",
+      sourcesToggle: "Where these numbers come from",
+      sourcesFplLabel: "2026 federal poverty guidelines (HHS)",
+      sourcesHospitalLabel: "{{hospital}}'s financial-assistance policy",
+      sourcesExhibitBLabel: "{{hospital}} Exhibit B (HCAI filing)",
+      newTab: "(opens in a new tab)",
+      resultHeader: "Your result",
+      resultNotes: {
+        free: "You're likely eligible for free / charity care under this hospital's policy.",
+        disc: "You're likely eligible for a discounted rate under this hospital's policy.",
+        border:
+          "You're close to the line — it's worth applying anyway; hospitals can review case-by-case.",
+        above:
+          "You're above this hospital's assistance line, but California's fair-pricing rights still apply.",
+      },
+      mathToggle: "Show me the math",
+      mathIncomeLabel: "Your yearly income",
+      mathHouseholdLabel: "Household size",
+      mathFplLabel: "100% poverty level for a household of {{size}}",
+      mathPctLabel: "Your income as a percent of poverty",
+      summary:
+        "At {{hospital}}, that puts you in the {{range}} range under their policy and the California Hospital Fair Pricing Act.",
+      ranges: {
+        free: "free-care",
+        disc: "discounted",
+        border: "borderline / apply-anyway",
+        above: "above-the-assistance-line",
+      },
+      back: "Back",
+      primaryCta: "Continue to letter",
+      primaryCtaPendingNote: "Letter step coming soon.",
+    },
   },
 } as const;
