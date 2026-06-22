@@ -515,22 +515,28 @@ function CustomHospitalQualify({
 /* --------------------------- Fallback ----------------------------- */
 
 function MissingQualify() {
+  const m = strings.qualify.missing;
   return (
     <AppShell>
       <div className="mx-auto w-full max-w-3xl px-5 pb-20">
         <StepTracker current={2} />
         <div className="pt-10">
-          <p className="text-sm text-muted-foreground">
-            {strings.qualify.missing.body}
+          <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
+            {m.eyebrow}
+          </p>
+          <h1 className="mt-3 font-display text-4xl font-medium tracking-tight text-foreground sm:text-5xl">
+            {m.title}
+          </h1>
+          <p className="mt-4 text-base leading-relaxed text-foreground/85">
+            {m.body}
           </p>
           <Link
             to="/intake"
-            className="mt-6 inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2.5 text-sm text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="mt-8 inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <span aria-hidden>←</span>
-            {strings.qualify.missing.backToIntake}
+            {m.backToIntake}
           </Link>
-
         </div>
       </div>
     </AppShell>
