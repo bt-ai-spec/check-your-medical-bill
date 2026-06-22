@@ -170,7 +170,7 @@ export const strings = {
     lede:
       "You don't need to paste the whole thing — just the line or two that look confusing or wrong. Messy paste is fine; spacing and codes don't matter.",
 
-    previewIntro: "We'll help you check your bill for three things worth questioning:",
+    previewIntro: "These are the things we're watching for:",
     previewChecks: [
       {
         label: "Duplicate charges",
@@ -185,6 +185,7 @@ export const strings = {
         body: "Your right to see every line.",
       },
     ],
+
 
     formatHeader: "What kind of bill do you have?",
     formatSummary: "Just a summary balance",
