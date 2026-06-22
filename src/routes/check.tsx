@@ -214,7 +214,8 @@ function CheckPage() {
         surpriseConfirmed,
       },
     });
-  }, [parsed, format, surpriseConfirmed, search.type, search.hospital, search.customName]);
+  }, [parsed, format, surpriseConfirmed, search.type, search.hospital, search.customName, search.providerName]);
+
 
 
   const loadExample = () => {
