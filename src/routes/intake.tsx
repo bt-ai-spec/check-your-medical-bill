@@ -148,7 +148,7 @@ function IntakePage() {
                             </svg>
                           </span>
                           <span className="flex-1">
-                            <span className="block font-display text-lg font-medium text-foreground">
+                            <span className="block text-lg font-medium text-foreground">
                               {h.name}
                             </span>
                             <span className="mt-0.5 block text-sm text-muted-foreground">
@@ -177,9 +177,9 @@ function IntakePage() {
                     </button>
                   ) : (
                     <div className="rounded-xl border border-border bg-card p-5">
-                      <p className="font-display text-lg font-medium text-foreground">
+                      <h3 className="text-lg font-medium text-foreground">
                         {t.hospitalAddTitle}
-                      </p>
+                      </h3>
                       <p className="mt-2 text-sm text-foreground/80">
                         {t.hospitalAddIntro}
                       </p>
@@ -412,7 +412,7 @@ function RightsSection({ providerType }: { providerType: "hospital" | "independe
       <div className="mt-6 space-y-8">
         {groups.map((g) => (
           <div key={g.header}>
-            <h3 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            <h3 className="text-xs font-medium uppercase tracking-wide text-muted-foreground font-sans">
               {g.header}
             </h3>
             <ul className="mt-3 flex flex-wrap gap-2">

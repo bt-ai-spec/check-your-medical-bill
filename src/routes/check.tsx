@@ -474,9 +474,9 @@ function SummaryPath() {
           {s.lede}
         </p>
         <div className="mt-5 rounded-md border border-border bg-card p-4">
-          <p className="font-display text-base font-medium text-foreground">
+          <h3 className="text-base font-medium text-foreground">
             {s.ctaTitle}
-          </p>
+          </h3>
           <p className="mt-1.5 text-sm leading-relaxed text-foreground/80">
             {s.ctaBody}
           </p>

@@ -142,7 +142,7 @@ function IndependentQualify() {
       backLabel={q.back}
     >
       <section className="mt-10">
-        <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+        <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground font-sans">
           {q.cardsHeader}
         </h2>
         <ol className="mt-4 grid gap-3">
@@ -190,7 +190,7 @@ function HouseholdInputs({
   const h = strings.qualify.hospital;
   return (
     <section className="mt-10">
-      <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+      <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground font-sans">
         {h.inputsHeader}
       </h2>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -354,12 +354,12 @@ function HospitalQualify({ hospital }: { hospital: Hospital }) {
 
       {result && ready && (
         <section className="mt-8 rounded-xl border border-pine/30 bg-pine-soft/30 p-5">
-          <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground font-sans">
             {h.resultHeader}
           </h2>
-          <p className="mt-3 font-display text-2xl font-medium text-foreground">
+          <h3 className="mt-3 text-2xl font-medium text-foreground">
             {result.label}
-          </p>
+          </h3>
           <p className="mt-3 text-sm leading-relaxed text-foreground/85">
             {h.resultNotes[result.key]}
           </p>
