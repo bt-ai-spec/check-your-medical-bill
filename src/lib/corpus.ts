@@ -58,6 +58,10 @@ export interface Hospital {
   id: string;
   name: string;
   city: string;
+  /** Organizational type — drives the badge segment after the city. */
+  orgType?: "private-nonprofit" | "public";
+  /** Source URL backing the orgType claim. Same shape as `source`. */
+  orgTypeSource?: string;
   /** Outer ceiling of any assistance (free or discounted), where defined as one combined figure. */
   assistanceMaxPctFpl?: number;
   /** Upper bound (% FPL) for free / charity care. */
@@ -124,6 +128,9 @@ export const CORPUS: Corpus = {
       id: "psj",
       name: "Providence Saint John's",
       city: "Santa Monica",
+      orgType: "private-nonprofit",
+      orgTypeSource:
+        "https://projects.propublica.org/nonprofits/organizations/952462044",
       assistanceMaxPctFpl: 400, // free OR discounted, one common application
       freeMaxPctFpl: 300, // 100% write-off ("financially indigent") at or below 300% FPL
       discountMaxPctFpl: 400, // 301–400% FPL: discount, not free
@@ -151,6 +158,9 @@ export const CORPUS: Corpus = {
       id: "cedars",
       name: "Cedars-Sinai",
       city: "Los Angeles",
+      orgType: "private-nonprofit",
+      orgTypeSource:
+        "https://projects.propublica.org/nonprofits/organizations/951644600",
       freeMaxPctFpl: 400, // care without charge at or below 400% FPL
       discountMaxPctFpl: 600, // 401–600% FPL sliding scale
       verifiedOn: "2026-06-19",
@@ -161,6 +171,9 @@ export const CORPUS: Corpus = {
       id: "ucla",
       name: "UCLA Health",
       city: "Los Angeles",
+      orgType: "public",
+      orgTypeSource:
+        "https://www.uclahealth.org/about-us",
       freeMaxPctFpl: 400, // hospital (facility) services: 100% discount at/below 400% FPL
       discountMaxPctFpl: 450, // 401–450% FPL partial
       physicianServices: {

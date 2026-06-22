@@ -118,7 +118,19 @@ function IntakePage() {
                 <ul className="mt-4 grid gap-3" role="radiogroup" aria-label={t.hospitalLabel}>
                   {CORPUS.hospitals.map((h) => {
                     const selected = hospitalId === h.id;
-                    const meta = `${h.city}${t.hospitalCityTypeSep}Nonprofit${t.hospitalCityTypeSep}CA Fair Pricing`;
+                    const orgTypeLabel =
+                      h.orgType === "private-nonprofit"
+                        ? t.hospitalOrgTypeNonprofit
+                        : h.orgType === "public"
+                          ? t.hospitalOrgTypePublic
+                          : null;
+                    const meta = [
+                      h.city,
+                      orgTypeLabel,
+                      "CA Fair Pricing",
+                    ]
+                      .filter(Boolean)
+                      .join(t.hospitalCityTypeSep);
                     return (
                       <li key={h.id}>
                         <button
