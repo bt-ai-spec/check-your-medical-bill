@@ -428,7 +428,7 @@ function RightsSection({ providerType }: { providerType: "hospital" | "independe
                       type="button"
                       onClick={() => toggle(id)}
                       aria-expanded={open}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-pine/40 bg-pine-soft/40 px-3 py-1.5 text-left text-sm font-medium text-pine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                      className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-pine/40 bg-pine-soft/40 px-3 py-1.5 text-left text-sm font-medium text-pine transition-colors hover:border-pine/60 hover:bg-pine-soft/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     >
                       <span
                         aria-hidden
