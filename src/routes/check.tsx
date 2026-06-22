@@ -136,29 +136,7 @@ function CheckPage() {
         </p>
 
         {/* Preview of checks */}
-        <section className="mt-6" aria-label="What this screen checks for">
-          <p className="text-sm text-foreground/85">{t.previewIntro}</p>
-          <ol className="mt-3 grid gap-2">
-            {t.previewChecks.map((c, i) => (
-              <li
-                key={c.label}
-                className="flex items-start gap-3 text-sm text-foreground/90"
-              >
-                <span
-                  aria-hidden
-                  className="mt-0.5 font-mono text-xs text-muted-foreground"
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span>
-                  <span className="font-medium text-foreground">{c.label}</span>
-                  {" "}
-                  — {c.body}
-                </span>
-              </li>
-            ))}
-          </ol>
-        </section>
+        <PreviewChecks />
       </div>
 
       {/* Format fork */}
