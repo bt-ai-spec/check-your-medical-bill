@@ -114,7 +114,10 @@ export const strings = {
     primaryCtaPendingNote: "Next screen coming soon.",
 
     rights: {
-      title: "What applies to your bill",
+      title: {
+        hospital: "These are your protections",
+        independent: "Your protections and options",
+      },
       intro:
         "These are general rights tied to the kind of provider you picked. We'll check the bill itself on the next screen.",
       expandHint: "Tap a row to read it.",
