@@ -1,3 +1,22 @@
+/*
+ * Fair Bill — verified legal corpus (California medical-bill assistance data).
+ * Copyright (C) 2026  bt-ai-spec
+ *
+ * This data file, its letter templates, and educational copy are licensed under
+ * Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) —
+ * separate from the application code, which is licensed under AGPL-3.0.
+ * Full corpus license: /data/CORPUS-LICENSE  (repo root → data/CORPUS-LICENSE)
+ * Canonical terms: https://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * You may reuse and adapt this data WITH attribution, provided your version is
+ * shared under the same license.
+ *
+ * VERIFICATION REQUIREMENT: Every legal figure here is verified against a primary
+ * source with a recorded date, and is specific to California. Any reuse for another
+ * jurisdiction MUST be re-verified against that state's own primary sources before
+ * being relied upon. A tool about people's rights cannot ship a number it cannot trace.
+ */
+
 // Fair Bill — verified legal corpus (drop-in data file)
 // Verified 2026-06-19. Re-verify FPL each January; hospital policies twice a year.
 // Every value here is sourced in Legal_Corpus_CA.md. The app must read legal
