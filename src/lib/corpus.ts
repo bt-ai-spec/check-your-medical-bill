@@ -128,6 +128,9 @@ export const CORPUS: Corpus = {
       id: "psj",
       name: "Providence Saint John's",
       city: "Santa Monica",
+      orgType: "private-nonprofit",
+      orgTypeSource:
+        "https://projects.propublica.org/nonprofits/organizations/952462044",
       assistanceMaxPctFpl: 400, // free OR discounted, one common application
       freeMaxPctFpl: 300, // 100% write-off ("financially indigent") at or below 300% FPL
       discountMaxPctFpl: 400, // 301–400% FPL: discount, not free
