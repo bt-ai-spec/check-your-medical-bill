@@ -383,6 +383,11 @@ export const strings = {
   letter: {
     eyebrow: "Step 04 · Get your letter",
     title: "Your letter, ready to send",
+    subjectLabel: "Subject",
+    a11y: {
+      tabList: "Letter type",
+    },
+
     ledeSingle:
       "Based on what you did, here's the letter that fits your situation. Highlighted fields are yours to fill in — everything else is pre-filled from what you've already told this tool.",
     ledeMulti:
