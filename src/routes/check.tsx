@@ -199,8 +199,12 @@ function CheckPage() {
                 : undefined) ?? search.customName ?? undefined,
           }
         : search.type === "independent"
-          ? { kind: "independent" as const }
+          ? {
+              kind: "independent" as const,
+              name: search.providerName?.trim() || undefined,
+            }
           : undefined;
+
     
     writeLetterContext({
       provider,
