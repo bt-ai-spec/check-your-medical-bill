@@ -45,7 +45,27 @@ type ParsedLine = {
   description: string;
   amount: number | null;
   isDuplicate: boolean;
+  isSelfCheck: boolean;
+  isFlagged: boolean;
 };
+
+const SELF_CHECK_KEYWORDS = [
+  "out-of-network",
+  "out of network",
+  "radiologist",
+  "anesthesiologist",
+  "pathologist",
+  "assistant surgeon",
+  "er doctor",
+  "emergency physician",
+  "non-network",
+  "surprise",
+];
+
+function isSelfCheckLine(raw: string): boolean {
+  const lower = raw.toLowerCase();
+  return SELF_CHECK_KEYWORDS.some((k) => lower.includes(k));
+}
 
 function parseBill(text: string): ParsedLine[] {
   const lines = text
@@ -56,9 +76,9 @@ function parseBill(text: string): ParsedLine[] {
   // Match the LAST currency-like number on the line (handles "$2,480" / "2480.00" / "$ 2,480").
   const amtRe = /\$?\s?([0-9]{1,3}(?:,[0-9]{3})+(?:\.[0-9]+)?|[0-9]+(?:\.[0-9]+)?)\s*$/;
 
-  const initial: Omit<ParsedLine, "isDuplicate">[] = lines.map((raw) => {
+  const initial: Omit<ParsedLine, "isDuplicate" | "isFlagged">[] = lines.map((raw) => {
     const m = raw.match(amtRe);
-    if (!m) return { raw, description: raw, amount: null };
+    if (!m) return { raw, description: raw, amount: null, isSelfCheck: isSelfCheckLine(raw) };
     const amount = parseFloat(m[1].replace(/,/g, ""));
     // Strip the trailing amount + any preceding " — ", " - ", ":" punctuation.
     const description = raw
@@ -69,6 +89,7 @@ function parseBill(text: string): ParsedLine[] {
       raw,
       description: description || raw,
       amount: Number.isFinite(amount) ? amount : null,
+      isSelfCheck: isSelfCheckLine(raw),
     };
   });
 
@@ -80,9 +101,10 @@ function parseBill(text: string): ParsedLine[] {
     counts.set(key, (counts.get(key) ?? 0) + 1);
   }
   return initial.map((l) => {
-    if (l.amount === null) return { ...l, isDuplicate: false };
-    const key = `${l.description.toLowerCase()}|${l.amount}`;
-    return { ...l, isDuplicate: (counts.get(key) ?? 0) > 1 };
+    const isDuplicate =
+      l.amount !== null && (counts.get(`${l.description.toLowerCase()}|${l.amount}`) ?? 0) > 1;
+    const isSelfCheck = l.isSelfCheck;
+    return { ...l, isDuplicate, isFlagged: isDuplicate || isSelfCheck };
   });
 }
 
@@ -417,18 +439,25 @@ function ItemizedPath({
         <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
           {it.ledgerHeader}
         </p>
-        <ul className="mt-3 divide-y divide-border rounded-xl border border-border bg-card">
+        <ul className="mt-3 divide-y divide-border overflow-hidden rounded-xl border border-border bg-card">
           {parsed.map((l, i) => (
             <li
               key={`${i}-${l.raw}`}
-              className="flex items-baseline justify-between gap-4 px-4 py-3"
+              className={`flex items-baseline justify-between gap-4 px-4 py-3 ${
+                l.isFlagged ? "bg-honey-soft" : ""
+              }`}
             >
               <div className="min-w-0 flex-1">
                 <p className="text-sm text-foreground">{l.description}</p>
                 {l.isDuplicate && (
-                  <p className="mt-0.5 font-mono text-xs text-honey">
-                    · {it.duplicateFlag}
-                  </p>
+                  <span className="mt-1 inline-flex items-center rounded-full border border-honey/40 bg-honey/10 px-2 py-0.5 font-mono text-xs text-honey-foreground">
+                    {it.duplicateFlag}
+                  </span>
+                )}
+                {l.isSelfCheck && (
+                  <span className="mt-1 inline-flex items-center rounded-full border border-honey/40 bg-honey/10 px-2 py-0.5 font-mono text-xs text-honey-foreground">
+                    {it.selfCheckFlag}
+                  </span>
                 )}
               </div>
               <p className="shrink-0 font-mono text-sm tabular-nums text-foreground">
