@@ -87,7 +87,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     const raw = search.lang;
     // Spanish is wired in the locale infrastructure but is not selectable yet;
     // only English is reachable. Any other ?lang= value falls back to English.
-    console.log("validateSearch raw lang:", raw);
     return raw === "en" ? {} : {};
   },
   search: {
@@ -156,7 +155,10 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const { lang } = Route.useSearch();
   const navigate = useNavigate();
-  console.log("RootComponent lang from useSearch:", lang);
+
+  // Guard: Spanish is wired but not selectable yet; any direct URL attempt
+  // falls back to English so the UI never activates the Spanish bundle.
+  const activeLocale: Locale = lang === "es" ? "en" : (lang ?? "en");
 
   const handleLocaleChange = useCallback(
     (next: Locale) => {
