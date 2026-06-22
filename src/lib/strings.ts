@@ -20,7 +20,7 @@ export const strings = {
   welcome: {
     tagline: "Got a hospital bill you don't understand? Start here.",
     intro:
-      "Check the bill for problems, see if you qualify for help, and leave with a letter you can send — in a few minutes.",
+      "Check the bill for problems, see if you qualify for help paying, and leave with a letter you can send — use whichever steps fit your situation. When both apply, correct the bill first, then seek help paying.",
     audience:
       "No account, no upload to anyone's server. The bill, your income, everything you type stays in this browser, on this device. You're not sharing it with us — because there is no \"us\" holding it.",
     freshSession: "Because nothing is stored, every visit starts fresh.",
