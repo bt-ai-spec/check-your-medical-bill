@@ -213,12 +213,14 @@ export const strings = {
       ctaTitle: "Ask for a fully itemized bill",
       ctaBody:
         "Use the itemized-bill request letter on the next step. It cites the right to itemization and asks the provider to pause collections while you review.",
+      summaryPrimaryCta: "Ask for a fully itemized bill",
+      summarySecondaryCta: "Continue to qualify",
     },
 
     itemized: {
       heading: "What to question on this bill",
       lede:
-        "Based on the lines you entered, here's what's worth questioning — and what to do about each.",
+        "Based on the lines you entered, here's what's worth questioning — and what we'll do about each.",
       ledgerHeader: "Your bill",
       totalLabel: "Total",
       duplicateFlag: "duplicate?",
@@ -231,7 +233,7 @@ export const strings = {
             "You can ask any provider for a fully itemized bill — every charge, with billing codes — before you pay. A summary balance isn't enough to spot duplicates or wrong codes. The next step generates the request letter.",
           actionLabel: "Do",
           action:
-            "Send the itemized-bill request letter on the next step.",
+            "We'll generate a ready-to-send itemized-bill request letter for you.",
         },
         {
           id: "duplicate" as const,
@@ -241,7 +243,7 @@ export const strings = {
             "We flagged lines that look like exact duplicates of another line. Sometimes a charge legitimately repeats (two separate scans on different days), but on a single bill it's worth asking the provider to confirm — in writing — that each one is a distinct service.",
           actionLabel: "Do",
           action:
-            "On the dispute letter, list the duplicated line and ask the provider to confirm or remove it.",
+            "We'll include this duplicated line in your dispute letter and ask the provider to confirm or remove it.",
         },
         {
           id: "surprise" as const,
@@ -251,7 +253,7 @@ export const strings = {
             "Surprise billing is when you're charged out-of-network rates by a provider you didn't choose at a facility you went to in-network — most often a radiologist, anesthesiologist, pathologist, ER doctor, or assistant surgeon. Federal law (the No Surprises Act) and California's AB-72 usually limit you to your in-network cost-sharing in those cases.",
           selfCheckLabel: "Does this match a line on your bill?",
           selfCheckPrompt:
-            "If yes — for example, an \"out-of-network radiologist read\" billed separately after an in-network ER visit — flag it on the dispute letter and ask your insurer to reprocess at the in-network rate.",
+            "If this matches your situation, we'll include it in your letter.",
         },
       ],
       duplicateNoneNote:

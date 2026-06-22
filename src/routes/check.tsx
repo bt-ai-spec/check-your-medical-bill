@@ -286,7 +286,25 @@ function CheckPage() {
             <span aria-hidden>←</span>
             {t.backToIntake}
           </Link>
-          {canContinue ? (
+          {format === "summary" ? (
+            <div className="flex items-center gap-3">
+              <Link
+                to="/qualify"
+                search={passthroughSearch(search)}
+                className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2.5 text-sm text-foreground/90 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                {t.summary.summarySecondaryCta}
+              </Link>
+              <Link
+                to="/letter"
+                search={passthroughSearch(search)}
+                className="inline-flex items-center gap-2 rounded-md bg-pine px-5 py-3 text-sm font-medium text-pine-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                {t.summary.summaryPrimaryCta}
+                <span aria-hidden>→</span>
+              </Link>
+            </div>
+          ) : canContinue ? (
             <Link
               to="/qualify"
               search={passthroughSearch(search)}
