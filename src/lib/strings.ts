@@ -272,6 +272,8 @@ export const strings = {
     backToIntake: "Back",
     primaryCta: "Continue to qualify",
     primaryCtaPendingNote: "",
+    qualifyPrompt:
+      "Worried you can't afford this bill? See if you qualify for help paying — this is often the biggest savings step.",
   },
 
   qualify: {
