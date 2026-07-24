@@ -106,7 +106,7 @@ function DemoPage() {
   const active = letters.find((l) => l.id === activeTab) ?? letters[0];
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
+    <AppShell>
       {/* Persistent demo banner */}
       <div
         role="status"
@@ -118,7 +118,7 @@ function DemoPage() {
         </p>
       </div>
 
-      <main className="mx-auto w-full max-w-3xl px-4 pb-12 pt-6">
+      <div className="mx-auto w-full max-w-3xl px-4 pb-12 pt-6">
         <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
           {t.eyebrow}
         </p>
