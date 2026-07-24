@@ -46,51 +46,6 @@ const EXAMPLE_TEXT = [
   "Facility fee — $1,940",
 ].join("\n");
 
-type ParsedLine = {
-  raw: string;
-  description: string;
-  amount: number | null;
-  isDuplicate: boolean;
-};
-
-function parseBill(text: string): ParsedLine[] {
-  const lines = text
-    .split("\n")
-    .map((l) => l.trim())
-    .filter((l) => l.length > 0);
-
-  // Match the LAST currency-like number on the line (handles "$2,480" / "2480.00" / "$ 2,480").
-  const amtRe = /\$?\s?([0-9]{1,3}(?:,[0-9]{3})+(?:\.[0-9]+)?|[0-9]+(?:\.[0-9]+)?)\s*$/;
-
-  const initial: Omit<ParsedLine, "isDuplicate">[] = lines.map((raw) => {
-    const m = raw.match(amtRe);
-    if (!m) return { raw, description: raw, amount: null };
-    const amount = parseFloat(m[1].replace(/,/g, ""));
-    // Strip the trailing amount + any preceding " — ", " - ", ":" punctuation.
-    const description = raw
-      .slice(0, raw.length - m[0].length)
-      .replace(/[\s\u2014\-:·|]+$/, "")
-      .trim();
-    return {
-      raw,
-      description: description || raw,
-      amount: Number.isFinite(amount) ? amount : null,
-    };
-  });
-
-  // Duplicate = same normalized description AND same amount, appearing >1 time.
-  const counts = new Map<string, number>();
-  for (const l of initial) {
-    if (l.amount === null) continue;
-    const key = `${l.description.toLowerCase()}|${l.amount}`;
-    counts.set(key, (counts.get(key) ?? 0) + 1);
-  }
-  return initial.map((l) => {
-    if (l.amount === null) return { ...l, isDuplicate: false };
-    const key = `${l.description.toLowerCase()}|${l.amount}`;
-    return { ...l, isDuplicate: (counts.get(key) ?? 0) > 1 };
-  });
-}
 
 function fmtCurrency(n: number): string {
   return n.toLocaleString("en-US", {
