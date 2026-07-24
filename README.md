@@ -86,7 +86,7 @@ This project is open in two layers, with two licenses:
 
 - **Code** → **GNU Affero General Public License v3.0 (AGPL-3.0)**. You may use, modify, and run it — including as a hosted service — but any modified version you deploy must also be open under AGPL. See `LICENSE`.
 
-- **The corpus (`corpus.ts`), letter templates, and educational copy** → **Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)**. Reuse and adapt with attribution, provided your version is shared under the same license. See `CORPUS-LICENSE.md`.
+- **The corpus (`corpus.ts`), letter templates, and educational copy** → **Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)**. Reuse and adapt with attribution, provided your version is shared under the same license. See [`data/CORPUS-LICENSE`](data/CORPUS-LICENSE).
 
 In plain terms: you can build on this, including commercially, but you cannot enclose it — derivatives stay open, and the data stays attributed and share-alike.
 
