@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as QualifyRouteImport } from './routes/qualify'
 import { Route as LetterRouteImport } from './routes/letter'
 import { Route as IntakeRouteImport } from './routes/intake'
+import { Route as DemoRouteImport } from './routes/demo'
 import { Route as CheckRouteImport } from './routes/check'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -29,6 +30,11 @@ const LetterRoute = LetterRouteImport.update({
 const IntakeRoute = IntakeRouteImport.update({
   id: '/intake',
   path: '/intake',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoRoute = DemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckRoute = CheckRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/check': typeof CheckRoute
+  '/demo': typeof DemoRoute
   '/intake': typeof IntakeRoute
   '/letter': typeof LetterRoute
   '/qualify': typeof QualifyRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/check': typeof CheckRoute
+  '/demo': typeof DemoRoute
   '/intake': typeof IntakeRoute
   '/letter': typeof LetterRoute
   '/qualify': typeof QualifyRoute
@@ -68,20 +76,29 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/check': typeof CheckRoute
+  '/demo': typeof DemoRoute
   '/intake': typeof IntakeRoute
   '/letter': typeof LetterRoute
   '/qualify': typeof QualifyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/check' | '/intake' | '/letter' | '/qualify'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/check'
+    | '/demo'
+    | '/intake'
+    | '/letter'
+    | '/qualify'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/check' | '/intake' | '/letter' | '/qualify'
+  to: '/' | '/about' | '/check' | '/demo' | '/intake' | '/letter' | '/qualify'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/check'
+    | '/demo'
     | '/intake'
     | '/letter'
     | '/qualify'
@@ -91,6 +108,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   CheckRoute: typeof CheckRoute
+  DemoRoute: typeof DemoRoute
   IntakeRoute: typeof IntakeRoute
   LetterRoute: typeof LetterRoute
   QualifyRoute: typeof QualifyRoute
@@ -117,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/intake'
       fullPath: '/intake'
       preLoaderRoute: typeof IntakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo': {
+      id: '/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof DemoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/check': {
@@ -147,6 +172,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   CheckRoute: CheckRoute,
+  DemoRoute: DemoRoute,
   IntakeRoute: IntakeRoute,
   LetterRoute: LetterRoute,
   QualifyRoute: QualifyRoute,

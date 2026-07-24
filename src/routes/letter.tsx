@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useStrings, type Strings } from "@/lib/i18n";
+import { useStrings } from "@/lib/i18n";
 import { AppShell } from "@/components/AppShell";
 import { StepTracker } from "@/components/StepTracker";
 import { CORPUS } from "@/lib/corpus";
@@ -8,6 +8,13 @@ import {
   readLetterContext,
   type LetterContext,
 } from "@/lib/letter-context";
+import {
+  chooseTabs,
+  deriveProviderName,
+  letterToPlainText,
+  type RenderedLetter,
+  type TabId,
+} from "@/lib/build-letters";
 
 export const Route = createFileRoute("/letter")({
   head: () => ({
@@ -23,185 +30,6 @@ export const Route = createFileRoute("/letter")({
   component: LetterPage,
 });
 
-type TabId = "itemized" | "dispute" | "assistance" | "leverage";
-
-type RenderedLetter = {
-  id: TabId;
-  subject: string;
-  body: string[]; // paragraphs; placeholders use [BRACKETED]
-};
-
-function fmtCurrency(n: number): string {
-  return n.toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 2,
-  });
-}
-
-function deriveProviderName(ctx: LetterContext, strings: Strings): string {
-  // Always prefer the current provider on the bill. The dispute / itemized /
-  // leverage letters concern THIS provider's bill regardless of any prior
-  // (and possibly stale) qualify result tied to a different hospital.
-  if (ctx.provider?.name) return ctx.provider.name;
-  if (ctx.qualify?.kind === "hospital") return ctx.qualify.hospitalName;
-  return strings.letter.placeholders.providerFallback;
-}
-
-function buildItemized(ctx: LetterContext, strings: Strings): RenderedLetter {
-  const t = strings.letter.itemized;
-  const ph = strings.letter.placeholders;
-  const provider = deriveProviderName(ctx, strings);
-  const subject = t.subject.replace("{{ACCOUNT}}", ph.accountNumber);
-  const greeting = t.greeting.replace("{{PROVIDER}}", provider);
-  return {
-    id: "itemized",
-    subject,
-    body: [
-      `${ph.todayDate}`,
-      greeting,
-      `Re: account ${ph.accountNumber} · date of service ${ph.dateOfService} · patient ${ph.patientName}`,
-      ...t.body,
-      t.signoff,
-      `${ph.patientName}\n${ph.address}`,
-    ],
-  };
-}
-
-function buildDispute(ctx: LetterContext, strings: Strings): RenderedLetter {
-  const t = strings.letter.dispute;
-  const ph = strings.letter.placeholders;
-  const provider = deriveProviderName(ctx, strings);
-  const subject = t.subject.replace("{{ACCOUNT}}", ph.accountNumber);
-  const greeting = t.greeting.replace("{{PROVIDER}}", provider);
-  const dups = ctx.check?.duplicates ?? [];
-  const paragraphs: string[] = [
-    `${ph.todayDate}`,
-    greeting,
-    `Re: account ${ph.accountNumber} · date of service ${ph.dateOfService} · patient ${ph.patientName}`,
-    t.intro,
-  ];
-  if (dups.length > 0) {
-    paragraphs.push(`${t.duplicateHeader}.`);
-    paragraphs.push(t.duplicateLead);
-    const lines = dups
-      .map((d) =>
-        t.duplicateLineFormat
-          .replace("{{DESC}}", d.description)
-          .replace("{{AMT}}", d.amount !== null ? fmtCurrency(d.amount) : "—"),
-      )
-      .join("\n");
-    paragraphs.push(lines);
-  }
-  if (ctx.check?.surpriseConfirmed) {
-    paragraphs.push(`${t.surpriseHeader}.`);
-    paragraphs.push(
-      t.surpriseBody.replace("{{IN_NETWORK}}", ph.providerInNetwork),
-    );
-  }
-  paragraphs.push(t.ask);
-  paragraphs.push(t.signoff);
-  paragraphs.push(`${ph.patientName}\n${ph.address}`);
-  return { id: "dispute", subject, body: paragraphs };
-}
-
-function buildAssistance(ctx: LetterContext, strings: Strings): RenderedLetter {
-  const t = strings.letter.assistance;
-  const ph = strings.letter.placeholders;
-  const q = ctx.qualify?.kind === "hospital" ? ctx.qualify : null;
-  const hospitalName = q?.hospitalName ?? ph.providerFallback;
-  const subject = t.subject.replace("{{HOSPITAL}}", hospitalName);
-  const greeting = t.greeting.replace("{{HOSPITAL}}", hospitalName);
-  const intro = t.intro.replace("{{HOSPITAL}}", hospitalName);
-
-  const elig: keyof typeof t.eligibility = q?.eligibility ?? "unknown";
-  const eligPara = t.eligibility[elig]
-    .replace("{{PCT}}", q?.pct != null ? String(q.pct) : ph.accountNumber)
-    .replace(
-      "{{HOUSEHOLD}}",
-      q?.household != null ? String(q.household) : "[household size]",
-    );
-
-  const ask = t.ask
-    .replace("{{ACCOUNT}}", ph.accountNumber)
-    .replace("{{DOS}}", ph.dateOfService);
-
-  return {
-    id: "assistance",
-    subject,
-    body: [
-      `${ph.todayDate}`,
-      greeting,
-      `Re: account ${ph.accountNumber} · patient ${ph.patientName}`,
-      intro,
-      eligPara,
-      t.collections,
-      ask,
-      t.signoff,
-      `${ph.patientName}\n${ph.address}`,
-    ],
-  };
-}
-
-function buildLeverage(ctx: LetterContext, strings: Strings): RenderedLetter {
-  const t = strings.letter.leverage;
-  const ph = strings.letter.placeholders;
-  const provider = deriveProviderName(ctx, strings);
-  const subject = t.subject.replace("{{PROVIDER}}", provider);
-  const greeting = t.greeting.replace("{{PROVIDER}}", provider);
-  const askPlan = t.askPaymentPlan.replace("{{MONTHLY}}", ph.monthlyAmount);
-  const ask = t.ask.replace("{{ACCOUNT}}", ph.accountNumber);
-  return {
-    id: "leverage",
-    subject,
-    body: [
-      `${ph.todayDate}`,
-      greeting,
-      `Re: account ${ph.accountNumber} · patient ${ph.patientName}`,
-      t.intro,
-      t.askSelfPay,
-      t.askHardship,
-      askPlan,
-      t.collections,
-      ask,
-      t.signoff,
-      `${ph.patientName}\n${ph.address}`,
-    ],
-  };
-}
-
-function chooseTabs(ctx: LetterContext, strings: Strings): RenderedLetter[] {
-  const out: RenderedLetter[] = [];
-  const check = ctx.check;
-  const qualify = ctx.qualify;
-
-  // Itemized: relevant when the user is on the summary path, OR when no
-  // bill-check happened at all (so they can request the breakdown).
-  const needsItemized =
-    !check || check.format === "summary" || check.format === undefined;
-  if (needsItemized) out.push(buildItemized(ctx, strings));
-
-  // Dispute: only when something to dispute was found / confirmed.
-  const hasDispute =
-    (check?.duplicates?.length ?? 0) > 0 || !!check?.surpriseConfirmed;
-  if (hasDispute) out.push(buildDispute(ctx, strings));
-
-  // Financial relief — only one of the two, based on which path they took.
-  // Assistance is only valid when the qualify result was computed against the
-  // SAME hospital that's on the current bill. If the user switched providers
-  // after qualifying, the stale eligibility is not applicable here.
-  if (
-    qualify?.kind === "hospital" &&
-    ctx.provider?.name &&
-    qualify.hospitalName === ctx.provider.name
-  ) {
-    out.push(buildAssistance(ctx, strings));
-  } else if (qualify?.kind === "independent") {
-    out.push(buildLeverage(ctx, strings));
-  }
-
-  return out;
-}
 
 /* --------------------------- Renderers --------------------------- */
 
@@ -226,16 +54,13 @@ function FillInText({ text }: { text: string }) {
   );
 }
 
-function lettersToPlainText(l: RenderedLetter): string {
-  return [`Subject: ${l.subject}`, "", ...l.body].join("\n\n");
-}
 
 function LetterPanel({ letter }: { letter: RenderedLetter }) {
   const strings = useStrings();
   const a = strings.letter.actions;
   const [copied, setCopied] = useState(false);
 
-  const plain = useMemo(() => lettersToPlainText(letter), [letter]);
+  const plain = useMemo(() => letterToPlainText(letter), [letter]);
 
   const onCopy = async () => {
     try {

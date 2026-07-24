@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useStrings } from "@/lib/i18n";
 import { AppShell } from "@/components/AppShell";
@@ -21,6 +22,54 @@ export const Route = createFileRoute("/")({
   }),
   component: Welcome,
 });
+
+const DEMO_BANNER_KEY = "fairbill:demo-banner-dismissed:v1";
+
+function DemoBanner() {
+  const b = useStrings().landingBanner;
+  const [dismissed, setDismissed] = useState(true);
+
+  // Read sessionStorage after hydration to avoid SSR mismatch.
+  useEffect(() => {
+    try {
+      setDismissed(window.sessionStorage.getItem(DEMO_BANNER_KEY) === "1");
+    } catch {
+      setDismissed(false);
+    }
+  }, []);
+
+  if (dismissed) return null;
+
+  return (
+    <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-pine/30 bg-pine-soft/40 px-4 py-2 text-sm text-foreground">
+      <p className="flex-1 min-w-0">
+        <span className="font-medium">{b.prefix}</span> {b.body}
+        <Link
+          to="/demo"
+          className="text-pine underline underline-offset-4 hover:text-pine/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          {b.linkText}
+        </Link>
+        {b.suffix}
+      </p>
+      <button
+        type="button"
+        aria-label={b.dismissLabel}
+        onClick={() => {
+          try {
+            window.sessionStorage.setItem(DEMO_BANNER_KEY, "1");
+          } catch {
+            /* ignore */
+          }
+          setDismissed(true);
+        }}
+        className="rounded-md p-1 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      >
+        <span aria-hidden className="text-lg leading-none">×</span>
+      </button>
+    </div>
+  );
+}
 
 function Welcome() {
   const strings = useStrings();
@@ -67,6 +116,7 @@ function Welcome() {
         </ol>
 
         <div className="mt-12">
+          <DemoBanner />
           <Link
             to="/intake"
             className="inline-flex max-w-full items-center justify-center rounded-md bg-pine px-6 py-3.5 text-base font-medium text-pine-foreground shadow-sm transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"

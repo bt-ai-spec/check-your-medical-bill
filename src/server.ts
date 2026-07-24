@@ -37,12 +37,33 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   });
 }
 
+function applyDemoEmbedHeaders(request: Request, response: Response): Response {
+  const url = new URL(request.url);
+  if (url.pathname !== "/demo" && !url.pathname.startsWith("/demo/")) {
+    return response;
+  }
+  // Clone so we can mutate headers even on immutable responses.
+  const headers = new Headers(response.headers);
+  headers.delete("x-frame-options");
+  headers.delete("X-Frame-Options");
+  headers.set(
+    "content-security-policy",
+    "frame-ancestors 'self' https://brunatalarico.com https://*.brunatalarico.com",
+  );
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const normalized = await normalizeCatastrophicSsrResponse(response);
+      return applyDemoEmbedHeaders(request, normalized);
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {
