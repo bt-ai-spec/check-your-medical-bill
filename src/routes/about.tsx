@@ -262,7 +262,7 @@ function AboutPage() {
           <h2 className="text-2xl font-medium tracking-tight text-foreground">
             {a.disclaimersTitle}
           </h2>
-          {a.disclaimersBody.map((p, i) => (
+          {a.disclaimersBody.slice(0, 2).map((p, i) => (
             <p
               key={i}
               className="mt-3 text-base leading-relaxed text-foreground/85"
@@ -270,6 +270,37 @@ function AboutPage() {
               {p}
             </p>
           ))}
+          <p className="mt-3 text-base leading-relaxed text-foreground/85">
+            {(() => {
+              const openSourceSentence = a.disclaimersBody[2];
+              const [beforeOpen, afterOpen] =
+                openSourceSentence.split("open");
+              const [beforeSingle, afterSingle] = afterOpen.split(
+                "single readable file",
+              );
+              return (
+                <>
+                  {beforeOpen}
+                  <a
+                    href={REPO_URL}
+                    {...externalLinkProps}
+                    className="text-pine underline underline-offset-4 hover:text-pine/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  >
+                    open
+                  </a>
+                  {beforeSingle}
+                  <a
+                    href={CORPUS_URL}
+                    {...externalLinkProps}
+                    className="text-pine underline underline-offset-4 hover:text-pine/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  >
+                    single readable file
+                  </a>
+                  {afterSingle}
+                </>
+              );
+            })()}
+          </p>
         </section>
 
         <div className="mt-14">
