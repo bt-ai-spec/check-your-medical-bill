@@ -7,6 +7,7 @@ import { AppShell } from "@/components/AppShell";
 import { StepTracker } from "@/components/StepTracker";
 import { writeLetterContext } from "@/lib/letter-context";
 import { CORPUS } from "@/lib/corpus";
+import { parseBill, type ParsedLine } from "@/lib/parse-bill";
 
 const searchSchema = z.object({
   type: z.enum(["hospital", "independent"]).optional(),
