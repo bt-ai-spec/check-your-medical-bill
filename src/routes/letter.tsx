@@ -54,9 +54,6 @@ function FillInText({ text }: { text: string }) {
   );
 }
 
-function lettersToPlainText(l: RenderedLetter): string {
-  return [`Subject: ${l.subject}`, "", ...l.body].join("\n\n");
-}
 
 function LetterPanel({ letter }: { letter: RenderedLetter }) {
   const strings = useStrings();
