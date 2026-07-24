@@ -29,6 +29,10 @@ const externalLinkProps = {
   referrerPolicy: "no-referrer" as const,
 };
 
+const REPO_URL = "https://github.com/bt-ai-spec/check-your-medical-bill";
+const CORPUS_URL =
+  "https://github.com/bt-ai-spec/check-your-medical-bill/blob/main/src/lib/corpus.ts";
+
 function formatDate(iso: string): string {
   // iso is "YYYY-MM-DD" from corpus; render as a long, readable date.
   const [y, m, d] = iso.split("-").map((n) => parseInt(n, 10));
