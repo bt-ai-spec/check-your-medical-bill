@@ -9,7 +9,12 @@ export const strings = {
     pilotTag: "Pilot · CA",
     aboutLink: "About & sources",
     privacyBar: "Your information never leaves your device",
-    footerDisclaimer: "Working prototype · Not legal advice.",
+    footer: {
+      prefix: "Pilot — California",
+      link: "Open source",
+      suffix: "Not legal advice.",
+    },
+    footerDisclaimer: "Pilot — California · Open source · Not legal advice.",
     steps: [
       { num: "01", label: "Your bill" },
       { num: "02", label: "Check it" },
