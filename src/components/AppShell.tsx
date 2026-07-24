@@ -74,7 +74,17 @@ export function AppShell({ children }: AppShellProps) {
       <footer className="border-t border-border/60">
         <div className="mx-auto max-w-5xl px-5 py-4">
           <p className="text-center text-xs text-muted-foreground">
-            {c.footerDisclaimer}
+            {c.footer.prefix} ·{" "}
+            <a
+              href="https://github.com/bt-ai-spec/check-your-medical-bill"
+              target="_blank"
+              rel="noopener noreferrer"
+              referrerPolicy="no-referrer"
+              className="text-pine underline underline-offset-4 hover:text-pine/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              {c.footer.link}
+            </a>{" "}
+            · {c.footer.suffix}
           </p>
         </div>
       </footer>
