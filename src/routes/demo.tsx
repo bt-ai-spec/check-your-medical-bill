@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useStrings } from "@/lib/i18n";
+import { AppShell } from "@/components/AppShell";
 import { parseBill } from "@/lib/parse-bill";
 import { CORPUS, fplFor } from "@/lib/corpus";
 import { chooseTabs, letterToPlainText, type RenderedLetter, type TabId } from "@/lib/build-letters";
