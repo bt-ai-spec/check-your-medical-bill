@@ -615,4 +615,43 @@ export const strings = {
 
     backHome: "Back to home",
   },
+
+  landingBanner: {
+    prefix: "First time here?",
+    body: "See it work on a ",
+    linkText: "sample bill",
+    suffix: " first — nothing to paste, nothing to share.",
+    dismissLabel: "Dismiss",
+  },
+
+  demo: {
+    banner:
+      "Sample bill — fictional data for demonstration. Your real data never leaves your device.",
+    eyebrow: "Demo · Sample bill",
+    title: "See Fair Bill work on a sample bill",
+    intro:
+      "This is a fictional bill from a fictional hospital. The duplicate detection, poverty-level math, and letter generation are the real tool running on made-up numbers.",
+    providerLabel: "Sample provider",
+    providerName: "Sample General Hospital (fictional)",
+    billHeader: "1. The sample bill",
+    billNote:
+      "Six itemized lines. One row is repeated — same description, same amount — so the duplicate check has something real to find.",
+    duplicateFlag: "Duplicate",
+    totalLabel: "Billed total",
+    checkHeader: "2. What the check found",
+    checkFoundDuplicate:
+      "One duplicate charge flagged. That's a line the tool will ask the provider to confirm or remove.",
+    qualifyHeader: "3. Does the sample household qualify?",
+    qualifyNote:
+      "Sample household of {{HOUSEHOLD}} with annual income {{INCOME}}. Compared to the federal poverty level for that household size ({{FPL}}), that's {{PCT}}% of FPL.",
+    qualifyResult:
+      "Under California's Hospital Fair Pricing Act, a nonprofit hospital must offer free or discounted care up to 400% of the federal poverty level. This household lands at {{PCT}}% — inside the free / charity-care band.",
+    letterHeader: "4. The letters this produces",
+    letterNote:
+      "Two letters, generated in the browser from the same data. Bracketed fields are what the real user would fill in.",
+    finalCtaHeader: "That's the whole tool.",
+    finalCtaBody:
+      "The demo used fictional numbers. On your own bill, everything you enter stays on your device.",
+    finalCtaLink: "Check your own bill",
+  },
 } as const;
