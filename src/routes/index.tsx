@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useStrings } from "@/lib/i18n";
 import { AppShell } from "@/components/AppShell";
@@ -23,27 +22,13 @@ export const Route = createFileRoute("/")({
   component: Welcome,
 });
 
-const DEMO_BANNER_KEY = "fairbill:demo-banner-dismissed:v1";
-
 function DemoBanner() {
   const b = useStrings().landingBanner;
-  const [dismissed, setDismissed] = useState(true);
-
-  // Read sessionStorage after hydration to avoid SSR mismatch.
-  useEffect(() => {
-    try {
-      setDismissed(window.sessionStorage.getItem(DEMO_BANNER_KEY) === "1");
-    } catch {
-      setDismissed(false);
-    }
-  }, []);
-
-  if (dismissed) return null;
 
   return (
     <div className="sticky top-0 z-50 w-full border-b border-pine/50 bg-pine-soft px-4 py-3 shadow-sm">
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-3 gap-y-1 text-sm text-foreground">
-        <p className="flex-1 min-w-0 text-center leading-relaxed">
+      <div className="mx-auto flex max-w-5xl items-center justify-center text-sm text-foreground">
+        <p className="text-center leading-relaxed">
           <span className="font-medium text-pine">{b.prefix}</span> {b.body}
           <Link
             to="/demo"
@@ -53,21 +38,6 @@ function DemoBanner() {
           </Link>
           {b.suffix}
         </p>
-        <button
-          type="button"
-          aria-label={b.dismissLabel}
-          onClick={() => {
-            try {
-              window.sessionStorage.setItem(DEMO_BANNER_KEY, "1");
-            } catch {
-              /* ignore */
-            }
-            setDismissed(true);
-          }}
-          className="rounded-md p-1 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          <span aria-hidden className="text-lg leading-none">×</span>
-        </button>
       </div>
     </div>
   );
