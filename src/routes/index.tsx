@@ -41,32 +41,34 @@ function DemoBanner() {
   if (dismissed) return null;
 
   return (
-    <div className="mb-5 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-pine/50 bg-pine-soft px-4 py-3 text-sm text-foreground shadow-sm">
-      <p className="flex-1 min-w-0 leading-relaxed">
-        <span className="font-medium text-pine">{b.prefix}</span> {b.body}
-        <Link
-          to="/demo"
-          className="font-medium text-pine underline underline-offset-4 hover:text-pine/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+    <div className="sticky top-0 z-50 w-full border-b border-pine/50 bg-pine-soft px-4 py-3 shadow-sm">
+      <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-3 gap-y-1 text-sm text-foreground">
+        <p className="flex-1 min-w-0 leading-relaxed">
+          <span className="font-medium text-pine">{b.prefix}</span> {b.body}
+          <Link
+            to="/demo"
+            className="font-medium text-pine underline underline-offset-4 hover:text-pine/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            {b.linkText}
+          </Link>
+          {b.suffix}
+        </p>
+        <button
+          type="button"
+          aria-label={b.dismissLabel}
+          onClick={() => {
+            try {
+              window.sessionStorage.setItem(DEMO_BANNER_KEY, "1");
+            } catch {
+              /* ignore */
+            }
+            setDismissed(true);
+          }}
+          className="rounded-md p-1 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-          {b.linkText}
-        </Link>
-        {b.suffix}
-      </p>
-      <button
-        type="button"
-        aria-label={b.dismissLabel}
-        onClick={() => {
-          try {
-            window.sessionStorage.setItem(DEMO_BANNER_KEY, "1");
-          } catch {
-            /* ignore */
-          }
-          setDismissed(true);
-        }}
-        className="rounded-md p-1 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-      >
-        <span aria-hidden className="text-lg leading-none">×</span>
-      </button>
+          <span aria-hidden className="text-lg leading-none">×</span>
+        </button>
+      </div>
     </div>
   );
 }
@@ -79,6 +81,7 @@ function Welcome() {
 
   return (
     <AppShell>
+      <DemoBanner />
       <div className="mx-auto w-full max-w-3xl px-5 pb-16 pt-14 sm:pt-20">
         <p className="text-base font-medium text-pine">
           {c.eyebrow}
@@ -116,7 +119,6 @@ function Welcome() {
         </ol>
 
         <div className="mt-12">
-          <DemoBanner />
           <Link
             to="/intake"
             className="inline-flex max-w-full items-center justify-center rounded-md bg-pine px-6 py-3.5 text-base font-medium text-pine-foreground shadow-sm transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
