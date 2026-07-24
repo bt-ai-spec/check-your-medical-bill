@@ -20,6 +20,11 @@ declare global {
 
 export function reportLovableError(error: unknown, context: Record<string, unknown> = {}) {
   if (typeof window === "undefined") return;
+  // Privacy: never transmit error data from the published production app.
+  // This hook only fires inside the Lovable editor preview (dev builds), where
+  // window.__lovableEvents is injected by the editor host so runtime errors
+  // surface in the editor. In production the call is compiled out entirely.
+  if (!import.meta.env.DEV) return;
   window.__lovableEvents?.captureException?.(
     error,
     {
