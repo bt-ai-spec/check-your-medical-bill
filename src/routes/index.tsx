@@ -43,7 +43,7 @@ function DemoBanner() {
   return (
     <div className="sticky top-0 z-50 w-full border-b border-pine/50 bg-pine-soft px-4 py-3 shadow-sm">
       <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-3 gap-y-1 text-sm text-foreground">
-        <p className="flex-1 min-w-0 leading-relaxed">
+        <p className="flex-1 min-w-0 text-center leading-relaxed">
           <span className="font-medium text-pine">{b.prefix}</span> {b.body}
           <Link
             to="/demo"
