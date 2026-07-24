@@ -14,7 +14,6 @@ export const strings = {
       link: "Open source",
       suffix: "Not legal advice.",
     },
-    footerDisclaimer: "Pilot — California · Open source · Not legal advice.",
     steps: [
       { num: "01", label: "Your bill" },
       { num: "02", label: "Check it" },
