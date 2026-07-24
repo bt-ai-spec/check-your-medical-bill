@@ -253,8 +253,8 @@ function DemoPage() {
             <span aria-hidden>→</span>
           </Link>
         </section>
-      </main>
-    </div>
+      </div>
+    </AppShell>
   );
 }
 
