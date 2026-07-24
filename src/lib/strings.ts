@@ -595,6 +595,13 @@ export const strings = {
     resourcesIntro:
       "Outside organizations the tool may point you to. Listed here for transparency. Not endorsements; links open in a new tab and carry no information about you.",
 
+    openSourceTitle: "Open source — code and corpus",
+    openSourceClaim:
+      "The entire project is public — the code under AGPL-3.0, the legal corpus and letter templates under CC BY-SA 4.0 — so anyone can verify the figures or adapt the tool for another state, and adaptations stay open.",
+    openSourceRepoLabel: "Fair Bill repository (GitHub)",
+    openSourceCorpusLabel: "The corpus — every legal figure in one readable file",
+    openSourceVerifiedOn: "2026-07-24",
+
     disclaimersTitle: "Disclaimers",
     disclaimersBody: [
       "Fair Bill is not legal or medical advice. It is a tool to help you read your bill and exercise rights that already exist under California and federal law.",

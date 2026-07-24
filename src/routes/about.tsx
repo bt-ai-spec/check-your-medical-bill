@@ -29,6 +29,10 @@ const externalLinkProps = {
   referrerPolicy: "no-referrer" as const,
 };
 
+const REPO_URL = "https://github.com/bt-ai-spec/check-your-medical-bill";
+const CORPUS_URL =
+  "https://github.com/bt-ai-spec/check-your-medical-bill/blob/main/src/lib/corpus.ts";
+
 function formatDate(iso: string): string {
   // iso is "YYYY-MM-DD" from corpus; render as a long, readable date.
   const [y, m, d] = iso.split("-").map((n) => parseInt(n, 10));
@@ -237,6 +241,20 @@ function AboutPage() {
               </li>
             ))}
           </ul>
+
+          <h3 className="mt-10 font-sans text-sm font-semibold uppercase tracking-wide text-foreground/70">
+            {a.openSourceTitle}
+          </h3>
+          <ul className="mt-5 space-y-4">
+            <SourceCard
+              claim={a.openSourceClaim}
+              links={[
+                { label: a.openSourceRepoLabel, url: REPO_URL },
+                { label: a.openSourceCorpusLabel, url: CORPUS_URL },
+              ]}
+              verifiedOn={a.openSourceVerifiedOn}
+            />
+          </ul>
         </section>
 
         {/* 5. Disclaimers */}
@@ -244,7 +262,7 @@ function AboutPage() {
           <h2 className="text-2xl font-medium tracking-tight text-foreground">
             {a.disclaimersTitle}
           </h2>
-          {a.disclaimersBody.map((p, i) => (
+          {a.disclaimersBody.slice(0, 2).map((p, i) => (
             <p
               key={i}
               className="mt-3 text-base leading-relaxed text-foreground/85"
@@ -252,6 +270,37 @@ function AboutPage() {
               {p}
             </p>
           ))}
+          <p className="mt-3 text-base leading-relaxed text-foreground/85">
+            {(() => {
+              const openSourceSentence = a.disclaimersBody[2];
+              const [beforeOpen, afterOpen] =
+                openSourceSentence.split("open");
+              const [beforeSingle, afterSingle] = afterOpen.split(
+                "single readable file",
+              );
+              return (
+                <>
+                  {beforeOpen}
+                  <a
+                    href={REPO_URL}
+                    {...externalLinkProps}
+                    className="text-pine underline underline-offset-4 hover:text-pine/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  >
+                    open
+                  </a>
+                  {beforeSingle}
+                  <a
+                    href={CORPUS_URL}
+                    {...externalLinkProps}
+                    className="text-pine underline underline-offset-4 hover:text-pine/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  >
+                    single readable file
+                  </a>
+                  {afterSingle}
+                </>
+              );
+            })()}
+          </p>
         </section>
 
         <div className="mt-14">
