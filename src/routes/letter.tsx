@@ -60,7 +60,7 @@ function LetterPanel({ letter }: { letter: RenderedLetter }) {
   const a = strings.letter.actions;
   const [copied, setCopied] = useState(false);
 
-  const plain = useMemo(() => lettersToPlainText(letter), [letter]);
+  const plain = useMemo(() => letterToPlainText(letter), [letter]);
 
   const onCopy = async () => {
     try {
