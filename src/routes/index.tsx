@@ -41,12 +41,12 @@ function DemoBanner() {
   if (dismissed) return null;
 
   return (
-    <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-pine/30 bg-pine-soft/40 px-4 py-2 text-sm text-foreground">
-      <p className="flex-1 min-w-0">
-        <span className="font-medium">{b.prefix}</span> {b.body}
+    <div className="mb-5 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-pine/50 bg-pine-soft px-4 py-3 text-sm text-foreground shadow-sm">
+      <p className="flex-1 min-w-0 leading-relaxed">
+        <span className="font-medium text-pine">{b.prefix}</span> {b.body}
         <Link
           to="/demo"
-          className="text-pine underline underline-offset-4 hover:text-pine/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="font-medium text-pine underline underline-offset-4 hover:text-pine/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           {b.linkText}
         </Link>
