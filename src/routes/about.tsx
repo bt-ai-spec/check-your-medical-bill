@@ -241,6 +241,20 @@ function AboutPage() {
               </li>
             ))}
           </ul>
+
+          <h3 className="mt-10 font-sans text-sm font-semibold uppercase tracking-wide text-foreground/70">
+            {a.openSourceTitle}
+          </h3>
+          <ul className="mt-5 space-y-4">
+            <SourceCard
+              claim={a.openSourceClaim}
+              links={[
+                { label: a.openSourceRepoLabel, url: REPO_URL },
+                { label: a.openSourceCorpusLabel, url: CORPUS_URL },
+              ]}
+              verifiedOn={a.openSourceVerifiedOn}
+            />
+          </ul>
         </section>
 
         {/* 5. Disclaimers */}
