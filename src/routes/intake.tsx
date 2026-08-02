@@ -14,6 +14,12 @@ export const Route = createFileRoute("/intake")({
         content:
           "Tell Fair Bill who sent the bill so it shows you only the rights and steps that apply.",
       },
+      { property: "og:title", content: "Intake — Fair Bill" },
+      {
+        property: "og:description",
+        content:
+          "Step 1: tell Fair Bill who sent the bill so it shows only the rights that apply to that provider.",
+      },
     ],
   }),
   component: IntakePage,
