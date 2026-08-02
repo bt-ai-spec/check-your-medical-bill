@@ -104,6 +104,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Fair Bill helps Californians read and act on a confusing or unfair medical bill. Private — everything stays on your device.",
       },
       { name: "referrer", content: "no-referrer" },
+      {
+        name: "google-site-verification",
+        content: "Rdt8lzQIixEGgFLzraRSak5mY_HgxiX_oexZsulrntE",
+      },
       { property: "og:title", content: "Fair Bill — Check your California medical bill" },
       {
         property: "og:description",
