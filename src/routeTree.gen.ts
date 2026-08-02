@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as QualifyRouteImport } from './routes/qualify'
 import { Route as LetterRouteImport } from './routes/letter'
 import { Route as IntakeRouteImport } from './routes/intake'
@@ -17,6 +18,11 @@ import { Route as CheckRouteImport } from './routes/check'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const QualifyRoute = QualifyRouteImport.update({
   id: '/qualify',
   path: '/qualify',
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/intake': typeof IntakeRoute
   '/letter': typeof LetterRoute
   '/qualify': typeof QualifyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/intake': typeof IntakeRoute
   '/letter': typeof LetterRoute
   '/qualify': typeof QualifyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   '/intake': typeof IntakeRoute
   '/letter': typeof LetterRoute
   '/qualify': typeof QualifyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,8 +100,17 @@ export interface FileRouteTypes {
     | '/intake'
     | '/letter'
     | '/qualify'
+    | '/sitemap.xml'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/check' | '/demo' | '/intake' | '/letter' | '/qualify'
+  to:
+    | '/'
+    | '/about'
+    | '/check'
+    | '/demo'
+    | '/intake'
+    | '/letter'
+    | '/qualify'
+    | '/sitemap.xml'
   id:
     | '__root__'
     | '/'
@@ -102,6 +120,7 @@ export interface FileRouteTypes {
     | '/intake'
     | '/letter'
     | '/qualify'
+    | '/sitemap.xml'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -112,10 +131,18 @@ export interface RootRouteChildren {
   IntakeRoute: typeof IntakeRoute
   LetterRoute: typeof LetterRoute
   QualifyRoute: typeof QualifyRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/qualify': {
       id: '/qualify'
       path: '/qualify'
@@ -176,17 +203,8 @@ const rootRouteChildren: RootRouteChildren = {
   IntakeRoute: IntakeRoute,
   LetterRoute: LetterRoute,
   QualifyRoute: QualifyRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
