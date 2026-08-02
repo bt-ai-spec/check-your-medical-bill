@@ -25,6 +25,12 @@ export const Route = createFileRoute("/letter")({
         content:
           "A ready-to-send letter built from what you already entered — generated on this device.",
       },
+      { property: "og:title", content: "Get your letter — Fair Bill" },
+      {
+        property: "og:description",
+        content:
+          "Step 4: a ready-to-send dispute or financial-assistance letter, written on your device.",
+      },
     ],
   }),
   component: LetterPage,

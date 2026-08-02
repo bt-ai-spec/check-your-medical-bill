@@ -10,7 +10,7 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "Where every number in Fair Bill comes from: California's Hospital Fair Pricing Act, the federal poverty guidelines, and each pilot hospital's published financial-assistance policy.",
+          "Where every number in Fair Bill comes from: California's Hospital Fair Pricing Act, the federal poverty guidelines, and each pilot hospital's policy.",
       },
       { property: "og:title", content: "About & sources — Fair Bill" },
       {

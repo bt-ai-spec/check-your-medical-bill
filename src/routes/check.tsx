@@ -30,6 +30,12 @@ export const Route = createFileRoute("/check")({
         content:
           "See what's worth questioning on your medical bill — duplicates, surprise billing, and your right to itemization.",
       },
+      { property: "og:title", content: "Check it — Fair Bill" },
+      {
+        property: "og:description",
+        content:
+          "Step 2: spot duplicates, surprise billing, and your right to an itemized medical bill.",
+      },
     ],
   }),
   component: CheckPage,
