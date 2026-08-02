@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://check-your-medical-bill.lovable.app/sitemap.xml

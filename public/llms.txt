@@ -1,0 +1,15 @@
+# Fair Bill
+
+> A privacy-first, open-source web app that helps Californians read and act on a confusing or unfair medical bill. Everything runs in the browser — no accounts, no tracking, no data leaves the device.
+
+Fair Bill walks through four steps: identify the provider, check the bill for issues, see if you qualify for charity or discounted care under California's Hospital Fair Pricing Act, and generate a letter to send. Every legal figure is traceable to a published source.
+
+## Pages
+
+- [Home](/): What Fair Bill is and how the four steps work.
+- [Demo](/demo): A walkthrough with fictional sample bill data.
+- [Intake](/intake): Step 1 — tell the tool who sent the bill.
+- [Check it](/check): Step 2 — spot duplicates, surprise billing, and your right to itemization.
+- [See if you qualify](/qualify): Step 3 — charity care and discounted care eligibility.
+- [Get your letter](/letter): Step 4 — a ready-to-send dispute or assistance letter.
+- [About & sources](/about): Every legal figure, its source, and how privacy works.
