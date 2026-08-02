@@ -26,6 +26,12 @@ export const Route = createFileRoute("/qualify")({
         content:
           "What actually works to bring down a medical bill — tailored to who sent it.",
       },
+      { property: "og:title", content: "See if you qualify — Fair Bill" },
+      {
+        property: "og:description",
+        content:
+          "Step 3: check whether you qualify for charity care or discounted care under California law.",
+      },
     ],
   }),
   component: QualifyPage,
