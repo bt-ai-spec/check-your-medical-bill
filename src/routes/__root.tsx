@@ -134,6 +134,30 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap",
       },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              name: "Fair Bill",
+              url: "https://check-your-medical-bill.lovable.app",
+              description:
+                "A privacy-first web app that helps Californians read and act on confusing medical bills",
+            },
+            {
+              "@type": "WebSite",
+              name: "Fair Bill",
+              url: "https://check-your-medical-bill.lovable.app",
+              description:
+                "A privacy-first web app that helps Californians read and act on confusing medical bills",
+            },
+          ],
+        }),
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
